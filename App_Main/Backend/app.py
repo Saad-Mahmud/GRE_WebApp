@@ -5,7 +5,7 @@ import os
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 template_dir = os.path.join(template_dir, 'Frontend')
 template_dir = os.path.join(template_dir, 'templates')
-print(template_dir)
+print(template_dir,"asd")
 app = Flask(__name__,template_folder=template_dir)
 
 
