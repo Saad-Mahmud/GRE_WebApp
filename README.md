@@ -1,3 +1,3 @@
-# GRE_WebApp
+# VocLab
 SDP_Lab_Project
 
