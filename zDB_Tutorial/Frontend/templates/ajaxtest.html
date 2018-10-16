@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Test Ajax</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(cols=50, rows=4) }}<br>
+            {% for error in form.about_me.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.about_me2.label }}<br>
+            {{ form.about_me2(cols=50, rows=4) }}<br>
+            {% for error in form.about_me2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <button onclick="test()" class="btn" type="button">Submit</button>
+    </form>
+    <script>
+    function test() {
+        console.log("ok")
+        $.ajax({
+            url: '/here',
+            data: $('form').serialize(),
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                document.getElementById("testaj").innerHTML=response.status
+                console.log(response.status)
+            },
+            error: function (error) {
+                document.getElementById("testaj").innerHTML=error.toString()
+            }
+        });
+
+    }
+    </script>
+
+    <div>
+        <p id="testaj">
+        </p>
+    </div>
+{% endblock %}
