@@ -5,3 +5,4 @@ sudo mongo
 
 #If socket gets blocked
 fuser -k socket_id/tcp
+
