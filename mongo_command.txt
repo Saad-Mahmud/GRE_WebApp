@@ -1,0 +1,7 @@
+#If mongo does not open
+sudo rm /var/lib/mongodb/mongod.lock
+sudo service mongod restart
+sudo mongo
+
+#If socket gets blocked
+fuser -k socket_id/tcp
