@@ -12,7 +12,7 @@ from datetime import datetime
 import json,os
 from flask_oauth import OAuth
 from urllib.request import Request,urlopen,URLError
-import secrets
+from os import urandom
 from PIL import Image
 next_gpage = ""
 reg_bool = True
@@ -266,7 +266,7 @@ def user(username):
     return render_template('user.html', user=user, posts=posts)
 
 def save_pic(form_picture):
-    random_hex = secrets.token_hex(8)
+    random_hex = urandom(8).hex()
     _,f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(APP_MAIN.static_folder, 'img', picture_fn)
