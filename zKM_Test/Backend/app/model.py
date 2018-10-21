@@ -34,10 +34,16 @@ class User(UserMixin,Document):
             return self.upic.format(digest,size)
 
 
-
 class Country(UserMixin, Document):
     country_id = IntField(required=True, primary_key=True)
     country_name = StringField(required=True, max_length=50, unique=True    )
+
+class Gre_data(UserMixin, Document):
+    username =  StringField(required=True, primary_key=True)
+    how_many_test = StringField()
+    best_score = IntField()
+    avg_score = StringField()
+
 
 @APPLOGIN.user_loader
 def load_user(username):

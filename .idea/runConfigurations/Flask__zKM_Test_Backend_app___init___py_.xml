@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Flask (App_Main/Backend/app.py)" type="Python.FlaskServer" factoryName="Flask server" nameIsGenerated="true">
+  <configuration default="false" name="Flask (zKM_Test/Backend/app/__init__.py)" type="Python.FlaskServer" factoryName="Flask server" nameIsGenerated="true">
     <option name="additionalOptions" value="" />
     <option name="application" value="" />
     <option name="flaskDebug" value="true" />
     <module name="GRE_WebApp" />
-    <option name="target" value="$PROJECT_DIR$/App_Main/Backend/app.py" />
+    <option name="target" value="$PROJECT_DIR$/zKM_Test/Backend/app/__init__.py" />
     <option name="targetType" value="PATH" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

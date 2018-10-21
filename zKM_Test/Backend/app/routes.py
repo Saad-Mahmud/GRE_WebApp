@@ -223,7 +223,6 @@ def login():
             user = user[0]
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('login'))
-        del session['access_token']
         login_user(user,remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -316,7 +315,14 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
-    pass
+    label = []
+    val = []
+    col = db['gre_data']
+    cursor = col.find({})
+    for i in cursor:
+        label.append(i['_id'])
+        val.append(i['best_score'])
+    return render_template('stat.html',val = val, label = label)
 
 
 @APP_MAIN.before_request

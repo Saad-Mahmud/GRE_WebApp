@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUUBgtiJj06wt/s=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h3>Charts:</h3>
+<div class="ct-chart .ct-perfect-fourth"></div>
+
+<script>
+    let options = {
+        width: 600,
+        height: 400
+    };
+    let data = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in label %}
+          "{{ i }}",
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in val %}
+            {{ i }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    // Create a new line chart object where as first parameter we pass in a selector
+    // that is resolving to our chart container element. The Second parameter
+    // is the actual data object.
+    let mychart = new Chartist.Line('.ct-chart', data, options);
+</script>
+</body>
+</html>
