@@ -261,7 +261,17 @@ def ranking():
     for i in curser:
         rnk.append(i['rating'])
     rnk.sort(reverse=True)
-    print(rnk)
+    return rnk
+def locrank():
+    col = db['gre_data']
+    curser = col.find({})
+    rnk = []
+    for i in curser:
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        if user.country== current_user.country:
+            rnk.append(i['rating'])
+    rnk.sort(reverse=True)
     return rnk
 
 @APP_MAIN.route('/user/<username>')
@@ -280,7 +290,9 @@ def user(username):
     ]
     rate = rating(username)
     rank = ranking().index(rate.rating)
-    return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1)
+    local = locrank().index(rate.rating)
+    print(local)
+    return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1, local=local+1)
 
 def save_pic(form_picture):
     random_hex = urandom(8).hex()

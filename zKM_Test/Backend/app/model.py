@@ -39,7 +39,7 @@ class Country(UserMixin, Document):
     country_name = StringField(required=True, max_length=50, unique=True    )
 
 class Gre_data(UserMixin, Document):
-    username =  StringField(required=True, primary_key=True)
+    username = StringField(required=True, primary_key=True)
     history = ListField(IntField())
     how_many_test = IntField()
     best_score = FloatField()
