@@ -10,7 +10,6 @@ from datetime import datetime
 import json
 
 
-
 @APP_MAIN.route('/')
 @APP_MAIN.route('/index')
 @login_required
@@ -52,10 +51,12 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
+
 @APP_MAIN.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @APP_MAIN.route('/register', methods=['GET', 'POST'])
 def register():
@@ -92,6 +93,7 @@ def before_request():
         current_user.update(last_seen = datetime.utcnow())
         current_user.reload()
 
+
 @APP_MAIN.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -106,6 +108,7 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
 
+
 @APP_MAIN.route('/testajax', methods=['GET', 'POST'])
 @login_required
 def test_ajax():
@@ -115,6 +118,7 @@ def test_ajax():
         print(form.about_me2.data)
     return render_template('ajaxtest.html', title='Test Ajax',
                            form=form)
+
 
 @APP_MAIN.route('/here', methods=['POST'])
 def kaka():

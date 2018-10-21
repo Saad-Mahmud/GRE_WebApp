@@ -14,7 +14,7 @@ static_dir = os.path.join(template_dir, 'Frontend')
 static_dir = os.path.join(template_dir, 'static')
 print(template_dir)
 
-APP_MAIN = Flask(__name__,template_folder=template_dir,static_folder=static_dir)
+APP_MAIN = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 APP_MAIN.config.from_object(Config.Config)
 
 APPBS=Bootstrap(APP_MAIN)

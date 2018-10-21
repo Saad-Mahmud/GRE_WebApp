@@ -11,7 +11,7 @@ template_dir = os.path.join(template_dir, 'Frontend')
 template_dir = os.path.join(template_dir, 'templates')
 print(template_dir)
 
-APP_MAIN = Flask(__name__,template_folder=template_dir)
+APP_MAIN = Flask(__name__, template_folder=template_dir)
 APP_MAIN.config.from_object(Config.Config)
 
 APPBS=Bootstrap(APP_MAIN)

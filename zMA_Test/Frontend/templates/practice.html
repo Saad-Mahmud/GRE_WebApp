@@ -7,5 +7,42 @@
 <body>
 <h1>Practice!</h1>
 
+{% for idx in counter %}
+        <button onclick="myFunction({{ words }}, {{ idx }})">Next</button>
+        <button onclick="flipCard({{ words }}, {{ idx }})">Flip</button>
+
+{% endfor %}
+
+<p id="demo"></p>
+
+<script>
+    function myFunction(words,i) {
+        var x = document.getElementById("demo");
+        var y = words[i].word;
+        var z = words[i].meanings;
+        var final = y;
+
+        document.getElementById("demo").innerHTML = final;
+    }
+
+    function flipCard(words,i) {
+    var x = document.getElementById("demo");
+    var y = words[i].word;
+    var z = words[i].meanings;
+    var final = y;
+    if (x.innerHTML === z) {
+        final = y;
+    } else {
+        final = z;
+    }
+    document.getElementById("demo").innerHTML = final;
+
+
+}
+
+</script>
+
+
 </body>
 </html>
+
