@@ -7,6 +7,8 @@
 
             <td>
                 <h3>User: {{ user.username }}</h3>
+                <h5>Rating: {{ rate.rating }}</h5>
+                <h5>Rank: {{ rank }}</h5>
                 <h6>accout: {{ user.email }}</h6>
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}

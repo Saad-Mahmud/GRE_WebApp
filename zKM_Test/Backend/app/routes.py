@@ -1,4 +1,4 @@
-import random
+import random,copy
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
 from zKM_Test.Backend.app.model import User, Gre_data, Country
 from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm
@@ -250,6 +250,20 @@ def logout():
     #return redirect(url_for('index'))
 
 
+def rating(username):
+    rate = Gre_data.objects(username=username)
+    rate = rate[0]
+    return rate
+def ranking():
+    col = db['gre_data']
+    curser = col.find({})
+    rnk = []
+    for i in curser:
+        rnk.append(i['rating'])
+    rnk.sort(reverse=True)
+    print(rnk)
+    return rnk
+
 @APP_MAIN.route('/user/<username>')
 @login_required
 def user(username):
@@ -264,7 +278,9 @@ def user(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    rate = rating(username)
+    rank = ranking().index(rate.rating)
+    return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1)
 
 def save_pic(form_picture):
     random_hex = urandom(8).hex()
@@ -326,15 +342,16 @@ def stat():
         stat_data = stat_data[0]
         history = []
         how_many_test = 0
-        best_score = 0
-        avg_score = 0
+        rating = 0
         for x in range (0,4,1):
-            history.append(random.randint(0,40))
+            a = random.randint(0,40)
+            history.append(a)
             how_many_test = how_many_test + 1
+            rating = rating + a
 
         best_score = max(history)
-        avg_score = sum(history)/how_many_test
-        stat_data = stat_data.update(history = history, how_many_test=how_many_test, best_score = best_score, avg_score=avg_score)
+        avg_score = rating/how_many_test
+        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score)
 
     return render_template('stat.html', history=history, how_many_test = how_many_test+1)
     '''

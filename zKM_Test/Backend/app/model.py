@@ -44,7 +44,7 @@ class Gre_data(UserMixin, Document):
     how_many_test = IntField()
     best_score = FloatField()
     avg_score = FloatField()
-
+    rating = FloatField()
 
 @APPLOGIN.user_loader
 def load_user(username):
