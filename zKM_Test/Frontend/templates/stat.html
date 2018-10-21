@@ -18,13 +18,13 @@
     };
     let data = {
       // A labels array that can contain any sort of values
-      labels: [{% for i in label %}
-          "{{ i }}",
+      labels: [{% for i in range(1,how_many_test,1) %}
+          {{ i }},
           {% endfor %}
       ],
       // Our series array that contains series objects or in this case series data arrays
       series: [
-        [{% for i in val %}
+        [{% for i in history %}
             {{ i }},
             {% endfor %}
         ]

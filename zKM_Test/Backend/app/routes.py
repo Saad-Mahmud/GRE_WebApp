@@ -1,5 +1,6 @@
+import random
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
-from zKM_Test.Backend.app.model import User
+from zKM_Test.Backend.app.model import User, Gre_data, Country
 from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_oauth import OAuth
@@ -317,14 +318,14 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
-    label = []
-    val = []
     col = db['gre_data']
     cursor = col.find({})
-    for i in cursor:
-        label.append(i['_id'])
-        val.append(i['best_score'])
-    return render_template('stat.html',val = val, label = label)
+
+    stat_data = Gre_data.objects(username=current_user.username)
+    stat_data = stat_data[0]
+
+    return render_template('stat.html',history = stat_data
+                            .history, how_many_test = stat_data.how_many_test+1)
 
 
 @APP_MAIN.before_request

@@ -40,9 +40,10 @@ class Country(UserMixin, Document):
 
 class Gre_data(UserMixin, Document):
     username =  StringField(required=True, primary_key=True)
-    how_many_test = StringField()
-    best_score = IntField()
-    avg_score = StringField()
+    history = ListField(IntField())
+    how_many_test = IntField()
+    best_score = FloatField()
+    avg_score = FloatField()
 
 
 @APPLOGIN.user_loader
