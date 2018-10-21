@@ -21,6 +21,7 @@ GOOGLE_CLIENT_SECRET = '8UggTqBUxM3M-9cd8KtLv8Tj'
 REDIRECT_URI = '/oauth2callback'
 
 
+
 oauth = OAuth()
 
 
