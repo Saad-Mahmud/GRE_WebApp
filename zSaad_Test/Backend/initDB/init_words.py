@@ -1,4 +1,4 @@
-from zSaad_Test.Backend.initDB.words import Words_Test,Words_Rating
+from zSaad_Test.Backend.initDB.words import Words_Test, Words_Rating
 import pandas as pd
 import os
 import random
