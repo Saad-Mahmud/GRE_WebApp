@@ -338,7 +338,7 @@ def stat():
 
     return render_template('stat.html', history=history, how_many_test = how_many_test+1)
     '''
-    #if u want to create dummy data to check comment in this section until render_template and comment out previous section
+    #if u want to create dummy data to check comment in this section including render_template and comment out previous section
     col = db['gre_data']
     cursor = col.find({})
 
