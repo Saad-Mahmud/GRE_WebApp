@@ -20,6 +20,7 @@ GOOGLE_CLIENT_ID = '375961356325-p3umdlkkjr6ak9kairqv8b3ttalio52a.apps.googleuse
 GOOGLE_CLIENT_SECRET = '8UggTqBUxM3M-9cd8KtLv8Tj'
 REDIRECT_URI = '/oauth2callback'
 
+
 oauth = OAuth()
 
 
