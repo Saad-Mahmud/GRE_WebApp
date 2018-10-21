@@ -23,3 +23,4 @@ def dictionary():
         for w in wordlist
     ]
     return render_template('dictionary.html', words=words)
+
