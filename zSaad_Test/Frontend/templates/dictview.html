@@ -1,0 +1,27 @@
+<table>
+        <tr>
+            <td>
+                <h3><b>{{ word.word }}</b></h3>
+            </td>
+        <tr>
+            <td>
+                <b>Type :</b> <i>{{ word.TYPE }}</i>
+            </td>
+        </tr>
+        </tr>
+        <tr>
+            <td>
+                <b>Meaning :</b> {{ word.meaning }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Usage :</b>
+                <ul>
+                    {% for usage in word.usages %}
+                        <li >{{ usage }}</li>
+                    {% endfor %}
+                    </ul>
+            </td>
+        </tr>
+</table>

@@ -27,7 +27,7 @@ class DataLoader():
     def next_word(self):
         aa=self.df.iloc[self.pointer]
         self.pointer=self.pointer+1
-        wordID = "A_["+aa["word"].strip()+"]_MAIN"
+        wordID = ""+aa["word"][0]+"_["+aa["word"]+"]"
         word = aa["word"].strip()
         meanings = [aa["meanings"].strip()]
         usages = [aa["usages"].strip()]
@@ -38,7 +38,7 @@ class DataLoader():
     def next_ratings(self):
         aa=self.df.iloc[self.pointer]
         self.pointer=self.pointer+1
-        wordID = "A_["+aa["word"].strip()+"]_MAIN"
+        wordID = ""+aa["word"][0]+"_["+aa["word"]+"]"
         ratings = [1+random.randint(1,10)%10 for i in range(200)]
         return Words_Rating(wordID=wordID,Ratings=ratings)
 
