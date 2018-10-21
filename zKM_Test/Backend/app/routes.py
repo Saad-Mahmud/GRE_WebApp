@@ -318,6 +318,26 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
+    '''   //////////////dummy stat creation in Gre_data table ///////////
+        col = db['gre_data']
+        cursor = col.find({})
+        for i in cursor:
+            stat_data = Gre_data.objects(username=i['_id'])
+            stat_data = stat_data[0]
+            history = []
+            how_many_test = 0
+            best_score = 0
+            avg_score = 0
+            for x in range (0,4,1):
+                history.append(random.randint(0,40))
+                how_many_test = how_many_test + 1
+
+            best_score = max(history)
+            avg_score = sum(history)/how_many_test
+            stat_data = stat_data.update(history = history, how_many_test=how_many_test, best_score = best_score, avg_score=avg_score)
+
+    '''
+    #if u want to create dummy data to check comment in this section until render_template and comment out previous section
     col = db['gre_data']
     cursor = col.find({})
 
