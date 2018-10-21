@@ -12,7 +12,7 @@ class DataLoader():
 
     def __init__(self):
         print(word_dir)
-        self.df = pd.read_csv(word_dir+"/word_data.csv")
+        self.df = pd.read_csv(word_dir+"/word_data.csv",sep='|')
         self.size=self.df.shape[0]
         print(self.size)
         self.pointer=0
