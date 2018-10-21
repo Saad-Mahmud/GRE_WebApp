@@ -268,7 +268,7 @@ def save_pic(form_picture):
     random_hex = secrets.token_hex(8)
     _,f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join('/home/koushik/PycharmProjects/GRE_WebApp-master/zKM_Test/Frontend/static/img', picture_fn)
+    picture_path = os.path.join(APP_MAIN.static_folder, 'img', picture_fn)
     output_size=(125,125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
