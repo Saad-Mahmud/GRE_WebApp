@@ -1,5 +1,6 @@
+import random,copy
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
-from zKM_Test.Backend.app.model import User
+from zKM_Test.Backend.app.model import User, Gre_data, Country
 from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_oauth import OAuth
@@ -249,6 +250,30 @@ def logout():
     #return redirect(url_for('index'))
 
 
+def rating(username):
+    rate = Gre_data.objects(username=username)
+    rate = rate[0]
+    return rate
+def ranking():
+    col = db['gre_data']
+    curser = col.find({})
+    rnk = []
+    for i in curser:
+        rnk.append(i['rating'])
+    rnk.sort(reverse=True)
+    return rnk
+def locrank():
+    col = db['gre_data']
+    curser = col.find({})
+    rnk = []
+    for i in curser:
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        if user.country== current_user.country:
+            rnk.append(i['rating'])
+    rnk.sort(reverse=True)
+    return rnk
+
 @APP_MAIN.route('/user/<username>')
 @login_required
 def user(username):
@@ -263,7 +288,11 @@ def user(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    rate = rating(username)
+    rank = ranking().index(rate.rating)
+    local = locrank().index(rate.rating)
+    print(local)
+    return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1, local=local+1)
 
 def save_pic(form_picture):
     random_hex = urandom(8).hex()
@@ -317,14 +346,37 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
-    label = []
-    val = []
+    '''       #//////////////dummy stat creation in Gre_data table ///////////
     col = db['gre_data']
     cursor = col.find({})
     for i in cursor:
-        label.append(i['_id'])
-        val.append(i['best_score'])
-    return render_template('stat.html',val = val, label = label)
+        stat_data = Gre_data.objects(username=i['_id'])
+        stat_data = stat_data[0]
+        history = []
+        how_many_test = 0
+        rating = 0
+        for x in range (0,4,1):
+            a = random.randint(0,40)
+            history.append(a)
+            how_many_test = how_many_test + 1
+            rating = rating + a
+
+        best_score = max(history)
+        avg_score = rating/how_many_test
+        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score)
+
+    return render_template('stat.html', history=history, how_many_test = how_many_test+1)
+    '''
+    #if u want to create dummy data to check comment in this section including render_template and comment out previous section
+    col = db['gre_data']
+    cursor = col.find({})
+
+    stat_data = Gre_data.objects(username=current_user.username)
+    stat_data = stat_data[0]
+
+    return render_template('stat.html',history = stat_data
+                            .history, how_many_test = stat_data.how_many_test+1)
+
 
 
 @APP_MAIN.before_request
