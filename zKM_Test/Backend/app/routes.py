@@ -1,3 +1,4 @@
+import operator
 import random,copy
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
 from zKM_Test.Backend.app.model import User, Gre_data, Country
@@ -12,7 +13,10 @@ from flask import request
 from datetime import datetime
 import json,os
 from flask_oauth import OAuth
-from urllib2 import Request,urlopen,URLError
+try:
+    from urllib.request import Request,urlopen, URLError
+except ImportError:
+    from urllib2 import Request,urlopen,URLError
 from os import urandom
 from PIL import Image
 next_gpage = ""
@@ -254,6 +258,19 @@ def rating(username):
     rate = Gre_data.objects(username=username)
     rate = rate[0]
     return rate
+'''
+def ranking():
+    col = db['gre_data']
+    curser = col.find({})
+    dict = {}
+    rnk = []
+    for i in curser:
+        dict[i['_id']]= i['rating']
+    print(dict)
+    #sorted_x = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
+
+    return dict
+'''
 def ranking():
     col = db['gre_data']
     curser = col.find({})
@@ -290,8 +307,9 @@ def user(username):
     ]
     rate = rating(username)
     rank = ranking().index(rate.rating)
+
     local = locrank().index(rate.rating)
-    print(local)
+    #print(local)
     return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1, local=local+1)
 
 def save_pic(form_picture):
