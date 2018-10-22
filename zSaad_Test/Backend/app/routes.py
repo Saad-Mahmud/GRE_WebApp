@@ -1,7 +1,7 @@
 from zSaad_Test.Backend.app import APP_MAIN
-from flask import render_template
+from flask import render_template,redirect,url_for,flash
 from zSaad_Test.Backend.initDB.words import Words_Test
-
+from zSaad_Test.Backend.app.forms import WordSuggestionForm
 
 
 @APP_MAIN.route('/')
@@ -26,6 +26,7 @@ def dictionary(page):
         return render_template('404.html')
     words = [
         {
+            'wordID': w.wordID,
             'word': w.word ,
             'TYPE': w.TYPE ,
             'meaning': w.meanings[0] ,
@@ -34,4 +35,21 @@ def dictionary(page):
         for w in wordlist
     ]
     return render_template('dictionary.html',links=links, title=title, words=words)
+
+@APP_MAIN.route('/suggestions/words/',defaults={'wordID': ''},methods=['GET', 'POST'])
+@APP_MAIN.route('/suggestions/words/<string:wordID>',methods=['GET', 'POST'])
+def suggestion(wordID):
+    if(wordID==''):
+        return render_template('404.html')
+    elif(Words_Test.objects(wordID=wordID)==[]):
+        return render_template('404.html')
+
+    form = WordSuggestionForm()
+    if form.validate_on_submit():
+        print (form.TYPE.data)
+        print (form.report.data)
+        flash('Report Submitted!')
+        return redirect(url_for('dictionary')+wordID[0])
+    return render_template('suggestions_word.html', form=form)
+
 
