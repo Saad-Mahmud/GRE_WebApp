@@ -1,8 +1,8 @@
 import operator
 import random,copy
-from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
+from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model,mail
 from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
-from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm
+from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_oauth import OAuth
 from flask_login import current_user, login_user, logout_user , login_required, fresh_login_required
@@ -19,6 +19,7 @@ except ImportError:
     from urllib2 import Request,urlopen,URLError
 from os import urandom
 from PIL import Image
+from flask_mail import Message
 next_gpage = ""
 reg_bool = True
 GOOGLE_CLIENT_ID = '375961356325-p3umdlkkjr6ak9kairqv8b3ttalio52a.apps.googleusercontent.com'
@@ -327,7 +328,6 @@ def save_pic(form_picture):
     return picture_fn
 
 
-
 @APP_MAIN.route('/edit_profile',methods=['POST','GET'])
 def edit_profile():
     form = EditProfileForm()
@@ -342,6 +342,48 @@ def edit_profile():
     elif request.method=='GET':
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html',title="Edit Profile", form = form)
+
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
+    msg.body=f'''To reset your password visit following link:
+{url_for('reset_token', token=token, _external=True)}
+'''
+    mail.send(msg)
+
+
+@APP_MAIN.route('/reset_password',methods=['POST','GET'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data)[0]
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@APP_MAIN.route('/reset_password/<token>',methods=['POST','GET'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid token')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = user[0]
+        password_hash=generate_password_hash(form.password.data)
+        user = user.update(password_hash=password_hash)
+
+        flash("Your password has been reset")
+        return redirect(url_for('login'))
+
+    return render_template('reset_token.html', title='Reset Password',form=form)
 
 
 @APP_MAIN.route('/dictionary')

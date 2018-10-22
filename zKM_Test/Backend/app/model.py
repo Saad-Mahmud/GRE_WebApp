@@ -1,7 +1,7 @@
 from mongoengine import *
 from flask_login import UserMixin
-
-from zKM_Test.Backend.app import APPLOGIN
+from itsdangerous import TimedJSONWebSignatureSerializer as Mub
+from zKM_Test.Backend.app import APPLOGIN, APP_MAIN
 from hashlib import md5
 from werkzeug.security import check_password_hash
 
@@ -32,7 +32,18 @@ class User(UserMixin,Document):
         digest, size)
         else:
             return self.upic.format(digest,size)
+    def get_reset_token(self, expires_sec=1800):
+        s = Mub(APP_MAIN.config['SECRET_KEY'],expires_sec)
+        return s.dumps({'user_id':self.username}).decode('utf-8')
+    @staticmethod
+    def verify_reset_token(token):
+        s = Mub(APP_MAIN.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
 
+        return User.objects(username=user_id)
 
 class Country(UserMixin, Document):
     country_id = IntField(required=True, primary_key=True)

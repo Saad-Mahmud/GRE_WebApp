@@ -33,7 +33,18 @@ collection = db['country']
 cursor = collection.find({})
 for i in cursor:
     print(i['country_name'])
+'''
 
+from flask import Flask
+import os
+app = Flask(__name__)
+
+a = os.environ.get('DBPASS')
+b = os.environ.get('DBUSER')
+
+print(a)
+print(b)
+'''
 if __name__== "__main__":
     app.run(debug=True)
 

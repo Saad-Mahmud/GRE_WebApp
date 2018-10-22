@@ -46,3 +46,37 @@ class AdditionalForm(FlaskForm):
    # country = StringField('Country', validators=[DataRequired()])
     confirm_password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Proceed')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.objects(email=email.data)
+        if user is None:
+            raise ValidationError('There is no account with that email, You must register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
