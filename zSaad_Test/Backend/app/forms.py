@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, BooleanField, StringField, TextAreaField, SubmitField,RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,Length
-
+from appdirs import unicode
 
 class WordSuggestionForm(FlaskForm):
     report = TextAreaField('Report', validators=[DataRequired(),Length(min=20, max=300)])

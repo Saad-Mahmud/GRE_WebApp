@@ -41,7 +41,7 @@ def dictionary(page):
     else:
         return render_template('404.html')
     print(wordlist)
-    
+
     words = [
         {
             'wordID': w.wordID,
