@@ -46,6 +46,10 @@ class Gre_data(UserMixin, Document):
     avg_score = FloatField()
     rating = FloatField()
 
+class Moumita(UserMixin, Document):
+    userid = StringField(required=True, primary_key=True)
+    wordid = StringField()
+
 @APPLOGIN.user_loader
 def load_user(username):
     return User.objects(username=username)[0]

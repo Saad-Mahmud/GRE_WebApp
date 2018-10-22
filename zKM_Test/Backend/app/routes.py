@@ -1,7 +1,7 @@
 import operator
 import random,copy
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model
-from zKM_Test.Backend.app.model import User, Gre_data, Country
+from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
 from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_oauth import OAuth
@@ -139,6 +139,8 @@ def register():
                     email=form.email.data,
                     password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow())
         user.save()
+        moumi = Moumita(userid = form.username.data)
+        moumi.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
         session.pop('access_token', None)
         return redirect(url_for('additional',username=form.username.data))
