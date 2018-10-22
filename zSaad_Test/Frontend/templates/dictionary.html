@@ -11,6 +11,30 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
+<script>
+    function myFunction(id) {
+        var e = document.getElementById(id);
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        $.ajax({
+            url: '/translate',
+            data: {'data':value.toString()},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                document.getElementById(id+"_text").innerHTML=response.status
+                console.log(response.status)
+            },
+            error: function (error) {
+                document.getElementById(id+"_text").innerHTML='Translation Not Available'
+            }
+        });
+
+}
+</script>
+
 <head>
     <meta charset="UTF-8">
     <title>Dictionary</title>
@@ -25,6 +49,7 @@
         </div>
     </div>
     <hr>
+
 
 <nav aria-label="my_pn">
   <ul class="pagination pagination-lg">

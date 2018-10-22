@@ -1,13 +1,29 @@
 from zSaad_Test.Backend.app import APP_MAIN
-from flask import render_template,redirect,url_for,flash
+from flask import render_template,redirect,url_for,flash,send_file,request,json
 from zSaad_Test.Backend.initDB.words import Words_Test
 from zSaad_Test.Backend.app.forms import WordSuggestionForm
+import os
 
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+static_dir = os.path.join(static_dir, 'Frontend')
+static_dir = os.path.join(static_dir, 'static')
+static_dir = os.path.join(static_dir, 'audio')
 
 @APP_MAIN.route('/')
 def hello_world():
     return render_template("dummy.html")
 
+@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/words/audio/<path:filename>')
+def download_file(filename):
+    file = ''
+    for i in range(len(filename)-4):
+        file =file+filename[i]
+    print(file)
+    filename = os.path.join(static_dir, filename)
+    if(Words_Test.objects(word=file)==[]):
+        return
+    return send_file(filename)
 
 @APP_MAIN.route('/dictionary/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/dictionary/<string:page>')
@@ -53,3 +69,8 @@ def suggestion(wordID):
     return render_template('suggestions_word.html', form=form)
 
 
+@APP_MAIN.route('/translate', methods=['POST'])
+def translate():
+    s1= request.form['data']
+    print("s1: "+s1)
+    return json.dumps({'status': s1})

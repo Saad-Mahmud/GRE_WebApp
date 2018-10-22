@@ -5,6 +5,11 @@
             </td>
         </tr>
         <tr>
+            <audio controls>
+                <source src="/words/audio/{{ word.word }}.mp3" type="audio/mpeg">
+            </audio>
+        </tr>
+        <tr>
             <td>
                 <b>Type :</b> <i>{{ word.TYPE }}</i>
             </td>
@@ -26,8 +31,20 @@
         </tr>
         <tr>
             <td>
+                <b>Translation:  </b>
+                <select id="{{ word.wordID }}" onclick="myFunction(this.id)" >
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                <b>  =  </b>
+                <b id="{{ word.wordID }}_text"> - - - -</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <a class="page-link" href="{{ url_for('suggestion') }}{{ word.wordID }}" target="_blank">Suggestion / Error Report</a>
             </td>
         </tr>
 </table>
-
