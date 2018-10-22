@@ -27,10 +27,13 @@ def fetch_easy_words(country_id=0):
     for w1 in rated_words:
         for w2 in words_dict:
             if w1[0] == w2.wordID:
+                print("meaningggggg : ", w2.word, w2.meanings)
                 final_easy_list.append([w2.wordID, w2.word, w2.meanings, w2.usages, w2.translations, w2.TYPE ])
 
+    """
     for i in final_easy_list:
         print(i.wordID, i.word, i.meanings)
     print("helllooooooooooooooooo ", final_easy_list)
+    """
 
     return final_easy_list
