@@ -31,8 +31,8 @@ APPREGISTER.register_view='register'
 APP_MAIN.config['MAIL_SERVER'] ='smtp.googlemail.com'
 APP_MAIN.config['MAIL_PORT'] =587
 APP_MAIN.config['MAIL_USE_TLS'] =True
-APP_MAIN.config['MAIL_USERNAME'] =os.environ.get('DBUSER')
-APP_MAIN.config['MAIL_PASSWORD'] =os.environ.get('DBPASS')
+APP_MAIN.config['MAIL_USERNAME'] =os.environ.get('DBUSER') or 'grewebapp@gmail.com'
+APP_MAIN.config['MAIL_PASSWORD'] =os.environ.get('DBPASS') or 'Grewebapp22'
 mail = Mail(APP_MAIN)
 
 
