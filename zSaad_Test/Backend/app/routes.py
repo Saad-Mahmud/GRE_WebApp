@@ -40,6 +40,7 @@ def dictionary(page):
         wordlist = Words_Test.objects(wordID__startswith=page[0])
     else:
         return render_template('404.html')
+    print(wordlist)
     words = [
         {
             'wordID': w.wordID,
