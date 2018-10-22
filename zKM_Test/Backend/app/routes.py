@@ -12,7 +12,7 @@ from flask import request
 from datetime import datetime
 import json,os
 from flask_oauth import OAuth
-from urllib.request import Request,urlopen,URLError
+from urllib2 import Request,urlopen,URLError
 from os import urandom
 from PIL import Image
 next_gpage = ""
