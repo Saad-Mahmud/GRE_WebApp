@@ -20,17 +20,14 @@ def fetch_easy_rating(country_id=0):
 
 
 def fetch_easy_words(country_id=0):
-    final_easy_list = [50]
+    final_easy_list = []
     rated_words = fetch_easy_rating(country_id)
     words_dict = Words_Test.objects()
-    idx = 0
+
     for w1 in rated_words:
         for w2 in words_dict:
             if w1[0] == w2.wordID:
-                print("ki din ashlo idx o lage ", idx, w2)
-                final_easy_list[idx] = w2
-
-
+                final_easy_list.append([w2.wordID, w2.word, w2.meanings, w2.usages, w2.translations, w2.TYPE ])
 
     for i in final_easy_list:
         print(i.wordID, i.word, i.meanings)
