@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script>
+    function myFunction(id) {
+        var e = document.getElementById(id);
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        $.ajax({
+            url: '/translate',
+            data: {'data':value.toString()},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                document.getElementById(id+"_text").innerHTML=response.status
+                console.log(response.status)
+            },
+            error: function (error) {
+                document.getElementById(id+"_text").innerHTML='Translation Not Available'
+            }
+        });
+
+}
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Words</title>
+</head>
+
+
+<body>
+
+<div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <h4>VarLAB <i class="fa fa-fw fa-heart text-danger"></i> by <a href="http://twitter.com/arkdron" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-fw fa-twitter"></i> @arkdron</a></h4>
+        </div>
+    </div>
+    <hr>
+
+
+<nav aria-label="my_pn">
+  <ul class="pagination pagination-lg">
+
+    {% for i in links %}
+        {% if i == title %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">{{ i }}</a>
+            </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_words') }}{{ i }}">{{ i }}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+
+  </ul>
+</nav>
+
+
+<h1>{{ title }}:</h1>
+<ul class="list-group">
+    {% for word in words %}
+        <li class="list-group-item">{% include 'awordview.html' %}</li>
+    {% endfor %}
+</ul>
+
+</body>
+
+
+</html>

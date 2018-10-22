@@ -76,3 +76,31 @@ def translate():
     s1= request.form['data']
     print("s1: "+s1)
     return json.dumps({'status': s1})
+
+
+@APP_MAIN.route('/adminwords/',defaults={'page': 'ALL'})
+@APP_MAIN.route('/adminwords/<string:page>')
+def admin_words(page):
+    page = page.lower()
+    title = page.capitalize()
+    links = ['All','A','B','C','D','E','F','G'
+        ,'H','I','J','K','L','M','N','O','P',
+             'Q','R','S','T','U','V','W','X','Y','Z']
+    print(title)
+    if(page=='all'):
+        wordlist=Words_Test.objects
+    elif(page[0]>='a' and page[0]<='z' and len(page)==1):
+        wordlist = Words_Test.objects(wordID__startswith=page[0])
+    else:
+        return render_template('404.html')
+    words = [
+        {
+            'wordID': w.wordID,
+            'word': w.word ,
+            'TYPE': w.TYPE ,
+            'meaning': w.meanings[0] ,
+            'usages' : w.usages
+        }
+        for w in wordlist
+    ]
+    return render_template('admin_words.html',links=links, title=title, words=words)

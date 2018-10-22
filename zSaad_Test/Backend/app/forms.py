@@ -1,12 +1,15 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, BooleanField, StringField, TextAreaField, SubmitField,RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,Length
-from appdirs import unicode
+try:
+    from appdirs import unicode
+except ImportError:
+    print (ImportError)
 
 class WordSuggestionForm(FlaskForm):
     report = TextAreaField('Report', validators=[DataRequired(),Length(min=20, max=300)])
 
     TYPE = RadioField(label='Report Type:',default='error', choices = [('error', 'Error'), ('suggestions', 'Suggestion'), ('translation', 'Translation')],
-                       coerce=unicode,validators=[DataRequired()])
+                       validators=[DataRequired()])
     submit = SubmitField('Submit')
 
