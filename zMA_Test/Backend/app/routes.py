@@ -84,6 +84,7 @@ def nextTestWord():
 
 
 
+
 @APP_MAIN.route('/fliped', methods=['POST'])
 def translate():
     sessionID = request.form['sessionID']
