@@ -15,7 +15,7 @@ def practice():
     words = fetch_easy_words()
     sessionID = create_session_practice(words,0)
     print("session mmm {}".format(sessionID.id))
-    print("status ", words[0]);
+    print("words ", words[0]);
 
     return render_template('tryit.html', word=words[0], sessionID=sessionID.id)
 

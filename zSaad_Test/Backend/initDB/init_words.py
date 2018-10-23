@@ -50,8 +50,8 @@ def init_DB_with_words():
     while(dataloader.hasNext()):
         data = dataloader.next_word().save()
     dataloader.re()
-   # while(dataloader.hasNext()):
-        #data = dataloader.next_ratings().save()
+    while(dataloader.hasNext()):
+        data = dataloader.next_ratings().save()
     return
 
 
