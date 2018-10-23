@@ -4,10 +4,50 @@
     <meta charset="UTF-8">
     <title>Chart</title>
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUUBgtiJj06wt/s=" crossorigin="anonymous"></script>
 </head>
 <body>
+<h2>Global</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Rank</th>
+    <th>Country</th>
+  </tr>
+    {% for i in range(0,length) %}
+         <tr>
+            <td>{{ rank[i][0] }}</td>
+            <td>{{ rank[i][1] }}</td>
+            <td>{% print(i+1) %} </td>
+            <td>{{ cursor1[i]['country'] }}</td>
+         </tr>
+    {% endfor %}
+
+</table>
+
+<h2>Local</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Rank</th>
+  </tr>
+    {% for i in range(0,length1) %}
+         <tr>
+            <td>{{ local[i][0] }}</td>
+            <td>{{ local[i][1] }}</td>
+            <td>{% print(i+1) %} </td>
+            <td>{{ current_user.country }}</td>
+         </tr>
+    {% endfor %}
+
+</table>
+
 <h3>Charts:</h3>
 <div class="ct-chart .ct-perfect-fourth"></div>
 
@@ -18,13 +58,13 @@
     };
     let data = {
       // A labels array that can contain any sort of values
-      labels: [{% for i in range(1,how_many_test,1) %}
+      labels: [{% for i in range(1,stat_data.how_many_test+1,1) %}
           {{ i }},
           {% endfor %}
       ],
       // Our series array that contains series objects or in this case series data arrays
       series: [
-        [{% for i in history %}
+        [{% for i in stat_data.history %}
             {{ i }},
             {% endfor %}
         ]
@@ -36,5 +76,8 @@
     // is the actual data object.
     let mychart = new Chartist.Line('.ct-chart', data, options);
 </script>
+
+
+
 </body>
 </html>

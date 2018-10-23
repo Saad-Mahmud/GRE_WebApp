@@ -330,14 +330,11 @@ def user(username):
     ]
     rate = rating(username)
     rank,local = ranking()
-        #.index(rate.rating)
     for i in range(0,len(rank)):
         if rank[i][0]==current_user.username:
             rankindx = i + 1
             break
             print(rankindx)
-
-    #local = locrank()#.index(rate.rating)
     for i in range(0, len(local)):
         if local[i][0] == current_user.username:
             locindx = i+1
@@ -376,13 +373,12 @@ def edit_profile():
 
 
 def send_reset_email(user):
-    return
-    '''token = user.get_reset_token()
+    token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
-    msg.body= "abcd"
-fTo reset your password visit following link:
+    msg.body=f'''To reset your password visit following link:
 {url_for('reset_token', token=token, _external=True)}
-    mail.send(msg)'''
+'''
+    mail.send(msg)
 
 
 @APP_MAIN.route('/reset_password',methods=['POST','GET'])
@@ -440,7 +436,7 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
-           #//////////////dummy stat creation in Gre_data table ///////////
+    '''       #//////////////dummy stat creation in Gre_data table ///////////
     col = db['gre_data']
     cursor = col.find({})
     for i in cursor:
@@ -462,19 +458,23 @@ def stat():
     return render_template('stat.html', history=history, how_many_test = how_many_test+1)
     '''
     #if u want to create dummy data to check comment in this section including render_template and comment out previous section
-    col = db['gre_data']
-    cursor = col.find({})
+    #col = db['gre_data']
+    #cursor = col.find({})
+    cursor1 = db['user'].find({})
+
+    rank, local = ranking()
 
     stat_data = Gre_data.objects(username=current_user.username)
     stat_data = stat_data[0]
+    print(cursor1[10]['_id']==stat_data.id)
+    return render_template('stat.html',history = stat_data.history, stat_data=stat_data,
+                           how_many_test = stat_data.how_many_test+1,cursor1=cursor1,rank = rank,
+                           local=local,length=len(rank),length1=len(local))
 
-    return render_template('stat.html',history = stat_data
-                            .history, how_many_test = stat_data.how_many_test+1)
-    '''
 
 
 @APP_MAIN.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.update(last_seen=datetime.utcnow())
-        current_user.reload();
+        current_user.reload()
