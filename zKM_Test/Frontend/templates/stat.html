@@ -23,7 +23,8 @@
             <td>{{ rank[i][0] }}</td>
             <td>{{ rank[i][1] }}</td>
             <td>{% print(i+1) %} </td>
-            <td>{{ cursor1[i]['country'] }}</td>
+            <td>{% print(user.objects(username=rank[i][0])[0].country) %}
+            </td>
          </tr>
     {% endfor %}
 
@@ -36,6 +37,7 @@
     <th>Name</th>
     <th>Rating</th>
     <th>Rank</th>
+    <th>Country</th>
   </tr>
     {% for i in range(0,length1) %}
          <tr>
