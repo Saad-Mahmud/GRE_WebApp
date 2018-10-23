@@ -22,7 +22,7 @@
 </button>
 <button id="flip" onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
 
-<p id="demo">{{ word[1] }}</p>
+<p id="demo">{{ word['word'] }}</p>
 
 <script>
 
@@ -34,39 +34,65 @@
                 dataType: 'json',
                 type: 'POST',
                 success: function (response) {
-                    document.getElementById("demo").innerHTML=response.word[1];
-                    console.log(response.word);
+                    if(response.word['wordID']==='$null$')
+                    {
+                        document.getElementById("demo").innerHTML='Congratulations!You have learned everything';
+                        document.getElementById(id2hide).style.visibility = 'hidden'
+                        document.getElementById(id3hide).style.visibility = 'hidden';
+                        document.getElementById(id2show).style.visibility = 'hidden';
+                    }
+                    else
+                    {
+                        document.getElementById("demo").innerHTML=response.word['word'];
+                        document.getElementById(id2hide).style.visibility = 'hidden'
+                        document.getElementById(id3hide).style.visibility = 'hidden';
+                        document.getElementById(id2show).style.visibility = 'visible';
+                    }
+
+                    console.log("nextword ",response.word, response.word['word']);
+
                 },
                 error: function (error) {
                     console.log('bal');
                 }
             });
 
-            document.getElementById(id2hide).style.visibility = 'hidden'
-            document.getElementById(id3hide).style.visibility = 'hidden';
-            document.getElementById(id2show).style.visibility = 'visible';
+
     }
 
     function flipCard(sessionID,id2hide, id2show, id3show) {
-        console.log('func e dhukse', sessionID);
+        //console.log('func e dhukse', sessionID);
         //document.getElementById("demo").innerHTML = word[1];
         $.ajax({
-                url: '/clicked',
+                url: '/fliped',
                 data: {'sessionID':sessionID},
                 dataType: 'json',
                 type: 'POST',
                 success: function (response) {
-                    document.getElementById("demo").innerHTML=response.word[2][0];
-                    console.log(response.word);
+
+                    if(response.word['wordID']==='$null$')
+                    {
+                        document.getElementById("demo").innerHTML='Congratulations!You have learned everything';
+                        document.getElementById(id2hide).style.visibility = 'hidden'
+                        document.getElementById(id3hide).style.visibility = 'hidden';
+                        document.getElementById(id2show).style.visibility = 'hidden';
+                    }
+                    else
+                    {
+                        document.getElementById("demo").innerHTML=response.word['meaning'];
+                        document.getElementById(id2hide).style.visibility = 'hidden';
+                        document.getElementById(id2show).style.visibility = 'visible';
+                        document.getElementById(id3show).style.visibility = 'visible';
+                    }
+
+                    console.log("flipped ", response.word, response.word['word']);
                 },
                 error: function (error) {
                     console.log('bal');
                 }
             });
 
-        document.getElementById(id2hide).style.visibility = 'hidden';
-        document.getElementById(id2show).style.visibility = 'visible';
-        document.getElementById(id3show).style.visibility = 'visible';
+
 
 
     }
