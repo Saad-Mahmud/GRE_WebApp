@@ -1,5 +1,4 @@
-
-<html lang="en">
+<html lang="en" >
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,6 +12,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Oswald);
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+html, body {
+  background: #f0f0f0;
+  border: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  padding: 50px;
+  display: table;
+}
+
+body {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+article.flashcard {
+  margin: 0px auto;
+  border: 1px rgba(255, 255, 255, 0.03) solid;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  max-height: 400px;}
+
+    /*
+    input[type=checkbox] {
+    display: none;
+  }
+
+  input[type=checkbox]:checked ~ label
+    section.front {
+      height: 0%;
+    }
+
+    section.back {
+      height: 100%;
+    }
+
+
+  label {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+*/
+  section {
+    display: block;
+    font: 30px 'Oswald', sans-serif;
+    text-align: center;
+    line-height: 400px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+
+
+
+
+</style>
 </head>
 
 <body>
@@ -23,9 +92,27 @@
 </button>
 <button id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
 
-<h3 id="cardside1"><b>{{ word.word }}</b></h3>
 
-<p id="cardside2" style="visibility: hidden"> {% include 'dictview.html' %}</p>
+<article class="flashcard">
+    <!--
+    <input id="flashcard-1" type="checkbox" onclick="flipCard('{{ sessionID }}','flip','ik','idk')" />
+    -->
+  <label for="flashcard-1">
+    <section  class="front" >
+      <h3 ><b id="cardside1" >{{ word.word }}</b></h3>
+    </section>
+
+    <section id="cardside2" class="back" style="visibility: hidden" >
+      {% include 'dictview.html' %}
+    </section>
+  </label>
+</article>
+
+<!--
+<h3 id="cardside1"><b></b></h3>
+
+<p id="cardside2" style="visibility: hidden"> </p>
+-->
 <script>
 
 

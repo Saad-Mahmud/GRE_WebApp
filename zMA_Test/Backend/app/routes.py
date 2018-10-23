@@ -9,7 +9,7 @@ from flask import render_template, request, json
 from zMA_Test.Backend.app import APP_MAIN
 from zMA_Test.Backend.app.model import session_practice, session_test
 from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice
-from zMA_Test.Backend.test.fetch_test import fetch_easy_words2
+from zMA_Test.Backend.test.fetch_test import fetch_easy_words2, create_session_test
 
 
 @APP_MAIN.route('/')
@@ -29,7 +29,7 @@ def practice():
 @APP_MAIN.route('/test')
 def test():
     test_words = fetch_easy_words2()
-    sessionID = create_session_practice(test_words, 0)
+    sessionID = create_session_test(test_words, 0)
     print("session mmm {}".format(sessionID.id))
     #option_words = fetch_easy_words2()
     #print(test_words[1][1])
