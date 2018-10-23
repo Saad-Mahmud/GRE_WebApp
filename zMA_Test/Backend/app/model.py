@@ -6,3 +6,8 @@ class session_practice(Document):
     words = ListField(required=True)
     idx = IntField()
     status = DictField()
+
+class session_test(Document):
+    words = ListField(required=True)
+    idx = IntField()
+    status = DictField()

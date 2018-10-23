@@ -1,10 +1,15 @@
 from random import randint
 
-from zMA_Test.Backend.app import APP_MAIN
-from flask import render_template, redirect,url_for,flash,send_file,request,json
+import operator
+import random
+import unicodedata
 
-from zMA_Test.Backend.app.model import session_practice
+from flask import render_template, request, json
+
+from zMA_Test.Backend.app import APP_MAIN
+from zMA_Test.Backend.app.model import session_practice, session_test
 from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice
+from zMA_Test.Backend.test.fetch_test import fetch_easy_words2
 
 
 @APP_MAIN.route('/')
@@ -23,7 +28,60 @@ def practice():
 
 @APP_MAIN.route('/test')
 def test():
-    return render_template('test.html')
+    test_words = fetch_easy_words2()
+    sessionID = create_session_practice(test_words, 0)
+    print("session mmm {}".format(sessionID.id))
+    #option_words = fetch_easy_words2()
+    #print(test_words[1][1])
+    random_idx = random.sample(range(1, 10), 3)
+    #print("rand idx", random_idx)
+    option = []
+    option.append(test_words[0][1])
+
+    #print(option_words[9][1])
+    for i in range(3):
+        option.append(test_words[random_idx[i]][1])
+    #print("options", option)
+
+    random_idx2 = random.sample(range(1, 5), 4)
+    #print(random_idx2)
+    option_dict = {}
+    for i in range(4):
+        option_dict[unicodedata.normalize('NFKD', option[i]).encode('ascii','ignore')] = random_idx2[i]
+    test_line =  unicodedata.normalize('NFKD', test_words[0][3][0]).encode('ascii','ignore')
+    #print(type(test_line))
+    #print("eeee", test_line)
+
+    sorted_dict = sorted(option_dict.items(), key=operator.itemgetter(1))
+
+    #print(type(sorted_dict))
+    #print(sorted_dict)
+
+    test_line = test_line.replace((unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii','ignore')), "___")
+
+    #print("eeeeeeeeeeeeeeeee", test_line)
+
+    #print(type(option_dict))
+    #print(option_dict)
+    return render_template('test_new.html', test_word=test_words[0], test_line=test_line, option_dict=sorted_dict, sessionID=sessionID.id)
+
+@APP_MAIN.route('/nexttestword', methods=['POST'])
+def nextTestWord():
+    answer = request.form['answer']
+    sessionID = request.form['sessionID']
+    pointer_f = session_test.objects(id=sessionID)[0]
+    pointer = pointer_f.idx + 1
+    test_words = pointer_f.words
+    print('Ansssssssssssssss', answer)
+    print('pointAnssssssssss', test_words[pointer_f.idx][1])
+    pointer_f.idx = pointer
+    pointer_f.save()
+    test_word = test_words[pointer]
+    return json.dumps({'test_word':test_word})
+
+
+
+
 
 
 @APP_MAIN.route('/fliped', methods=['POST'])

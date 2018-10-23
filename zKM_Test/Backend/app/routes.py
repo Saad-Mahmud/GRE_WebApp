@@ -376,12 +376,13 @@ def edit_profile():
 
 
 def send_reset_email(user):
-    token = user.get_reset_token()
+    return
+    '''token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
-    msg.body=f'''To reset your password visit following link:
+    msg.body= "abcd"
+fTo reset your password visit following link:
 {url_for('reset_token', token=token, _external=True)}
-'''
-    mail.send(msg)
+    mail.send(msg)'''
 
 
 @APP_MAIN.route('/reset_password',methods=['POST','GET'])
@@ -439,7 +440,7 @@ def practice():
 @APP_MAIN.route('/stat')
 @login_required
 def stat():
-    '''       #//////////////dummy stat creation in Gre_data table ///////////
+           #//////////////dummy stat creation in Gre_data table ///////////
     col = db['gre_data']
     cursor = col.find({})
     for i in cursor:
@@ -469,7 +470,7 @@ def stat():
 
     return render_template('stat.html',history = stat_data
                             .history, how_many_test = stat_data.how_many_test+1)
-
+    '''
 
 
 @APP_MAIN.before_request
