@@ -1,5 +1,6 @@
 import operator
 
+from zMA_Test.Backend.app.model import session_practice
 from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
 
 
@@ -37,3 +38,9 @@ def fetch_easy_words(country_id=0):
     """
 
     return final_easy_list
+
+
+def create_session_practice(words,idx):
+    session= session_practice(words=words,idx=idx)
+    session2 = session.save()
+    return session2

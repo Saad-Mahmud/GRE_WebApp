@@ -10,6 +10,6 @@ def rating_func(x):
     a = 1
     b = 10
     max = 500  #negative number of users
-    min = 500  #positive number of users
+    min = -500  #positive number of users
     return (((b-a)*(x-min))/(max-min)) + a
 

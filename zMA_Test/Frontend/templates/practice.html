@@ -22,7 +22,7 @@
 <button id="ik" style='visibility:hidden' onclick="myFunction(this, {{ words }}, {{ status }}, 'idk','ik','flip')">I
     know
 </button>
-<button id="flip" onclick="flipCard(this, {{ words }}, 'flip', 'idk', 'ik')">Flip</button>
+<button type="button" id="flip" onclick="flipCard(this, {{ words }}, 'flip', 'idk', 'ik'); return false;">Flip</button>
 
 <!--
 <input id='btn_1' type='button' value='button 1' onclick='javascript:myFunction({{ words }}"btn_1","btn_2")'/>
@@ -99,7 +99,7 @@ function show_hide(id2hide, id2show) {
             var final = globalWords[index][1];
 
 
-            /*$.ajax({
+            $.ajax({
                 url: '/clicked',
                 data: {'id':source.id.toString(), 'words':words, 'wordid':words[index][0]},
                 dataType: 'json',
@@ -112,7 +112,7 @@ function show_hide(id2hide, id2show) {
                     //document.getElementById(id+"_text").innerHTML='Translation Not Available'
                 }
             });
-            */
+
             if (source.id === "ik") {
                 wordlist_manipulation(globalWords[index][0], true, globalWords[index][1]);
             }
@@ -129,6 +129,7 @@ function show_hide(id2hide, id2show) {
     }
 
     function flipCard(source, words, id2hide, id2show, id3show) {
+        console.log(globalWords, isFirstWord);
         if (globalWords.length === 0 && isFirstWord == false) {
             globalWords = words;
             isFirstWord = true;
@@ -162,11 +163,9 @@ function show_hide(id2hide, id2show) {
             document.getElementById(id3show).style.visibility = 'visible';
         }
 
-
     }
 
 </script>
-
 
 </body>
 </html>
