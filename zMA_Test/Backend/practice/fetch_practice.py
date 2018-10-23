@@ -82,7 +82,7 @@ def fetch_easy_words(country_id=0):
                         'word': w2.word,
                         'TYPE': w2.TYPE,
                         'meaning': w2.meanings[0],
-                        'usages': w2.usages
+                        'usage': w2.usages[0]
                     })
 
     """

@@ -16,15 +16,18 @@
 </head>
 
 <body>
+
 <button id="idk" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</button>
 <button id="ik" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
     know
 </button>
-<button id="flip" onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
+<button id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
 
-<p id="demo">{{ word['word'] }}</p>
+<h3 id="cardside1"><b>{{ word.word }}</b></h3>
 
+<p id="cardside2" style="visibility: hidden"> {% include 'dictview.html' %}</p>
 <script>
+
 
     function myFunction(source, sessionID, id2hide, id3hide, id2show) {
 
@@ -36,14 +39,20 @@
                 success: function (response) {
                     if(response.word['wordID']==='$null$')
                     {
-                        document.getElementById("demo").innerHTML='Congratulations!You have learned everything';
+
+                        document.getElementById("cardside1").innerHTML='Congratulations!You have learned everything';
+                        document.getElementById("cardside2").style.visibility = 'hidden';
+                        document.getElementById("cardside1").style.visibility = 'visible';
                         document.getElementById(id2hide).style.visibility = 'hidden'
                         document.getElementById(id3hide).style.visibility = 'hidden';
                         document.getElementById(id2show).style.visibility = 'hidden';
                     }
                     else
                     {
-                        document.getElementById("demo").innerHTML=response.word['word'];
+                        document.getElementById("cardside2").style.visibility = 'hidden';
+                        document.getElementById("cardside1").style.visibility = 'visible';
+                        document.getElementById("cardside1").innerHTML=response.word['word']
+
                         document.getElementById(id2hide).style.visibility = 'hidden'
                         document.getElementById(id3hide).style.visibility = 'hidden';
                         document.getElementById(id2show).style.visibility = 'visible';
@@ -72,14 +81,23 @@
 
                     if(response.word['wordID']==='$null$')
                     {
-                        document.getElementById("demo").innerHTML='Congratulations!You have learned everything';
+                        document.getElementById("cardside1").innerHTML='Congratulations!You have learned everything';
+                        document.getElementById("cardside2").style.visibility = 'hidden';
+                        document.getElementById("cardside1").style.visibility = 'visible';
                         document.getElementById(id2hide).style.visibility = 'hidden'
                         document.getElementById(id3hide).style.visibility = 'hidden';
                         document.getElementById(id2show).style.visibility = 'hidden';
                     }
                     else
                     {
-                        document.getElementById("demo").innerHTML=response.word['meaning'];
+                        document.getElementById("cardside2").style.visibility = 'visible';
+                        document.getElementById("cardside1").style.visibility = 'hidden';
+
+                        document.getElementById("word").innerHTML=response.word['word'];
+                        document.getElementById("type").innerHTML= response.word['TYPE'];
+                        document.getElementById("meaning").innerHTML= response.word['meaning'];
+                        document.getElementById("usage").innerHTML= response.word['usage'];
+
                         document.getElementById(id2hide).style.visibility = 'hidden';
                         document.getElementById(id2show).style.visibility = 'visible';
                         document.getElementById(id3show).style.visibility = 'visible';
@@ -98,6 +116,5 @@
     }
 </script>
 
-<b id="text"> - - - -</b>
 </body>
 </html>>
