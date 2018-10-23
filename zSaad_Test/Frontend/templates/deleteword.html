@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script>
+    function myDel(id) {
+        console.log(id);
+        $.ajax({
+            url: '/admindeleteword',
+            data: {'wordID':id},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                console.log(response.status);
+                window.location.replace("/adminwords/");
+            },
+            error: function (error) {
+                console.log(error.toString());
+                window.location.replace("/adminwords/");
+            }
+        });
+    }
+</script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Delete Word</title>
+</head>
+
+
+<body>
+
+<div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <h4>VarLAB <i class="fa fa-fw fa-heart text-danger"></i> by <a href="http://twitter.com/arkdron" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-fw fa-twitter"></i> @arkdron</a></h4>
+        </div>
+    </div>
+    <hr>
+
+<h1 align="center"> Are You Sure You Want To Delete This Word?</h1>
+<a href="{{ url_for('admin_words') }}{{ word.wordID[0] }}" class="btn btn-primary btn-lg" role="button" >Back</a>
+
+<a onclick="myDel('{{ word.wordID }}')" class="btn btn-danger btn-lg" role="button" >DELETE</a>
+
+</body>
+
+
+</html>

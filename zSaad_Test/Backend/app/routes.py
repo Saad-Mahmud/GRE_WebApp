@@ -77,6 +77,21 @@ def translate():
     print("s1: "+s1)
     return json.dumps({'status': s1})
 
+@APP_MAIN.route('/admindelete/',defaults={'delid':''})
+@APP_MAIN.route('/admindelete/<string:delid>')
+def admindelete(delid):
+    if (len(Words_Test.objects(wordID=delid)) == 0):
+        return render_template('404.html')
+    return render_template('deleteword.html', word = Words_Test.objects(wordID=delid)[0])
+
+
+@APP_MAIN.route('/admintranslate/',defaults={'trnsid':''})
+@APP_MAIN.route('/admintranslate/<string:trnsid>')
+def admintranslate(trnsid):
+    if (len(Words_Test.objects(wordID=trnsid)) == 0):
+        return render_template('404.html')
+    return render_template('admintranslate.html', word = Words_Test.objects(wordID=trnsid)[0])
+
 
 @APP_MAIN.route('/adminwords/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/adminwords/<string:page>')
@@ -104,3 +119,23 @@ def admin_words(page):
         for w in wordlist
     ]
     return render_template('admin_words.html',links=links, title=title, words=words)
+
+@APP_MAIN.route('/admindeleteword', methods=['POST'])
+def admindeleteword():
+    s1= request.form['wordID']
+    if(len(Words_Test.objects(wordID=s1)) == 0):
+        return json.dumps({'status': 'success'})
+    else:
+        print("here")
+        Words_Test.objects(wordID=s1)[0].delete()
+        return json.dumps({'status': 'success'})
+
+@APP_MAIN.route('/adminaddtrans', methods=['POST'])
+def admindeleteword():
+    s1= request.form['wordID']
+    if(len(Words_Test.objects(wordID=s1)) == 0):
+        return json.dumps({'status': 'success'})
+    else:
+        print("here")
+        Words_Test.objects(wordID=s1)[0].delete()
+        return json.dumps({'status': 'success'})

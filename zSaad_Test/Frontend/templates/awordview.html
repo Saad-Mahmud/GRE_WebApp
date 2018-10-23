@@ -9,5 +9,22 @@
                 <h3><b>Word :</b> {{ word.word }}</h3>
             </td>
         </tr>
+        <tr>
+            <td></td>
+            <td>
+                <a href="{{ url_for('admintranslate') }}{{ word.wordID }}" class="btn btn-primary" role="button"  >Add Translation</a>
+            </td>
+            <td>
+                <a href="/" class="btn btn-primary" role="button"  >Add Audio</a>
+            </td>
+            <td>
+                <a href="/" class="btn btn-primary" role="button"  >
+                    Edit Text</a>
+            </td>
+            <td>
+                <a href="{{ url_for('admindelete') }}{{ word.wordID }}" class="btn btn-danger" role="button" >
+                    Delete</a>
+            </td>
+        </tr>
 
 </table>
