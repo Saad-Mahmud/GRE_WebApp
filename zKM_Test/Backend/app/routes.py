@@ -261,19 +261,37 @@ def rating(username):
     rate = Gre_data.objects(username=username)
     rate = rate[0]
     return rate
-'''
+
 def ranking():
     col = db['gre_data']
     curser = col.find({})
     dict = {}
-    rnk = []
+    dict1 = {}
     for i in curser:
         dict[i['_id']]= i['rating']
-    print(dict)
-    #sorted_x = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        if user.country == current_user.country:
+            dict1[i['_id']] = i['rating']
+    sorted_global = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
 
-    return dict
+    sorted_local = sorted(dict1.items(), key=operator.itemgetter(1),reverse=True)
+    #print(sorted_global,sorted_local)
+    return sorted_global,sorted_local
 '''
+def locrank():
+    col = db['gre_data']
+    cursor = col.find({})
+    dict = {}
+    for i in cursor:
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        if user.country== current_user.country:
+            dict[i['_id']] = i['rating']
+    sorted_x = sorted(dict.items(), key=operator.itemgetter(1), reverse=True)
+    print(sorted_x)
+    return sorted_x
+
 def ranking():
     col = db['gre_data']
     curser = col.find({})
@@ -282,6 +300,8 @@ def ranking():
         rnk.append(i['rating'])
     rnk.sort(reverse=True)
     return rnk
+
+
 def locrank():
     col = db['gre_data']
     curser = col.find({})
@@ -293,7 +313,7 @@ def locrank():
             rnk.append(i['rating'])
     rnk.sort(reverse=True)
     return rnk
-
+'''
 @APP_MAIN.route('/user/<username>')
 @login_required
 def user(username):
@@ -309,11 +329,22 @@ def user(username):
         {'author': user, 'body': 'Test post #2'}
     ]
     rate = rating(username)
-    rank = ranking().index(rate.rating)
+    rank,local = ranking()
+        #.index(rate.rating)
+    for i in range(0,len(rank)):
+        if rank[i][0]==current_user.username:
+            rankindx = i + 1
+            break
+            print(rankindx)
 
-    local = locrank().index(rate.rating)
-    #print(local)
-    return render_template('user.html', user=user, posts=posts, rate=rate, rank = rank+1, local=local+1)
+    #local = locrank()#.index(rate.rating)
+    for i in range(0, len(local)):
+        if local[i][0] == current_user.username:
+            locindx = i+1
+            break
+            print(locindx)
+
+    return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx)
 
 def save_pic(form_picture):
     random_hex = urandom(8).hex()
