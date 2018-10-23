@@ -12,6 +12,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+
+
+.myButton {
+	background-color:#44c767;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+    position: relative;
+    top: 70%;
+    left: 36%;
+
+}
+.myButton:hover {
+	background-color:#5cbf2a;
+}
+.myButton:active {
+
+
+}
+    </style>
+
     <style>
     @import url(https://fonts.googleapis.com/css?family=Oswald);
 
@@ -84,7 +116,7 @@ article.flashcard {
 </style>
 </head>
 
-<body>
+<!--
 
 <button id="idk" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</button>
 <button id="ik" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
@@ -92,6 +124,7 @@ article.flashcard {
 </button>
 <button id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
 
+-->
 
 <article class="flashcard">
     <!--
@@ -107,6 +140,13 @@ article.flashcard {
     </section>
   </label>
 </article>
+
+<body>
+<a href="#" class="myButton" id="idk"  style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
+<a href="#" class="myButton" id="ik" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
+    know</a>
+<a href="#" class="myButton" id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
+
 
 <!--
 <h3 id="cardside1"><b></b></h3>
