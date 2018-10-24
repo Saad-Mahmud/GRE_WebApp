@@ -469,7 +469,7 @@ def stat():
     stat_data = Gre_data.objects(username=current_user.username)
     stat_data = stat_data[0]
     user = User
-    print(cursor1[10]['_id']==stat_data.id)
+    #print(cursor1[10]['_id']==stat_data.id)
     return render_template('stat.html', stat_data=stat_data,
                            user=user,rank = rank,
                            local=local,length=len(rank),length1=len(local))
