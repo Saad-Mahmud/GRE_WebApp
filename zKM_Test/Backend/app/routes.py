@@ -140,7 +140,8 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow()-timedelta(days=15))
+                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow())
+        #reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
         user.save()
         moumi = Moumita(userid = form.username.data)
         moumi.save()
