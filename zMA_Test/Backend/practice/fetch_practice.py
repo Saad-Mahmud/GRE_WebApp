@@ -1,11 +1,7 @@
 import operator
 
-from zMA_Test.Backend.app.model import session_practice
+from zMA_Test.Backend.app.model import session_practice, user_word_history
 from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
-
-
-def takeSecond(elem, country_id):
-    return elem[1][country_id]
 
 
 def fetch_easy_rating(country_id=0):
@@ -33,6 +29,7 @@ def fetch_easy_rating(country_id=0):
         print("words ",w['wordID'])
     """
 
+    already_seen_words = user_word_history.objects(username="moumita")[0]
     temp_list = Words_Rating.objects()
 
     temps = [
@@ -45,6 +42,20 @@ def fetch_easy_rating(country_id=0):
     ]
 
     sorted_temp = sorted(temps, key=lambda k: k['Ratings'][country_id])
+    new_list = []
+
+    for i in range(0, 333):
+        if sorted_temp[i]['wordID'] not in already_seen_words.status:
+            print("bla ")
+            new_list.append(sorted_temp[i])
+
+        else:
+            if already_seen_words.status[sorted_temp[i]['wordID']]!='green':
+                new_list.append(sorted_temp[i])
+                print("maf chai ", sorted_temp[i]['wordID'])
+
+
+
     """
     for w in sorted_temp:
         print("words ", w['wordID'], w['Ratings'][country_id])
@@ -63,8 +74,10 @@ def fetch_easy_rating(country_id=0):
         print("Now see if sort : ", id, ratings)
     #print("Hi there save me : ", sorted_dict[1:5])
     """
-
-    return sorted_temp[1:5]
+    if len(new_list)>=10:
+        return new_list[0:10]
+    else:
+        sorted_temp[0:10]
 
 
 def fetch_easy_words(country_id=0):
@@ -98,3 +111,14 @@ def create_session_practice(status, words, idx):
     session = session_practice(status=status, words=words, idx=idx)
     session2 = session.save()
     return session2
+
+
+def create_user_word_history():
+    wordHistory = user_word_history("moumita")
+    wordHistory2 = wordHistory.save()
+    return wordHistory2
+
+
+def update_user_word_status(oldStatus, newStatus):
+    mergedList = newStatus + [s for s in oldStatus if s not in oldStatus]
+    return mergedList

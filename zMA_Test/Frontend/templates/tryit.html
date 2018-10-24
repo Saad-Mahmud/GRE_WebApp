@@ -14,6 +14,78 @@
     <title>Title</title>
 
     <style>
+        * {
+    margin:0;
+    padding:0;
+}
+.pie {
+    background-color:#ecc0b7;
+    width:200px;
+    height:200px;
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    position:relative;
+}
+.clip1 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+}
+.slice1 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 100px, 200px, 0px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#f7e5e1;
+    border-color:#f7e5e1;
+    -moz-transform:rotate(0);
+    -webkit-transform:rotate(0);
+    -o-transform:rotate(0);
+    transform:rotate(0);
+}
+.clip2 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0, 100px, 200px, 0px);
+}
+.slice2 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#f7e5e1;
+    border-color:#f7e5e1;
+    -moz-transform:rotate(0);
+    -webkit-transform:rotate(0);
+    -o-transform:rotate(0);
+    transform:rotate(0);
+}
+.status {
+    position:absolute;
+    height:30px;
+    width:200px;
+    line-height:60px;
+    text-align:center;
+    top:50%;
+    margin-top:-35px;
+    font-size:60px;
+}
+    </style>
+
+    <style>
 
 
 .myButton {
@@ -30,9 +102,8 @@
 	padding:16px 31px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
-    position: relative;
-    top: 70%;
-    left: 36%;
+    margin: 5px;
+
 
 }
 .myButton:hover {
@@ -59,19 +130,20 @@ html, body {
   width: 100%;
   height: 100%;
 }
-
+/*
 html {
   padding: 50px;
   display: table;
 }
 
 body {
-  display: table-cell;
+  display: inline-block;
   vertical-align: middle;
 }
+*/
 
 article.flashcard {
-  margin: 0px auto;
+  margin: 20px ;
   border: 1px rgba(255, 255, 255, 0.03) solid;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
@@ -109,10 +181,7 @@ article.flashcard {
     overflow: hidden;
   }
 
-
-
-
-
+.
 </style>
 </head>
 
@@ -125,11 +194,31 @@ article.flashcard {
 <button id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</button>
 
 -->
+<body>
 
-<article class="flashcard">
-    <!--
-    <input id="flashcard-1" type="checkbox" onclick="flipCard('{{ sessionID }}','flip','ik','idk')" />
-    -->
+<div style="display: inline-block">
+    <div style="display: block" class="pie">
+    <div class="clip1">
+        <div class="slice1"></div>
+    </div>
+    <div class="clip2">
+        <div class="slice2"></div>
+    </div>
+    <div class="status"></div>
+</div>
+
+<div style="display: block">
+    <p >You have mastered <b id="master">0</b> out of 10 words</p>
+    <p >You are reviewing <b id="review">0</b>out of 10 words</p>
+    <p >You are learning <b id="learn">0</b>out of 10 words</p>
+
+</div>
+</div>
+
+
+
+<article style="display: inline-block" class="flashcard">
+
   <label for="flashcard-1">
     <section  class="front" >
       <h3 ><b id="cardside1" >{{ word.word }}</b></h3>
@@ -141,22 +230,62 @@ article.flashcard {
   </label>
 </article>
 
-<body>
-<a href="#" class="myButton" id="idk"  style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
-<a href="#" class="myButton" id="ik" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
+<div style="display: inline-block">
+<div style="display: block">
+    <a href="#" class="myButton" id="idk"  style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
+    </div>
+    <div style="display: block">
+         <a href="#" class="myButton" id="ik" style='visibility:hidden' onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
     know</a>
-<a href="#" class="myButton" id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
+
+    </div>
+    <div style="display: block">
+        <a href="#" class="myButton" id="flip" style='visibility:visible' onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
+
+    </div>
+</div>
 
 
-<!--
-<h3 id="cardside1"><b></b></h3>
 
-<p id="cardside2" style="visibility: hidden"> </p>
--->
+
+
 <script>
 
+function rotate(element, degree) {
+    element.css({
+        '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-ms-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+            'zoom': 1
+    });
+}
+
+function progressBarUpdate(x, outOf) {
+    var firstHalfAngle = 180;
+    var secondHalfAngle = 0;
+
+    // caluclate the angle
+    var drawAngle = x / outOf * 360;
+
+    // calculate the angle to be displayed if each half
+    if (drawAngle <= 180) {
+        firstHalfAngle = drawAngle;
+    } else {
+        secondHalfAngle = drawAngle - 180;
+    }
+
+    // set the transition
+    rotate($(".slice1"), firstHalfAngle);
+    rotate($(".slice2"), secondHalfAngle);
+
+    // set the values on the text
+    $(".status").html(x + " of " + outOf);
+}
 
     function myFunction(source, sessionID, id2hide, id3hide, id2show) {
+        var m=3;
 
         $.ajax({
                 url: '/nextword',
@@ -164,6 +293,17 @@ article.flashcard {
                 dataType: 'json',
                 type: 'POST',
                 success: function (response) {
+                    document.getElementById("master").innerHTML = response.mastered;
+                    document.getElementById("review").innerHTML = response.reviewing;
+                    document.getElementById("learn").innerHTML = response.learning;
+
+                    m = response.mastered;
+                    progressBarUpdate(m,10);
+
+                    /*r = ((response.reviewing)*100)/(response.mastered+response.reviewing+response.learning);
+                    l = ((response.learning)*100)/(response.mastered+response.reviewing+response.learning);
+                    chart(m,r,l)
+                    */
                     if(response.word['wordID']==='$null$')
                     {
 

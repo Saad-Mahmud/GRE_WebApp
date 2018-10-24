@@ -11,3 +11,7 @@ class session_test(Document):
     words = ListField(required=True)
     idx = IntField()
     status = DictField()
+
+class user_word_history(Document):
+    username = StringField(required=True, primary_key=True)
+    status = DictField()
