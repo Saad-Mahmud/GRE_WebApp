@@ -32,11 +32,12 @@
         <tr>
             <td>
                 <b>Translation:  </b>
+
                 <select id="{{ word.wordID }}" onclick="myFunction(this.id)" >
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                    <option value="- - - -">None</option>
+                    {% for key, value in word.translations.items(): %}
+                        <option value={{ value }}>{{ key }}</option>
+                    {% endfor %}
                 </select>
                 <b>  =  </b>
                 <b id="{{ word.wordID }}_text"> - - - -</b>

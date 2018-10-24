@@ -33,14 +33,14 @@ def dictionary(page):
     links = ['All','A','B','C','D','E','F','G'
         ,'H','I','J','K','L','M','N','O','P',
              'Q','R','S','T','U','V','W','X','Y','Z']
-    print(title)
+
     if(page=='all'):
         wordlist=Words_Test.objects
     elif(page[0]>='a' and page[0]<='z' and len(page)==1):
         wordlist = Words_Test.objects(wordID__startswith=page[0])
     else:
         return render_template('404.html')
-    print(wordlist)
+
 
     words = [
         {
@@ -48,7 +48,8 @@ def dictionary(page):
             'word': w.word ,
             'TYPE': w.TYPE ,
             'meaning': w.meanings[0] ,
-            'usages' : w.usages
+            'usages' : w.usages ,
+            'translations' : w.translations
         }
         for w in wordlist
     ]
@@ -131,11 +132,18 @@ def admindeleteword():
         return json.dumps({'status': 'success'})
 
 @APP_MAIN.route('/adminaddtrans', methods=['POST'])
-def admindeleteword():
-    s1= request.form['wordID']
-    if(len(Words_Test.objects(wordID=s1)) == 0):
+def adminaddtrans():
+    lang= request.form['Lang']
+    trans = request.form['Trans']
+    wordID = request.form['id']
+
+    if(len(Words_Test.objects(wordID=wordID)) == 0):
         return json.dumps({'status': 'success'})
     else:
         print("here")
-        Words_Test.objects(wordID=s1)[0].delete()
+        a = Words_Test.objects(wordID=wordID)[0]
+        print(a.word)
+        a.translations[lang] = trans
+        
+        a.save()
         return json.dumps({'status': 'success'})

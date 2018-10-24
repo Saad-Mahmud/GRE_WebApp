@@ -20,15 +20,18 @@
 
         $.ajax({
             url: '/adminaddtrans',
-            data: {'data':value.toString()},
+            data: {'Lang':Lang, 'Trans':Trans , 'id':id},
             dataType: 'json',
             type: 'POST',
             success: function (response) {
-                document.getElementById(id+"_text").innerHTML=response.status
-                console.log(response.status)
+                console.log(response.status);
+                window.location.replace("/adminwords/");
             },
             error: function (error) {
-                document.getElementById(id+"_text").innerHTML='Translation Not Available'
+                console.log(
+                    error.toString()
+                );
+                window.location.replace("/adminwords/");
             }
         });
 

@@ -18,7 +18,8 @@
         var text = e.options[e.selectedIndex].text;
         console.log(value);
         console.log(text);
-        $.ajax({
+        document.getElementById(id+"_text").innerHTML=value
+        /*$.ajax({
             url: '/translate',
             data: {'data':value.toString()},
             dataType: 'json',
@@ -30,7 +31,7 @@
             error: function (error) {
                 document.getElementById(id+"_text").innerHTML='Translation Not Available'
             }
-        });
+        });*/
 
 }
 </script>

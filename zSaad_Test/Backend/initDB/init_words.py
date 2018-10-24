@@ -6,6 +6,7 @@ import random
 word_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 word_dir = os.path.join(word_dir, 'Backend')
 word_dir = os.path.join(word_dir, 'initDB')
+Language_name = ['English','Bangali','Arabic','Chinese','French','German','Hindi','Italian','Japanese','Spanish']
 encoding = "ISO-8859-1"
 
 class DataLoader():
@@ -13,6 +14,7 @@ class DataLoader():
     def __init__(self):
         print(word_dir)
         self.df = pd.read_csv(word_dir+"/word_data.csv",sep='|')
+        self.dftr = pd.read_csv(word_dir+"/transall.csv",sep='|')
         self.size=self.df.shape[0]
         print(self.size)
         self.pointer=0
@@ -26,6 +28,7 @@ class DataLoader():
 
     def next_word(self):
         aa=self.df.iloc[self.pointer]
+        trans = self.dftr.iloc[self.pointer]
         self.pointer=self.pointer+1
         wordID = ""+aa["word"][0]+"_["+aa["word"]+"]"
         word = aa["word"].strip()
@@ -33,6 +36,9 @@ class DataLoader():
         usages = [aa["usages"].strip()]
         TYPE = aa["TYPE"].strip()
         translation = {}
+        for i in range(len(Language_name)):
+            if(word != trans[Language_name[i]]):
+                translation[Language_name[i]] = trans[Language_name[i]]
         return Words_Test(wordID=wordID,word=word,meanings=meanings,usages=usages,translations=translation,TYPE=TYPE)
 
     def next_ratings(self):
