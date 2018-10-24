@@ -1,5 +1,7 @@
 import operator
 import random,copy
+import time
+
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model,mail
 from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
 from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm
@@ -10,7 +12,7 @@ from flask_register import register_required
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash
 from flask import request
-from datetime import datetime
+from datetime import datetime, timedelta
 import json,os
 from flask_oauth import OAuth
 try:
@@ -138,7 +140,7 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow())
+                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow()-timedelta(days=15))
         user.save()
         moumi = Moumita(userid = form.username.data)
         moumi.save()
@@ -471,6 +473,25 @@ def stat():
     return render_template('stat.html', stat_data=stat_data,
                            user=user,rank = rank,
                            local=local,length=len(rank),length1=len(local))
+
+
+@APP_MAIN.route('/admin')
+@login_required
+def admin():
+    if current_user.is_authenticated:
+        if current_user.usertype=='A':
+            current_time1 = datetime.now()
+            lastweek = datetime.now() - timedelta(days=7)
+            print(lastweek)
+            cursor = db['user'].find({})
+            dict = {}
+            for i in cursor:
+                if i['reg_date']>lastweek:
+                    dict[i['_id']] = i['reg_date']
+
+            print(type(dict))
+            return render_template('history.html', dict = dict)
+    return redirect(url_for('index'))
 
 
 

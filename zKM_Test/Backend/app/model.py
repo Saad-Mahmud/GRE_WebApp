@@ -18,6 +18,7 @@ class User(UserMixin,Document):
     reg_date = DateTimeField()
     upic = StringField()
     pic = StringField()
+    usertype = StringField()
 
 
     def check_password(self, password):

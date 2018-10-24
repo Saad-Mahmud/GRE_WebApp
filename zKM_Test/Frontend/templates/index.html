@@ -3,6 +3,7 @@
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}</h1>
     <h2> To make dummy user run dummy.py ,,, to make dummy stat , see routes.py</h2>
+    <h4><a href="{{ url_for('admin') }}">Registration History</a> </h4>
     {% for post in posts %}
     <div><p>{{ post.author.username }}: says - {{ post.body }}</p></div>
     {% endfor %}
