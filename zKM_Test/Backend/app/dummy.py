@@ -29,7 +29,9 @@ for i in range(11,16,1):
 
 col = db['user']
 cursor = col.find({})
+
 for i in cursor:
+    print(i['usertype'])
     if i['usertype']=='A':
         gre_record = Gre_data(username=i['_id'])
         print(gre_record.username)
@@ -47,7 +49,7 @@ for i in cursor:
 
         best_score = max(history)
         avg_score = rating/how_many_test
-        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score)
+        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score, test_date=datetime.utcnow())
 
 
 '''

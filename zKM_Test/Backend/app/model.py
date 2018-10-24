@@ -53,6 +53,7 @@ class Country(UserMixin, Document):
 class Gre_data(UserMixin, Document):
     username = StringField(required=True, primary_key=True)
     history = ListField(IntField())
+    test_date = DateTimeField()
     how_many_test = IntField()
     best_score = FloatField()
     avg_score = FloatField()
