@@ -24,3 +24,6 @@ class WordSuggestionForm2(FlaskForm):
                        validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
+    
+
