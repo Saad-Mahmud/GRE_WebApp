@@ -4,6 +4,11 @@
                 <h3 id="word"><b>{{ word.word }}</b></h3>
             </td>
         </tr>
+        <tr>
+            <audio  id="audio" controls>
+                <source src="/words/audio/{{ word.word }}.mp3" type="audio/mpeg">
+            </audio>
+        </tr>
 
         <tr>
             <td>
@@ -22,5 +27,24 @@
             </td>
         </tr>
 
+        <tr>
+            <td>
+                <b>Translation:  </b>
+                <select id="selectlan">
+                    <option value="english">English</option>
+                    <option value="bangali">Bangali</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="italian">Italian</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="spanish">Spanish</option>
+                </select>
+                <b>  =  </b>
+                <b id="trans"> - - - -</b>
+
+            </td>
+        </tr>
 
 </table>

@@ -96,7 +96,8 @@ def fetch_easy_words(country_id=0):
                         'word': w2.word,
                         'TYPE': w2.TYPE,
                         'meaning': w2.meanings[0],
-                        'usage': w2.usages[0]
+                        'usage': w2.usages[0],
+                        'translations': w2.translations
                     })
 
     """

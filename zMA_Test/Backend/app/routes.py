@@ -4,7 +4,7 @@ import operator
 import random
 import unicodedata
 
-from flask import render_template, request, json
+from flask import render_template, request, json,send_file
 
 from zMA_Test.Backend.app import APP_MAIN
 from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history
@@ -12,6 +12,7 @@ from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_se
     create_user_word_history, update_user_word_status
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.fetch_test import fetch_easy_words2, create_session_test
+from zSaad_Test.Backend.initDB.words import Words_Test
 
 
 @APP_MAIN.route('/')
@@ -169,3 +170,21 @@ def nextWord():
 @APP_MAIN.route('/tryit')
 def tryit():
     return render_template('moumitadummy.html')
+
+import os
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+static_dir = os.path.join(static_dir, 'Frontend')
+static_dir = os.path.join(static_dir, 'static')
+static_dir = os.path.join(static_dir, 'audio')
+
+@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/words/audio/<path:filename>')
+def download_file(filename):
+    file = ''
+    for i in range(len(filename)-4):
+        file =file+filename[i]
+    print(file)
+    filename = os.path.join(static_dir, filename)
+    if(Words_Test.objects(word=file)==[]):
+        return
+    return send_file(filename)

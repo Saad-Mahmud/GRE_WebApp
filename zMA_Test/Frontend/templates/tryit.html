@@ -181,7 +181,6 @@ article.flashcard {
     overflow: hidden;
   }
 
-.
 </style>
 </head>
 
@@ -360,6 +359,13 @@ function progressBarUpdate(x, outOf) {
                         document.getElementById("cardside2").style.visibility = 'visible';
                         document.getElementById("cardside1").style.visibility = 'hidden';
 
+                        var audio = document.getElementById("audio");
+                        audio.src = "/words/audio/"+response.word['word']+".mp3";
+                        audio.load(); //call this to just preload the audio without playing
+                        //audio.play(); //call this to play the song right away
+
+                        document.getElementById("selectlan").onchange = function() {translation(response.word['translations'])};
+
                         document.getElementById("word").innerHTML=response.word['word'];
                         document.getElementById("type").innerHTML= response.word['TYPE'];
                         document.getElementById("meaning").innerHTML= response.word['meaning'];
@@ -376,11 +382,19 @@ function progressBarUpdate(x, outOf) {
                     console.log('bal');
                 }
             });
+    }
+    function translation(meaning) {
+        var e = document.getElementById("selectlan");
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        console.log(meaning);
 
-
-
+        document.getElementById("trans").innerHTML = meaning[text];
 
     }
+
 </script>
 
 </body>
