@@ -25,5 +25,7 @@ class WordSuggestionForm2(FlaskForm):
     submit = SubmitField('Submit')
 
 
-    
+
+
+
 
