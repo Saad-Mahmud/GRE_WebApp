@@ -77,7 +77,7 @@ def fetch_easy_rating(country_id=0):
     if len(new_list)>=10:
         return new_list[0:10]
     else:
-        sorted_temp[0:10]
+        return sorted_temp[0:10]
 
 
 def fetch_easy_words(country_id=0):

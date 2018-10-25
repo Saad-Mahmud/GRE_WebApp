@@ -1,5 +1,6 @@
 import operator
 
+from zKM_Test.Backend.app.model import Gre_data
 from zMA_Test.Backend.app.model import session_practice, session_test
 from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
 
@@ -42,8 +43,13 @@ def fetch_easy_words2(country_id=0):
     return final_easy_list
 
 
-def create_session_test(words,idx):
-    session= session_test(words=words,idx=idx)
+def create_session_test(status, words,idx):
+    session= session_test(status=status, words=words,idx=idx)
     session2 = session.save()
     return session2
+
+def create_gre_test(username, history, how_many_test, best_score, avg_score, rating):
+    gre_test = Gre_data(username=username, history=history,how_many_test=how_many_test,best_score=best_score,avg_score=avg_score,rating=rating)
+    gre_test = gre_test.save()
+    return gre_test
 
