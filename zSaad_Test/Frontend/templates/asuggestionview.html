@@ -1,0 +1,26 @@
+<table>
+        <tr>
+            <td>
+                <h3><b>Type: </b> {{ suggestion.TYPE }} </h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3><b>Report :</b> {{ suggestion.report }}</h3>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            {% if suggestion.status=='US' %}
+                <td>
+                    <a class="btn btn-success" role="button"  onclick="myADD('{{ suggestion.id }}')">Add To TODO List</a>
+                </td>
+            {% endif %}
+
+            <td>
+                <a onclick="myDel('{{ suggestion.id }}')" class="btn btn-danger" role="button" >
+                    Delete</a>
+            </td>
+        </tr>
+
+</table>

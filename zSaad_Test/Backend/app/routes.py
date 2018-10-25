@@ -1,13 +1,16 @@
 from zSaad_Test.Backend.app import APP_MAIN
-from flask import render_template,redirect,url_for,flash,send_file,request,json
+from flask import render_template,redirect,url_for,flash,send_from_directory,request,json
 from zSaad_Test.Backend.initDB.words import Words_Test
-from zSaad_Test.Backend.app.forms import WordSuggestionForm
+from werkzeug.utils import secure_filename
+from zSaad_Test.Backend.app.forms import WordSuggestionForm,WordSuggestionForm2
+from zSaad_Test.Backend.app.model import Suggestions
 import os
+try:
+    from urllib.request import urlretrieve
+except ImportError:
+    from urllib import urlretrieve
 
-static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-static_dir = os.path.join(static_dir, 'Frontend')
-static_dir = os.path.join(static_dir, 'static')
-static_dir = os.path.join(static_dir, 'audio')
+
 
 @APP_MAIN.route('/')
 def hello_world():
@@ -20,10 +23,10 @@ def download_file(filename):
     for i in range(len(filename)-4):
         file =file+filename[i]
     print(file)
-    filename = os.path.join(static_dir, filename)
     if(Words_Test.objects(word=file)==[]):
         return
-    return send_file(filename)
+    return send_from_directory(APP_MAIN.config['AUDIO_FOLDER'],
+                               filename)
 
 @APP_MAIN.route('/dictionary/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/dictionary/<string:page>')
@@ -67,8 +70,23 @@ def suggestion(wordID):
     if form.validate_on_submit():
         print (form.TYPE.data)
         print (form.report.data)
+        Suggestions(TYPE=form.TYPE.data,report=form.report.data,status="US").save()
         flash('Report Submitted!')
         return redirect(url_for('dictionary')+wordID[0])
+    return render_template('suggestions_word.html', form=form)
+
+@APP_MAIN.route('/suggestions/general/',defaults={'x': ''},methods=['GET', 'POST'])
+@APP_MAIN.route('/suggestions/general/<string:x>',methods=['GET', 'POST'])
+def suggestion2(x):
+    if(x!=""):
+        return render_template("404.html")
+    form = WordSuggestionForm2()
+    if form.validate_on_submit():
+        print (form.TYPE.data)
+        print (form.report.data)
+        Suggestions(TYPE=form.TYPE.data,report=form.report.data,status="US").save()
+        flash('Report Submitted!')
+        return redirect(url_for('dictionary'))
     return render_template('suggestions_word.html', form=form)
 
 
@@ -92,6 +110,7 @@ def admintranslate(trnsid):
     if (len(Words_Test.objects(wordID=trnsid)) == 0):
         return render_template('404.html')
     return render_template('admintranslate.html', word = Words_Test.objects(wordID=trnsid)[0])
+
 
 
 @APP_MAIN.route('/adminwords/',defaults={'page': 'ALL'})
@@ -147,3 +166,75 @@ def adminaddtrans():
         
         a.save()
         return json.dumps({'status': 'success'})
+
+
+@APP_MAIN.route('/admineditword/',defaults={'wordID':''})
+@APP_MAIN.route('/admineditword/<string:wordID>')
+def admineditword(wordID):
+    return render_template('editwordpage.html')
+
+@APP_MAIN.route('/adminnewword/')
+def adminnewword():
+    return render_template('addnewword.html')
+
+
+@APP_MAIN.route('/adminaudio/',defaults={'wordID':''},methods=['POST','GET'])
+@APP_MAIN.route('/adminaudio/<string:wordID>',methods=['POST','GET'])
+def adminaudio(wordID):
+
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename_ = secure_filename(file.filename)
+            if(filename_!=file.filename):
+                return redirect(request.url)
+            file.save(os.path.join(APP_MAIN.config['AUDIO_FOLDER'], filename_))
+            return redirect(url_for('admin_words'))
+    else:
+        if (len(Words_Test.objects(wordID=wordID)) == 0):
+            return render_template('404.html')
+        return render_template('adminaudio.html', word = Words_Test.objects(wordID=wordID)[0])
+
+ALLOWED_EXTENSIONS = ['mp3', 'mpeg']
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@APP_MAIN.route('/adminsuggestions/',defaults={'x':''})
+@APP_MAIN.route('/adminsuggestions/<string:x>')
+def adminsuggestions(x):
+    if(x!=''):
+        return render_template('404.html')
+    return render_template('adminsuggestions.html',suggestions=Suggestions.objects(status='US'))
+
+@APP_MAIN.route('/admintodo/',defaults={'x':''})
+@APP_MAIN.route('/admintodo/<string:x>')
+def admintodo(x):
+    if(x!=''):
+        return render_template('404.html')
+    return render_template('admintodo.html',suggestions=Suggestions.objects(status='TD'))
+
+@APP_MAIN.route('/editsuggestion', methods=['POST'])
+def editsuggestion():
+    if(request.form['type']=='todo'):
+        a = Suggestions.objects(id=request.form['id'])
+
+        if(len(a)):
+            k = a[0]
+            k.status = 'TD'
+            k.save()
+    elif(request.form['type']=='del'):
+        a = Suggestions.objects(id=request.form['id'])
+        if (len(a)):
+            a = a[0]
+            a.delete()
+    return json.dumps({'status': 'success'})

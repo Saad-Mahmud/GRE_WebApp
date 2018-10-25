@@ -15,10 +15,10 @@
                 <a href="{{ url_for('admintranslate') }}{{ word.wordID }}" class="btn btn-primary" role="button"  >Add Translation</a>
             </td>
             <td>
-                <a href="/" class="btn btn-primary" role="button"  >Add Audio</a>
+                <a href="{{ url_for('adminaudio') }}{{ word.wordID }}" class="btn btn-primary" role="button"  >Add Audio</a>
             </td>
             <td>
-                <a href="/" class="btn btn-primary" role="button"  >
+                <a href="{{ url_for('admineditword') }}{{ word.wordID }}" class="btn btn-primary" role="button"  >
                     Edit Text</a>
             </td>
             <td>

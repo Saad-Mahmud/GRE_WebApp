@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+    function myADD(id) {
+        console.log(id);
+        $.ajax({
+            url: '/editsuggestion',
+            data: {'id':id,'type':'todo'},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                console.log(response.status)
+                window.location.replace("/adminsuggestions/");
+
+            },
+            error: function (error) {
+                console.log(error.toString());
+                window.location.replace("/adminsuggestions/");
+            }
+        });
+
+}
+</script>
+
+
+<script>
+    function myDel(id) {
+        console.log(id);
+        $.ajax({
+            url: '/editsuggestion',
+            data: {'id':id,'type':'del'},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                console.log(response.status)
+                window.location.replace("/adminsuggestions/");
+
+            },
+            error: function (error) {
+                console.log(error.toString());
+                window.location.replace("/adminsuggestions/");
+            }
+        });
+
+}
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Suggestions</title>
+</head>
+
+
+<body>
+
+<div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <h4>VarLAB <i class="fa fa-fw fa-heart text-danger"></i> by <a href="http://twitter.com/arkdron" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-fw fa-twitter"></i> @arkdron</a></h4>
+        </div>
+    </div>
+    <hr>
+
+
+<ul class="list-group">
+    {% for suggestion in suggestions %}
+        <li class="list-group-item">{% include 'asuggestionview.html' %}</li>
+    {% endfor %}
+</ul>
+
+</body>
+
+
+</html>

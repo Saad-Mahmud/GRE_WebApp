@@ -6,10 +6,21 @@ try:
 except ImportError:
     print (ImportError)
 
+
+
 class WordSuggestionForm(FlaskForm):
     report = TextAreaField('Report', validators=[DataRequired(),Length(min=20, max=300)])
 
-    TYPE = RadioField(label='Report Type:',default='error', choices = [('error', 'Error'), ('suggestions', 'Suggestion'), ('translation', 'Translation')],
+    TYPE = RadioField(label='Report Type:',default='Suggestion',
+                      choices = [('Suggestion', 'Suggestion'), ('Translation', 'Translation'),('Error', 'Error')],
+                       validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class WordSuggestionForm2(FlaskForm):
+    report = TextAreaField('Report', validators=[DataRequired(),Length(min=20, max=300)])
+
+    TYPE = RadioField(label='Report Type:',default='Add Word',
+                      choices = [('Suggestion', 'Suggestion'), ('Add Word', 'Add Word'),('Error', 'Error')],
                        validators=[DataRequired()])
     submit = SubmitField('Submit')
 

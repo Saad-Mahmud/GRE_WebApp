@@ -16,6 +16,7 @@ print(template_dir)
 
 APP_MAIN = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 APP_MAIN.config.from_object(Config.Config)
+print(APP_MAIN.config['AUDIO_FOLDER'])
 
 APPBS=Bootstrap(APP_MAIN)
 client = pymongo.MongoClient("localhost", 27017)

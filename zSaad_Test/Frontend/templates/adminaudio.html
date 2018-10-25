@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -10,10 +10,9 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
 <head>
     <meta charset="UTF-8">
-    <title>Admin Words</title>
+    <title>Admin Add Translate</title>
 </head>
 
 
@@ -26,34 +25,12 @@
     </div>
     <hr>
 
+<H1 align="center"> Add English Audio Of Word Using MP3 file.</H1>
 
-<nav aria-label="my_pn">
-  <ul class="pagination pagination-lg">
-
-    {% for i in links %}
-        {% if i == title %}
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">{{ i }}</a>
-            </li>
-        {% else %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('admin_words') }}{{ i }}">{{ i }}</a>
-        </li>
-        {% endif %}
-    {% endfor %}
-
-  </ul>
-</nav>
-
-<a href="{{ url_for('adminnewword') }}" class="btn btn-success btn-lg" role="button" >Add Word</a>
-<h1>{{ title }}:</h1>
-<ul class="list-group">
-    {% for word in words %}
-        <li class="list-group-item">{% include 'awordview.html' %}</li>
-    {% endfor %}
-</ul>
-
+<form  method=post enctype=multipart/form-data>
+  <input type=file name=file>
+  <input type=submit value=Upload>
+</form>
 </body>
-
 
 </html>
