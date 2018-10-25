@@ -140,9 +140,11 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U')
+                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
         #reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
         user.save()
+        gre_data = Gre_data(username=form.username.data)
+        gre_data.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
         session.pop('access_token', None)
         return redirect(url_for('additional',username=form.username.data))
@@ -184,6 +186,8 @@ def gregister():
                     email=form.email.data,
                     password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(),upic=upic)
         user.save()
+        gre_data = Gre_data(username=form.username.data)
+        gre_data.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
         session.pop('access_token',None)
         return redirect(url_for('additional',username=form.username.data))
@@ -205,6 +209,7 @@ def additional(username):
         arr.append(i['country_name'])
     if form.validate_on_submit():
         user = User.objects(username=username)
+        gre_data = Gre_data(username=username)
         if len(user)==0:
             return render_template(url_for('login'))
         else:
@@ -213,6 +218,7 @@ def additional(username):
             user = user.update(age=form.age.data,
                                country=request.form.get('cnt_name'),
                                gender=form.gender.data)
+            gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
             return redirect(url_for('login'))
         else:
             return redirect(url_for('index'))
@@ -269,15 +275,24 @@ def ranking(ajax_var):
     dict = {}
     dict1 = {}
     for i in curser:
-        dict[i['_id']]= i['rating']
+        try:
+            dict[i['_id']]= i['rating']
+        except:
+            dict[i['_id']]= 0
         user = User.objects(username=i['_id'])
         user = user[0]
-        if ajax_var is None or ajax_var == 'select country':
+        if ajax_var is None or ajax_var == 'select country' or ajax_var==current_user.country:
            if user.country == current_user.country:
-                dict1[i['_id']] = i['rating']
+               try:
+                   dict1[i['_id']] = i['rating']
+               except:
+                   dict1[i['_id']] = 0
         else:
             if user.country == ajax_var:
-                dict1[i['_id']] = i['rating']
+                try:
+                    dict1[i['_id']] = i['rating']
+                except:
+                    dict1[i['_id']] = 0
     sorted_global = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
 
     sorted_local = sorted(dict1.items(), key=operator.itemgetter(1),reverse=True)
@@ -302,42 +317,6 @@ def statcountry():
 
     return json.dumps({'status': sorted_local})
 '''
-'''
-def locrank():
-    col = db['gre_data']
-    cursor = col.find({})
-    dict = {}
-    for i in cursor:
-        user = User.objects(username=i['_id'])
-        user = user[0]
-        if user.country== current_user.country:
-            dict[i['_id']] = i['rating']
-    sorted_x = sorted(dict.items(), key=operator.itemgetter(1), reverse=True)
-    print(sorted_x)
-    return sorted_x
-
-def ranking():
-    col = db['gre_data']
-    curser = col.find({})
-    rnk = []
-    for i in curser:
-        rnk.append(i['rating'])
-    rnk.sort(reverse=True)
-    return rnk
-
-
-def locrank():
-    col = db['gre_data']
-    curser = col.find({})
-    rnk = []
-    for i in curser:
-        user = User.objects(username=i['_id'])
-        user = user[0]
-        if user.country== current_user.country:
-            rnk.append(i['rating'])
-    rnk.sort(reverse=True)
-    return rnk
-'''
 @APP_MAIN.route('/user/<username>')
 @login_required
 def user(username):
@@ -352,18 +331,23 @@ def user(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
+
     rate = rating(username)
-    rank,local = ranking()
-    for i in range(0,len(rank)):
-        if rank[i][0]==current_user.username:
-            rankindx = i + 1
-            break
-            print(rankindx)
-    for i in range(0, len(local)):
-        if local[i][0] == current_user.username:
-            locindx = i+1
-            break
-            print(locindx)
+    try:
+        rank,local = ranking(current_user.country)
+        for i in range(0,len(rank)):
+            if rank[i][0]==current_user.username:
+                rankindx = i + 1
+                break
+                print(rankindx)
+        for i in range(0, len(local)):
+            if local[i][0] == current_user.username:
+                locindx = i+1
+                break
+                print(locindx)
+    except:
+        rankindx = None
+        locindx = None
 
     return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx)
 
@@ -460,30 +444,6 @@ def practice():
 @APP_MAIN.route('/stat',methods=['POST','GET'])
 @login_required
 def stat():
-    '''       #//////////////dummy stat creation in Gre_data table ///////////
-    col = db['gre_data']
-    cursor = col.find({})
-    for i in cursor:
-        stat_data = Gre_data.objects(username=i['_id'])
-        stat_data = stat_data[0]
-        history = []
-        how_many_test = 0
-        rating = 0
-        for x in range (0,4,1):
-            a = random.randint(0,40)
-            history.append(a)
-            how_many_test = how_many_test + 1
-            rating = rating + a
-
-        best_score = max(history)
-        avg_score = rating/how_many_test
-        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score)
-
-    return render_template('stat.html', history=history, how_many_test = how_many_test+1)
-    '''
-    #if u want to create dummy data to check comment in this section including render_template and comment out previous section
-    #col = db['gre_data']
-    #cursor = col.find({})
     collection = db['country']
     cursor = collection.find({})
     arr = []
