@@ -1,13 +1,13 @@
 <html lang="en">
 
 <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -15,44 +15,181 @@
 </head>
 <body>
 <h1>Test</h1>
-<h3>{{ test_line }}</h3>
+<button id="choice1" style="visibility: visible" onclick="multipleChoice(this)">Multiple Choice</button>
+<button id="choice2" style="visibility: visible" onclick="fillInTheBlanks(this)">Fill in the blanks</button>
 
+<h3 id="line" style="visibility: hidden"></h3>
 
-<form action="">
-    {% for i in range(4) %}
-        <input type="radio" name="gender" onclick="check(this.value)" value={{ option_dict[i][0] }}>{{ option_dict[i][0] }}<br>
-    {% endfor %}
+<form id="formid" style="visibility: hidden">
+    <input type="radio" id="radio_btn1" name="gender" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
+    <label>{{ option_dict[0][0] }}</label><br>
+    <input type="radio" id="radio_btn2" name="gender" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
+    <label>{{ option_dict[1][0] }}</label><br>
+    <input type="radio" id="radio_btn3" name="gender" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
+    <label>{{ option_dict[2][0] }}</label><br>
+    <input type="radio" id="radio_btn4" name="gender" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
+    <label>{{ option_dict[3][0] }}</label><br>
 </form>
 
 <script>
-    var answer = '';
+    var isWhat = true;
+
+    function multipleChoice(source) {
+        isWhat = false;
+        var list=[];
+        document.getElementById(source.id).style.visibility = 'hidden';
+        document.getElementById("choice2").style.visibility = 'hidden';
+
+        list[0] = '{{ multi_dict[0][0] }}';
+        list[1] = '{{ multi_dict[1][0] }}';
+        list[2] = '{{ multi_dict[2][0] }}';
+        list[3] = '{{ multi_dict[3][0] }}';
+
+        setValues(list, '{{ multi_word }}')
+
+    }
+
+    function fillInTheBlanks(source) {
+        var list=[];
+        document.getElementById(source.id).style.visibility = 'hidden';
+        document.getElementById("choice1").style.visibility = 'hidden';
+
+        list[0] = '{{ option_dict[0][0] }}';
+        list[1] = '{{ option_dict[1][0] }}';
+        list[2] = '{{ option_dict[2][0] }}';
+        list[3] = '{{ option_dict[3][0] }}';
+
+        setValues(list, '{{ test_line }}')
+    }
+
+    function setValues(list, line) {
+        document.getElementById("line").innerHTML = line;
+        document.getElementById("line").style.visibility = 'visible';
+
+        var $label = $('input[id=radio_btn1]').next();
+        $label.text(list[0]);
+        var $label = $('input[id=radio_btn2]').next();
+        $label.text(list[1]);
+        var $label = $('input[id=radio_btn3]').next();
+        $label.text(list[2]);
+        var $label = $('input[id=radio_btn4]').next();
+        $label.text(list[3]);
+
+        $("#radio_btn1").val(list[0]);
+        $("#radio_btn2").val(list[1]);
+        $("#radio_btn3").val(list[2]);
+        $("#radio_btn4").val(list[3]);
+
+        document.getElementById("formid").style.visibility = 'visible';
+        document.getElementById("submit").style.visibility = 'visible';
+    }
+
     function check(ans) {
-        document.getElementById("clicked").innerHTML = 'You have clicked ' + ans;
-        answer = ans;
+        //document.getElementById("clicked").innerHTML = 'You have clicked ' + ans;
     }
 
     function nextTestWord(source, sessionID) {
-        console.log('abccccccccc',answer);
+        console.log(isWhat);
+        var answer;
+
+        document.getElementById("anstext").innerHTML = ' ';
+        //document.getElementById("clicked").innerHTML = ' ';
+        document.getElementById("submit").style.visibility = 'visible';
+        document.getElementById("next").style.visibility = 'hidden';
+
+        var exampleForm = document.forms['formid'];
+        for (var i = 0; i < exampleForm.length; i++) {
+            if (exampleForm[i].type === 'radio' && exampleForm[i].checked === true) {
+                answer = exampleForm[i].value;
+                exampleForm[i].checked = false;
+            }
+        }
 
         $.ajax({
-                url: '/nexttestword',
-                data: {'answer':answer, 'sessionID':sessionID, 'buttonID':source.id},
-                dataType: 'json',
-                type: 'POST',
-                success: function (response) {
-                    //document.getElementById("demo").innerHTML=response.word[1];
-                    console.log(response.test_word);
-                },
-                error: function (error) {
-                    console.log('bal');
-
+            url: '/nexttestword',
+            data: {'answer': answer, 'sessionID': sessionID, 'buttonID': source.id, 'isWhat':isWhat},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                if (response.test_word[0] === '$null$') {
+                    document.getElementById("line").innerHTML = "Congratulations. Test ended";
+                    document.getElementById("formid").style.visibility = 'hidden';
+                    document.getElementById("next").style.visibility = 'hidden';
+                    document.getElementById("submit").style.visibility = 'hidden';
                 }
-            });
+                else {
+                    //console.log(response.option_dict[0][0]);
+                    document.getElementById("line").innerHTML = response.test_line;
+                    document.getElementById("correct").innerHTML = 'Correct : ' +  response.correct;
+                    document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
+
+                    document.getElementById("correct").style.visibility = 'visible';
+                    document.getElementById("wrong").style.visibility = 'visible';
+
+                    var $label = $('input[id=radio_btn1]').next();
+                    $label.text(response.option_dict[0][0]);
+                    $("#radio_btn1").val(response.option_dict[0][0]);
+                    $label = $('input[id=radio_btn2]').next();
+                    $label.text(response.option_dict[1][0]);
+                    $("#radio_btn2").val(response.option_dict[1][0]);
+                    $label = $('input[id=radio_btn3]').next();
+                    $label.text(response.option_dict[2][0]);
+                    $("#radio_btn3").val(response.option_dict[2][0]);
+                    $label = $('input[id=radio_btn4]').next();
+                    $label.text(response.option_dict[3][0]);
+                    $("#radio_btn4").val(response.option_dict[3][0]);
+                }
+            },
+            error: function (error) {
+                console.log('Error in receiving');
+            }
+        });
     }
+
+    function displayAns(source, sessionID) {
+        var answer;
+        var exampleForm = document.forms['formid'];
+        for (var i = 0; i < exampleForm.length; i++) {
+            if (exampleForm[i].type === 'radio' && exampleForm[i].checked === true) {
+                answer = exampleForm[i].value;
+            }
+        }
+
+        $.ajax({
+            url: '/thisans',
+            data: {'sessionID': sessionID, 'isWhat':isWhat},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                //document.getElementById("anstext").innerHTML = response.ans;
+                if(response.ans === answer) {
+                    document.getElementById("anstext").innerHTML = "Correct : You have selected "+ answer;
+                }
+                else
+                {
+                    document.getElementById("anstext").innerHTML = "Wrong : You have selected " + answer + ". Correct answer is " + response.ans;
+                }
+
+            },
+            error: function (error) {
+                console.log('Error in receiving');
+            }
+        });
+
+        document.getElementById(source.id).style.visibility = 'hidden';
+        document.getElementById("next").style.visibility = 'visible';
+    }
+
 </script>
 
-<h4 id="clicked"></h4>
-<button id="next" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
+<!--<h4 id="clicked"></h4>-->
+
+<button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
+
+<button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
+<h4 id="anstext"></h4>
+<h4 id="correct" style="visibility: hidden"></h4>
+<h4 id="wrong" style="visibility: hidden"></h4>
 
 </body>
 </html>
