@@ -13,7 +13,7 @@ connect('tutorial_mega', host="127.0.0.1", port = 27017)
 
 cntttt = ["Bangladesh","America","England","Syria","Uganda","Honululu","India","Pakistan","Brazil","Argentina"]
 pword = 'abc'
-for i in range(11,16,1):
+for i in range(1,11,1):
     x = random.randint(0,3)
     user = User(username=str(i),
                 email=str(i)+'@gmail.com',
@@ -23,7 +23,7 @@ for i in range(11,16,1):
                 age = str(random.randint(1,30)),
                 reg_date = datetime.utcnow(),
                 gender = 'Male'
-                ,usertype = 'A'  #for admin, it is 'A', for others, 'U'
+                ,usertype = 'U'  #for admin, it is 'A', for others, 'U'
                 )
     user.save()
 
@@ -32,7 +32,7 @@ cursor = col.find({})
 
 for i in cursor:
     print(i['usertype'])
-    if i['usertype']=='A':
+    if i['usertype']=='U':
         gre_record = Gre_data(username=i['_id'])
         print(gre_record.username)
         gre_record.save()
@@ -49,7 +49,10 @@ for i in cursor:
 
         best_score = max(history)
         avg_score = rating/how_many_test
-        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score, test_date=datetime.utcnow())
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        country = user.country
+        stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score, test_date=datetime.utcnow(), country=country)
 
 
 '''

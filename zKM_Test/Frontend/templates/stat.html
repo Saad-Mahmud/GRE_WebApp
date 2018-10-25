@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <head>
     <meta charset="UTF-8">
     <title>Chart</title>
@@ -29,9 +39,21 @@
     {% endfor %}
 
 </table>
-
+ <form action="" method="post" novalidate>
+ {{ form.hidden_tag() }}
 <h2>Local</h2>
+<p>
+        <select name="cnt_name1" id="sc" onclick="myFunction(this.id)">
+            <option value="select country">Select a country</option><br>
+            {% for i in arr %}
+                <option value="{{i}}">{% print(i) %}</option><br>
+            {% endfor %}
+        </select>
 
+</p>
+     <p>{{ form.submit() }}</p>
+
+ </form>
 <table>
   <tr>
     <th>Name</th>
@@ -44,7 +66,11 @@
             <td>{{ local[i][0] }}</td>
             <td>{{ local[i][1] }}</td>
             <td>{% print(i+1) %} </td>
+             {% if ajax_var.isNone or ajax_var=='select country'%}
             <td>{{ current_user.country }}</td>
+            {% else %}
+            <td>{{ ajax_var }}</td>
+            {% endif %}
          </tr>
     {% endfor %}
 
@@ -77,6 +103,36 @@
     // that is resolving to our chart container element. The Second parameter
     // is the actual data object.
     let mychart = new Chartist.Line('.ct-chart', data, options);
+
+    function myFunction(id) {
+        var e = document.getElementById(id);
+        console.log(id)
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        if(value === 'select country'){
+
+        }
+        else{
+            //document.getElementById(id+"_text").innerHTML=value*/
+        $.ajax({
+            url: '/statcountry',
+            data: {'sc':value.toString()},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                //document.getElementById(id+"_text").innerHTML=response.status
+                console.log(response.status)
+            },
+            error: function (error) {
+                //document.getElementById(id+"_text").innerHTML='Translation Not Available'
+            }
+        });
+
+       }
+
+}
 </script>
 
 

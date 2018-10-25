@@ -4,14 +4,14 @@ import time
 
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model,mail
 from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
-from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm
+from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm, LocalStatForm
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_oauth import OAuth
 from flask_login import current_user, login_user, logout_user , login_required, fresh_login_required
 from flask_register import register_required
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash
-from flask import request
+from flask import request,json,request
 from datetime import datetime, timedelta
 import json,os
 from flask_oauth import OAuth
@@ -140,11 +140,9 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow())
+                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U')
         #reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
         user.save()
-        moumi = Moumita(userid = form.username.data)
-        moumi.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
         session.pop('access_token', None)
         return redirect(url_for('additional',username=form.username.data))
@@ -265,7 +263,7 @@ def rating(username):
     rate = rate[0]
     return rate
 
-def ranking():
+def ranking(ajax_var):
     col = db['gre_data']
     curser = col.find({})
     dict = {}
@@ -274,13 +272,36 @@ def ranking():
         dict[i['_id']]= i['rating']
         user = User.objects(username=i['_id'])
         user = user[0]
-        if user.country == current_user.country:
-            dict1[i['_id']] = i['rating']
+        if ajax_var is None or ajax_var == 'select country':
+           if user.country == current_user.country:
+                dict1[i['_id']] = i['rating']
+        else:
+            if user.country == ajax_var:
+                dict1[i['_id']] = i['rating']
     sorted_global = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
 
     sorted_local = sorted(dict1.items(), key=operator.itemgetter(1),reverse=True)
     #print(sorted_global,sorted_local)
     return sorted_global,sorted_local
+'''
+@APP_MAIN.route('/statcountry',methods=['POST'])
+@login_required
+def statcountry():
+    a = request.form['sc']
+    print(a)
+    col = db['gre_data']
+    curser = col.find({})
+    dict1 = {}
+    for i in curser:
+        user = User.objects(username=i['_id'])
+        user = user[0]
+        if user.country == a:
+            dict1[i['_id']] = i['rating']
+    sorted_local = sorted(dict1.items(), key=operator.itemgetter(1), reverse=True)
+
+
+    return json.dumps({'status': sorted_local})
+'''
 '''
 def locrank():
     col = db['gre_data']
@@ -436,7 +457,7 @@ def practice():
     pass
 
 
-@APP_MAIN.route('/stat')
+@APP_MAIN.route('/stat',methods=['POST','GET'])
 @login_required
 def stat():
     '''       #//////////////dummy stat creation in Gre_data table ///////////
@@ -463,17 +484,26 @@ def stat():
     #if u want to create dummy data to check comment in this section including render_template and comment out previous section
     #col = db['gre_data']
     #cursor = col.find({})
+    collection = db['country']
+    cursor = collection.find({})
+    arr = []
+    for i in cursor:
+        arr.append(i['country_name'])
+
+
     cursor1 = db['user'].find({})
-
-    rank, local = ranking()
-
+    ajax_var = request.form.get('cnt_name1')
+    print(ajax_var)
+    rank, local = ranking(ajax_var)
+    form = LocalStatForm()
     stat_data = Gre_data.objects(username=current_user.username)
     stat_data = stat_data[0]
     user = User
+
     #print(cursor1[10]['_id']==stat_data.id)
     return render_template('stat.html', stat_data=stat_data,
-                           user=user,rank = rank,
-                           local=local,length=len(rank),length1=len(local))
+                           user=user,rank = rank,ajax_var=ajax_var,
+                           local=local,length=len(rank),length1=len(local), arr=arr, form = form)
 
 
 @APP_MAIN.route('/admin')

@@ -58,6 +58,7 @@ class Gre_data(UserMixin, Document):
     best_score = FloatField()
     avg_score = FloatField()
     rating = FloatField()
+    country = StringField()
 
 class Moumita(UserMixin, Document):
     userid = StringField(required=True, primary_key=True)
