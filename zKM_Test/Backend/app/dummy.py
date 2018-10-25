@@ -31,7 +31,6 @@ col = db['user']
 cursor = col.find({})
 
 for i in cursor:
-    print(i['usertype'])
     if i['usertype']=='U':
         gre_record = Gre_data(username=i['_id'])
         print(gre_record.username)

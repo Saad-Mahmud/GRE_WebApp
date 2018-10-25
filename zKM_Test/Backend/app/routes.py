@@ -184,7 +184,7 @@ def gregister():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(),upic=upic)
+                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(),upic=upic,usertype='U',about_me=form.username.data+"\'s about")
         user.save()
         gre_data = Gre_data(username=form.username.data)
         gre_data.save()
