@@ -4,6 +4,8 @@ from zSaad_Test.Backend.initDB.words import Words_Test
 from werkzeug.utils import secure_filename
 from zSaad_Test.Backend.app.forms import WordSuggestionForm,WordSuggestionForm2
 from zSaad_Test.Backend.app.model import Suggestions
+import datetime
+
 import os
 try:
     from urllib.request import urlretrieve
@@ -56,39 +58,33 @@ def dictionary(page):
         }
         for w in wordlist
     ]
-    return render_template('dictionary.html',links=links, title=title, words=words)
+    return render_template('dictionary.html',links=links, title=title, words=words,length=len(words))
 
-@APP_MAIN.route('/suggestions/words/',defaults={'wordID': ''},methods=['GET', 'POST'])
-@APP_MAIN.route('/suggestions/words/<string:wordID>',methods=['GET', 'POST'])
+@APP_MAIN.route('/suggestions/words/',defaults={'wordID': ''})
+@APP_MAIN.route('/suggestions/words/<string:wordID>')
 def suggestion(wordID):
     if(wordID==''):
         return render_template('404.html')
-    elif(Words_Test.objects(wordID=wordID)==[]):
+    elif(len(Words_Test.objects(wordID=wordID))==0):
         return render_template('404.html')
 
-    form = WordSuggestionForm()
-    if form.validate_on_submit():
-        print (form.TYPE.data)
-        print (form.report.data)
-        Suggestions(TYPE=form.TYPE.data,report=form.report.data,status="US").save()
-        flash('Report Submitted!')
-        return redirect(url_for('dictionary')+wordID[0])
-    return render_template('suggestions_word.html', form=form)
+    return render_template('suggestions_word.html', form=['Translation','Meaning','Usage','Error'])
 
-@APP_MAIN.route('/suggestions/general/',defaults={'x': ''},methods=['GET', 'POST'])
-@APP_MAIN.route('/suggestions/general/<string:x>',methods=['GET', 'POST'])
+@APP_MAIN.route('/suggestions/general/',defaults={'x': ''})
+@APP_MAIN.route('/suggestions/general/<string:x>')
 def suggestion2(x):
     if(x!=""):
         return render_template("404.html")
-    form = WordSuggestionForm2()
-    if form.validate_on_submit():
-        print (form.TYPE.data)
-        print (form.report.data)
-        Suggestions(TYPE=form.TYPE.data,report=form.report.data,status="US").save()
-        flash('Report Submitted!')
-        return redirect(url_for('dictionary'))
-    return render_template('suggestions_word.html', form=form)
+    return render_template('suggestions_word.html', form=['New Word','Bug'])
 
+@APP_MAIN.route('/processsuggestion', methods=['POST'])
+def processsuggestion():
+    tp = request.form['type']
+    report = request.form['report']
+    date = str(datetime.datetime.now())
+    status = 'US'
+    Suggestions(TYPE=tp,report=report,date=date,status=status).save()
+    return json.dumps({'status': 'success'})
 
 @APP_MAIN.route('/translate', methods=['POST'])
 def translate():
@@ -134,11 +130,12 @@ def admin_words(page):
             'word': w.word ,
             'TYPE': w.TYPE ,
             'meaning': w.meanings[0] ,
-            'usages' : w.usages
+            'usages' : w.usages ,
+            'translations': w.translations
         }
         for w in wordlist
     ]
-    return render_template('admin_words.html',links=links, title=title, words=words)
+    return render_template('admin_words.html',links=links, title=title, words=words,length=len(words))
 
 @APP_MAIN.route('/admindeleteword', methods=['POST'])
 def admindeleteword():
@@ -214,14 +211,16 @@ def allowed_file(filename):
 def adminsuggestions(x):
     if(x!=''):
         return render_template('404.html')
-    return render_template('adminsuggestions.html',suggestions=Suggestions.objects(status='US'))
+    a = Suggestions.objects(status='US')
+    return render_template('adminsuggestions.html',suggestions=a,length=len(a))
 
 @APP_MAIN.route('/admintodo/',defaults={'x':''})
 @APP_MAIN.route('/admintodo/<string:x>')
 def admintodo(x):
     if(x!=''):
         return render_template('404.html')
-    return render_template('admintodo.html',suggestions=Suggestions.objects(status='TD'))
+    a = Suggestions.objects(status='TD')
+    return render_template('admintodo.html',suggestions=Suggestions.objects(status='TD'),length=len(a))
 
 @APP_MAIN.route('/editsuggestion', methods=['POST'])
 def editsuggestion():
