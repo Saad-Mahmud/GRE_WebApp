@@ -1,37 +1,33 @@
 <table>
         <tr>
             <td>
-                <h3 id="word"><b>{{ word.word }}</b></h3>
+                <h3><b id="word">{{ word.word }}></b> (<i id="type"> {{word.TYPE}}</i>)</h3>
             </td>
-        </tr>
+       </tr>
         <tr>
             <audio  id="audio" controls>
                 <source src="/words/audio/{{ word.word }}.mp3" type="audio/mpeg">
             </audio>
         </tr>
 
+
         <tr>
             <td>
-                <b >Type :</b> <h4 id="type">{{ word.TYPE }}</h4>
+                <h3><b>Meaning :</b></h3> <h3 id="meaning"> {{ word.meaning }}</h3>
             </td>
         </tr>
         <tr>
             <td>
-                <b>Meaning :</b> <h4 id="meaning"> {{ word.meaning }}</h4>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b >Usage :</b> <h4 id="usage"> {{ word.usage }}</h4>
+                <h3 ><b>Usage :</b></h3> <h3 id="usage"> {{ word.usage }}</h3>
 
             </td>
         </tr>
 
         <tr>
             <td>
-                <b>Translation:  </b>
-                <select id="selectlan">
-                    <option value="english">English</option>
+                <h3><b>Translation:  </b></h3><h3 id="trans"> - - - -</h3>
+                <select id="selectlan" style="width: 100px; height: 40px; font-size: 22px">
+                    <option value="- - - -">None</option>
                     <option value="bangali">Bangali</option>
                     <option value="chinese">Chinese</option>
                     <option value="french">French</option>
@@ -41,8 +37,8 @@
                     <option value="japanese">Japanese</option>
                     <option value="spanish">Spanish</option>
                 </select>
-                <b>  =  </b>
-                <b id="trans"> - - - -</b>
+
+
 
             </td>
         </tr>

@@ -1,7 +1,7 @@
 from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
 
 
-class FetchWords():
+class FetchWords2():
     def __init__(self):
         self.allWordsRatings = Words_Rating.objects()
         self.allWords = Words_Test.objects()

@@ -7,9 +7,9 @@ from flask import render_template, request, json, send_file
 
 from zMA_Test.Backend.app import APP_MAIN
 from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history, Gre_data
-from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice
+from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice, FetchWords
 from zMA_Test.Backend.practice.practice_util import showstat
-from zMA_Test.Backend.test.FetchWords import FetchWords
+from zMA_Test.Backend.test.FetchWords import FetchWords2
 from zMA_Test.Backend.test.fetch_test import create_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat
 from zSaad_Test.Backend.initDB.words import Words_Test
@@ -20,9 +20,10 @@ def hello_world():
     return render_template("dummy.html")
 
 
+
 @APP_MAIN.route('/testpage')
 def test_page():
-    fetch_words = FetchWords()
+    fetch_words = FetchWords2()
     test_words = fetch_words.practice_words("easy")
     status = {}
     ques_multi = []
@@ -44,7 +45,7 @@ def test(type):
 
     #print(sessionID)
 
-    fetch_words = FetchWords()
+    fetch_words = FetchWords2()
     test_words = fetch_words.practice_words(type)
     status = {}
     ques_multi = []
@@ -297,7 +298,9 @@ def summary():
 
 @APP_MAIN.route('/practice')
 def practice():
-    words = fetch_easy_words()
+    type = "easy"
+    fetchwords = FetchWords()
+    words = fetchwords.practice_words(type)
     status = {word['wordID']:'firstseen' for word in words}
     sessionID = create_session_practice(status, words, 0)
     #userWordHistory = create_user_word_history()
@@ -388,9 +391,10 @@ def nextWord():
 
     return json.dumps({'word': newWord, 'learning': learning, 'reviewing':reviewing, 'mastered':mastered})
 
+
 @APP_MAIN.route('/tryit')
 def tryit():
-    return render_template('moumitadummy.html')
+    return render_template('flashcard.html')
 
 import os
 static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
