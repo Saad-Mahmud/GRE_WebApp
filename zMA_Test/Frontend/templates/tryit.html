@@ -40,6 +40,8 @@
             -webkit-border-radius: 100px;
             border-radius: 100px;
             position: relative;
+            left: 15%;
+            top: 10%;
         }
 
         .clip1 {
@@ -59,8 +61,8 @@
             -moz-border-radius: 100px;
             -webkit-border-radius: 100px;
             border-radius: 100px;
-            background-color: #f7e5e1;
-            border-color: #f7e5e1;
+            background-color: #464646;
+            border-color: #464646;
             -moz-transform: rotate(0);
             -webkit-transform: rotate(0);
             -o-transform: rotate(0);
@@ -84,8 +86,8 @@
             -moz-border-radius: 100px;
             -webkit-border-radius: 100px;
             border-radius: 100px;
-            background-color: #f7e5e1;
-            border-color: #f7e5e1;
+            background-color: #464646;
+            border-color: #464646;
             -moz-transform: rotate(0);
             -webkit-transform: rotate(0);
             -o-transform: rotate(0);
@@ -191,7 +193,8 @@
             padding: 1em;
             border-radius: 5px;
             color: white;
-            background-color: #ff4136;
+            background-color: #3b97df;
+            height: 350px;
 
 
         }
@@ -199,6 +202,7 @@
         .card__side--back {
             background-color: #ffffff;
             box-shadow: 0px 5px 0px 0px #3c93d5;
+            height: 350px;
         }
 
         .btn {
@@ -235,6 +239,8 @@
         }
 
 
+
+
     </style>
 
     <!-- sienav -->
@@ -245,14 +251,15 @@
 
         .sidenav {
             height: 100%;
-            width: 300px;
+            width: 350px;
             position: fixed;
             z-index: -1;
             top: 60px;
             left: 0;
-
+            color: #efefef;
             background-color: #232435;
             overflow-x: hidden;
+
             /*padding-top: 20px;*/
         }
 
@@ -285,6 +292,21 @@
         }
     </style>
 
+    <style>
+        .flipbtn{
+            position: absolute;
+            left: 50%;
+        }
+        .nextbtn{
+            position: absolute;
+            left: 40%;
+        }
+        .stat{
+            position: absolute;
+            top: 50%;
+            left: 5%;
+        }
+    </style>
 </head>
 
 <body>
@@ -292,10 +314,7 @@
 
 
     <div class="sidenav">
-    <div class="card">
-        <h3>Mastered</h3>
 
-    </div>
     <div  style="display: block" class="pie">
         <div class="clip1">
             <div class="slice1"></div>
@@ -306,44 +325,47 @@
         <div class="status"></div>
     </div>
 
-    <div style="display: block">
+    <div class="stat" style="display: block">
         <h4 align="left">You have mastered <b id="master">0</b> out of 10 words</h4>
-        <h4 align="left">You are reviewing <b id="review">0</b>out of 10 words</h4>
-        <h4 align="left">You are learning <b id="learn">0</b>out of 10 words</h4>
+        <h4 align="left">You are reviewing <b id="review">0</b> out of 10 words</h4>
+        <h4 align="left">You are learning <b id="learn">0</b> out of 10 words</h4>
 
     </div>
 </div>
 
 
-<div class="card js-card">
+
+<div class="card js-card " style="display: block">
     <div class="card__wrapper">
-        <div class="card__side is-active">
+        <div class="card__side is-active align-items-center d-flex justify-content-center">
             <h3><b id="cardside1">{{ word.word }}</b></h3>
         </div>
         <div class="card__side card__side--back">
             {% include 'dictview.html' %}
         </div>
     </div>
-</div>
+    </div>
 
 
-<div style="display: inline-block">
+
+<div class="myclass" style="display: inline-block; vertical-align: center">
 
 
-    <div>
+
+    <div class="nextbtn" style="display: block">
         <div style="display: inline-block">
             <a href="#" class="btn btn-danger" id="idk" style='visibility:hidden'
                onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
         </div>
         <div style="display: inline-block">
-            <a href="#" class="btn btn-danger" id="ik" style='visibility:hidden'
+            <a href="#" class="btn btn-success" id="ik" style='visibility:hidden'
                onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
                 know</a>
 
         </div>
 
     </div>
-    <div style="display: block">
+    <div class="flipbtn" style="display: block" >
         <a href="#" class="btn btn-danger" id="flip" style='visibility:visible'
            onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
 
