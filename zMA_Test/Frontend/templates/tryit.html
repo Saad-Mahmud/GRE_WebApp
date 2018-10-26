@@ -103,6 +103,8 @@
             top: 50%;
             margin-top: -35px;
             font-size: 60px;
+
+
         }
     </style>
 
@@ -295,11 +297,15 @@
     <style>
         .flipbtn{
             position: absolute;
-            left: 50%;
+            left: 55%;
         }
-        .nextbtn{
+        .idkbtn{
             position: absolute;
-            left: 40%;
+            left: 35%;
+        }
+        .ikbtn{
+            position: absolute;
+            left: 65%;
         }
         .stat{
             position: absolute;
@@ -322,7 +328,7 @@
         <div class="clip2">
             <div class="slice2"></div>
         </div>
-        <div class="status"></div>
+        <div class="status" >0 of 10</div>
     </div>
 
     <div class="stat" style="display: block">
@@ -352,12 +358,12 @@
 
 
 
-    <div class="nextbtn" style="display: block">
-        <div style="display: inline-block">
+    <div  style="display: block">
+        <div class="idkbtn" style="display: inline-block">
             <a href="#" class="btn btn-danger" id="idk" style='visibility:hidden'
                onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
         </div>
-        <div style="display: inline-block">
+        <div class="ikbtn" style="display: inline-block">
             <a href="#" class="btn btn-success" id="ik" style='visibility:hidden'
                onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
                 know</a>
@@ -374,18 +380,17 @@
 </div>
 
 
-
-
-
 <script>
 
     let cardTransitionTime = 500;
 
-    let $card = $('.js-card')
-    let switching = false
+    let $card = $('.js-card');
+    let switching = false;
+
 
 
     function flipCard(sessionID, id2hide, id2show, id3show) {
+        document.getElementById("flip").style.visibility = 'hidden';
         $.ajax({
             url: '/fliped',
             data: {'sessionID': sessionID},
@@ -421,9 +426,15 @@
                     document.getElementById("meaning").innerHTML = response.word['meaning'];
                     document.getElementById("usage").innerHTML = response.word['usage'];
 
-                    document.getElementById(id2hide).style.visibility = 'hidden';
-                    document.getElementById(id2show).style.visibility = 'visible';
-                    document.getElementById(id3show).style.visibility = 'visible';
+                     document.getElementById("flip").style.visibility = 'hidden';
+                     if(document.getElementById('flip').style.visibility==='hidden') {
+
+
+                         document.getElementById('ik').style.visibility = 'visible';
+                         document.getElementById('idk').style.visibility = 'visible';
+                     }
+
+
                 }
 
                 console.log("flipped ", response.word, response.word['word']);
@@ -440,8 +451,12 @@
 
         $card.toggleClass('is-switched')
         window.setTimeout(function () {
+
             $card.children().children().toggleClass('is-active')
             switching = false
+
+
+
         }, cardTransitionTime / 2)
     }
 

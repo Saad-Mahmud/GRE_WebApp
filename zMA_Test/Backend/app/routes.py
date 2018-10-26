@@ -20,20 +20,17 @@ def hello_world():
     return render_template("dummy.html")
 
 
-
 @APP_MAIN.route('/testpage')
 def test_page():
-    fetch_words = FetchWords2()
+    '''fetch_words = FetchWords()
     test_words = fetch_words.practice_words("easy")
     status = {}
     ques_multi = []
     ques_blank = []
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
-    print("SSSSSSSSSSSSSSSSSS", sessionID)
+    print("SSSSSSSSSSSSSSSSSS", sessionID) '''
 
-    #sessionID = 'abcd'
-
-    return render_template("test_page.html", sessionID=sessionID.id)
+    return render_template("test_page.html")
 
 
 
@@ -64,8 +61,8 @@ def test(type):
     #print(type(username))
     #test_words = fetch_easy_words2()
     #status = {}
-    ques_multi = []
-    ques_blank = []
+    #ques_multi = []
+    #ques_blank = []
     #sessionID = create_session_test(status, test_words, 0, questions)
     temp = Gre_data.objects(username="amit99")[0]
 
@@ -125,6 +122,9 @@ def test(type):
     #print(ans_multi)
     ques_multi.append(test_multi_choice_word)
     ques_blank.append(test_line)
+
+    pointer_f.ques_blank = ques_blank
+    pointer_f.ques_multi = ques_multi
 
     pointer_f.save()
 
@@ -206,6 +206,7 @@ def nextTestWord():
             test_line = test_word[3][0]
             test_line = test_line.replace(test_word[1], "___")
             pointer_f.ques_blank.append(test_line)
+
             pointer_f.save()
             return json.dumps({'test_word': test_word, 'test_line': test_line, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
         else:
@@ -228,6 +229,8 @@ def nextTestWord():
             test_key: session_data.status
         }
 
+
+
         print("==================================")
         correct, wrong = show_test_stat(pointer_f.status)
         print(correct, wrong)
@@ -236,6 +239,7 @@ def nextTestWord():
         print(gre_data.username)
         gre_data.history[test_key] = session_data.status
         gre_data.save()
+        pointer_f.save()
 
         print("Ppppppppppppppppppppp", gre_test_words)
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
@@ -276,6 +280,8 @@ def summary():
         ques = pointer_f.ques_blank
     else:
         ques = pointer_f.ques_multi
+
+    print("baaaaaaaaaaaaaaaaaaaaallllllllllll", len(ques))
 
     status = pointer_f.status
     correct_ans=[]
