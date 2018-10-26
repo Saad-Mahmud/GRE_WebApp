@@ -6,6 +6,8 @@ from flask_bootstrap import Bootstrap
 import os
 from zSaad_Test.Backend.initDB.init_words import init_DB_with_words
 
+from zSaad_Test.Backend.initDB.init_error import init_errordb
+
 template_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 template_dir = os.path.join(template_dir, 'Frontend')
 template_dir = os.path.join(template_dir, 'templates')
@@ -23,5 +25,5 @@ client = pymongo.MongoClient("localhost", 27017)
 db = client.zSaad_Test
 connect('zSaad_Test', host='127.0.0.1', port=27017)
 init_DB_with_words()
-
+init_errordb()
 from zSaad_Test.Backend.app import routes,model
