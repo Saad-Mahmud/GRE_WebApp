@@ -15,20 +15,25 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <head>
     <meta charset="UTF-8">
     <title>Practice</title>
     <!-- Chart  -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+
 
         .pie {
-            background-color:red;
+            background-color: #3b97df;
             width: 200px;
             height: 200px;
             -moz-border-radius: 100px;
@@ -104,8 +109,10 @@
         .card {
             perspective: 600px;
             position: relative;
+            background-color: #464646;
 
         }
+
 
         .card.is-switched .card__wrapper {
             animation: rotate 0.5s linear both;
@@ -119,10 +126,9 @@
         .card__side {
             backface-visibility: hidden;
             position: absolute;
-            top: 20%;
+            top: 0;
             left: 0;
             width: 100%;
-
 
         }
 
@@ -166,7 +172,7 @@
         body {
 
             text-align: center;
-
+           /* padding: 1.5rem;*/
         }
 
         h1, h2 {
@@ -176,8 +182,9 @@
         .card {
             margin: 2rem auto;
             max-width: 800px;
-            margin-top: 30%;
-            margin-left: 13%;
+            margin-top: 10%;
+            margin-left: 30%;
+
         }
 
         .card__side {
@@ -241,16 +248,16 @@
             width: 300px;
             position: fixed;
             z-index: -1;
-            top: 80px;
-            left: 10px;
+            top: 60px;
+            left: 0;
 
-            background-color: white;
+            background-color: #232435;
             overflow-x: hidden;
-            padding-top: 20px;
+            /*padding-top: 20px;*/
         }
 
         .sidenav a {
-            padding: 6px 8px 6px 16px;
+            /*padding: 6px 8px 6px 16px;*/
             text-decoration: none;
             font-size: 25px;
             color: #818181;
@@ -258,7 +265,7 @@
         }
 
         .sidenav a:hover {
-            color: #f1f1f1;
+            color: darkblue;
         }
 
         .main {
@@ -269,7 +276,7 @@
 
         @media screen and (max-height: 450px) {
             .sidenav {
-                padding-top: 15px;
+
             }
 
             .sidenav a {
@@ -284,13 +291,12 @@
 {% include 'header.html' %}
 
 
-<div style="display: inline-block">
-<div class="sidenav">
+    <div class="sidenav">
     <div class="card">
         <h3>Mastered</h3>
 
     </div>
-    <div style="display: block" class="pie">
+    <div  style="display: block" class="pie">
         <div class="clip1">
             <div class="slice1"></div>
         </div>
@@ -345,7 +351,7 @@
 
 </div>
 
-</div>
+
 
 
 
@@ -522,15 +528,6 @@
     }
 
 </script>
-<footer class="page-footer font-small unique-color-dark pt-4"
-        style="position: relative; margin-top: 50%;width: 100%">
 
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2018 Copyright:
-      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
-    </div>
-    <!-- Copyright -->
-
-</footer>
 </body>
 </html>>

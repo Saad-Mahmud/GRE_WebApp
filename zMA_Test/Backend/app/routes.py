@@ -296,9 +296,15 @@ def summary():
                            test_words=test_words, ques=ques, correct_ans=correct_ans, your_ans=your_ans)
 
 
+
 @APP_MAIN.route('/practice')
-def practice():
-    type = "easy"
+def practice_intro():
+    return render_template("practice.html")
+
+
+@APP_MAIN.route('/practice/<type>')
+def practice(type):
+    print("type ", type)
     fetchwords = FetchWords()
     words = fetchwords.practice_words(type)
     status = {word['wordID']:'firstseen' for word in words}
