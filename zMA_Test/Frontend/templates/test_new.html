@@ -152,9 +152,9 @@
             margin: 0 0 72px;
             text-align: center;
         }
-        h5{
-            color: #efefef;
 
+        h5 {
+            color: #efefef;
 
         }
 
@@ -180,7 +180,7 @@
 
 
     <style>
-        /*
+
         .btn {
             outline: none;
             border: none;
@@ -202,7 +202,7 @@
             transform: translate(0px, 5px);
             box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .25);
         }
-*/
+
     </style>
 
     <style>
@@ -241,6 +241,7 @@
             text-decoration: none;
             font-size: 25px;
             color: #818181;
+
             display: block;
         }
 
@@ -263,7 +264,6 @@
                 font-size: 18px;
             }
         }
-
     </style>
 
 
@@ -273,10 +273,11 @@
 {% include 'header.html' %}
 
 <div class="sidenav">
-<h5 id="correct" >Correct: 0</h5>
+    <h5 id="correct">Correct: 0</h5>
     <progress id="corbar" class="progress" max="10"></progress>
+
     <h5 id="wrong">Wrong: 0</h5>
-   <progress id="wrongbar" class="progress" max="10"></progress>
+    <progress id="wrongbar" class="progress" max="10"></progress>
 
 </div>
 
@@ -453,6 +454,12 @@
     }
 
     function nextTestWord(source, sessionID) {
+
+        document.getElementById("radio_btn1").disabled = false;
+        document.getElementById("radio_btn2").disabled = false;
+        document.getElementById("radio_btn3").disabled = false;
+        document.getElementById("radio_btn4").disabled = false;
+
         console.log(isWhat);
         var answer;
 
@@ -460,6 +467,7 @@
         //document.getElementById("clicked").innerHTML = ' ';
         document.getElementById("submit").style.visibility = 'visible';
         document.getElementById("next").style.visibility = 'hidden';
+        //removeDummy("next");
 
         var exampleForm = document.forms['formid'];
         for (var i = 0; i < exampleForm.length; i++) {
@@ -480,6 +488,8 @@
                     document.getElementById("formid").style.visibility = 'hidden';
                     document.getElementById("next").style.visibility = 'hidden';
                     document.getElementById("submit").style.visibility = 'hidden';
+                    //removeDummy("next");
+                    //removeDummy("submit");
                     document.getElementById("correct").style.visibility = 'hidden';
                     document.getElementById("wrong").style.visibility = 'hidden';
 
@@ -512,7 +522,9 @@
                     document.getElementById("correct").innerHTML = 'Correct : ' + response.correct;
                     document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
 
-                    $('.progress').val(response.correct);
+                    //$('.progress').val(response.correct);
+                    $("#corbar").val(response.correct);
+                    $("#wrongbar").val(response.wrong);
 
                     document.getElementById("correct").style.visibility = 'visible';
                     document.getElementById("wrong").style.visibility = 'visible';
@@ -538,6 +550,11 @@
     }
 
     function displayAns(source, sessionID) {
+        document.getElementById("radio_btn1").disabled = true;
+        document.getElementById("radio_btn2").disabled = true;
+        document.getElementById("radio_btn3").disabled = true;
+        document.getElementById("radio_btn4").disabled = true;
+
         var answer;
         var exampleForm = document.forms['formid'];
         for (var i = 0; i < exampleForm.length; i++) {
@@ -554,11 +571,11 @@
             success: function (response) {
                 //document.getElementById("anstext").innerHTML = response.ans;
                 if (response.ans === answer) {
-                    document.getElementById("anstext").style.color = "#228B22"
+                    document.getElementById("anstext").style.color = "#006400";
                     document.getElementById("anstext").innerHTML = "Correct : You have selected " + answer;
                 }
                 else {
-                    document.getElementById("anstext").style.color = "#F08080"
+                    document.getElementById("anstext").style.color = "#c30101";
                     document.getElementById("anstext").innerHTML = "Wrong : You have selected " + answer + ". Correct answer is " + response.ans;
                 }
 
@@ -586,6 +603,7 @@
 <h4 id="correct" style="visibility: hidden" align="center"></h4>
 <h4 id="wrong" style="visibility: hidden" align="center"></h4>
 -->
+
 
 </body>
 </html>
