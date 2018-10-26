@@ -1,21 +1,13 @@
-from random import randint
-
 import operator
 import random
 import unicodedata
+from random import randint
 
-from flask import render_template, request, json
-from flask_login import login_required, current_user
-from flask import render_template, request, json,send_file
+from flask import render_template, request, json, send_file
 
-from zKM_Test.Backend.app.model import Gre_data
 from zMA_Test.Backend.app import APP_MAIN
-from zMA_Test.Backend.app.model import session_practice, session_test
+from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history, Gre_data
 from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice
-from zMA_Test.Backend.test.fetch_test import fetch_easy_words2, create_session_test
-from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history
-from zMA_Test.Backend.practice.fetch_practice import fetch_easy_words, create_session_practice, \
-    create_user_word_history, update_user_word_status
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.fetch_test import fetch_easy_words2, create_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat
@@ -34,10 +26,12 @@ def test():
     #print(type(username))
     test_words = fetch_easy_words2()
     status = {}
-    sessionID = create_session_test(status, test_words, 0)
+    ques_multi = []
+    ques_blank = []
+    #sessionID = create_session_test(status, test_words, 0, questions)
     temp = Gre_data.objects(username="amit99")[0]
 
-    print("session mmm {}".format(sessionID.id))
+    #print("session mmm {}".format(sessionID.id))
     print(type(test_words))
     random_idx = random.sample(range(1, 10), 3)
     option = []
@@ -85,6 +79,10 @@ def test():
     ans_multi = unicodedata.normalize('NFKD', test_words[0][2][0]).encode('ascii', 'ignore')
 
     print(ans_multi)
+    ques_multi.append(test_multi_choice_word)
+    ques_blank.append(test_line)
+    sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
+
 
     return render_template('test_new.html', test_word=test_words[0], test_line=test_line,
                            multi_word=test_multi_choice_word, option_dict=sorted_dict,
@@ -155,6 +153,8 @@ def nextTestWord():
             test_line = unicodedata.normalize('NFKD', test_word[3][0]).encode('ascii', 'ignore')
             test_line = test_line.replace((unicodedata.normalize('NFKD', test_word[1]).encode('ascii', 'ignore')),
                                           "___")
+            pointer_f.ques_blank.append(test_line)
+            pointer_f.save()
             return json.dumps({'test_word': test_word, 'test_line': test_line, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
         else:
             test_multi_choice_word = ''
@@ -162,6 +162,8 @@ def nextTestWord():
             choice_word = unicodedata.normalize('NFKD', test_word[1]).encode('ascii', 'ignore')
             choice_word = choice_word.upper()
             test_multi_choice_word += choice_word
+            pointer_f.ques_multi.append(test_multi_choice_word)
+            pointer_f.save()
             return json.dumps({'test_word': test_word, 'test_line': test_multi_choice_word, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
 
     else:
@@ -173,13 +175,17 @@ def nextTestWord():
             test_key: session_data.status
         }
 
+        print("==================================")
+        correct, wrong = show_test_stat(pointer_f.status)
+        print(correct, wrong)
+
         gre_data = Gre_data.objects(username=username)[0]
         print(gre_data.username)
         gre_data.history[test_key] = session_data.status
         gre_data.save()
 
         print("Ppppppppppppppppppppp", gre_test_words)
-        return json.dumps({'test_word': test_word})
+        return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
 
 
 @APP_MAIN.route('/thisans', methods=['POST'])
@@ -199,6 +205,42 @@ def nextAns():
 
     return json.dumps({'ans': answer})
 
+@APP_MAIN.route('/testsummary', methods=['POST'])
+def summary():
+    sessionID = request.form['sessionID']
+    print(sessionID)
+    isWhat = request.form['isWhat']
+    print(isWhat)
+    correct = request.form['correct']
+    print(correct)
+    wrong = request.form['wrong']
+    print(wrong)
+
+    pointer_f = session_test.objects(id=sessionID)[0]
+    test_words = pointer_f.words
+
+    if isWhat=='true':
+        ques = pointer_f.ques_blank
+    else:
+        ques = pointer_f.ques_multi
+
+    status = pointer_f.status
+    correct_ans=[]
+    your_ans=[]
+
+    for the_key, the_value in status.iteritems():
+        correct_ans.append(the_key)
+        your_ans.append(the_value)
+
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print(correct_ans)
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+    print(your_ans)
+
+    print(test_words)
+
+    return render_template("test_summary.html", correct=correct, wrong=wrong, isWhat=isWhat,
+                           test_words=test_words, ques=ques, correct_ans=correct_ans, your_ans=your_ans)
 
 
 @APP_MAIN.route('/practice')

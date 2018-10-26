@@ -43,8 +43,8 @@ def fetch_easy_words2(country_id=0):
     return final_easy_list
 
 
-def create_session_test(status, words,idx):
-    session= session_test(status=status, words=words,idx=idx)
+def create_session_test(status, words, idx, ques_multi, ques_blank):
+    session= session_test(status=status, words=words, idx=idx, ques_multi=ques_multi, ques_blank=ques_blank)
     session2 = session.save()
     return session2
 

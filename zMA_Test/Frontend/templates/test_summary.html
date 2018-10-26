@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Summary</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            alignment: center;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #8aa1df;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #bcc0f0;
+        }
+
+        th {
+            background-color: #4a93c9;
+            color: white;
+        }
+
+        h2 {
+            background: #b9dadb;
+        }
+    </style>
+
+
+</head>
+<body>
+<h2 align="center">Congratulation, Test is ended</h2>
+<h2 align="center">Correct:{{ correct }} and Wrong:{{ wrong }}</h2>
+
+<table align="center">
+    <tr>
+        <th>Questions</th>
+        <th>Your Answers</th>
+        <th>Correct Answers</th>
+    </tr>
+
+    {% for i in range(10) %}
+        <tr>
+            <td>{{ ques[i] }}</td>
+            <td>{{ your_ans[i] }}</td>
+            <td>{{ correct_ans[i] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

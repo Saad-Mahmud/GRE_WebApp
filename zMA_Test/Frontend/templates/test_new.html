@@ -12,31 +12,189 @@
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
+
+    <style>
+        .myButton {
+            background-color: #44c767;
+            -moz-border-radius: 28px;
+            -webkit-border-radius: 28px;
+            border-radius: 28px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 17px;
+            padding: 16px 31px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+            margin: 5px;
+
+        }
+
+        .myButton:hover {
+            background-color: #5cbf2a;
+        }
+
+        .myButton:active {
+
+        }
+    </style>
+
+
+    <style>
+        .wrapper {
+            text-align: center;
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+        }
+    </style>
+
+
+    <style>
+        label {
+            font-family: Georgia;
+            font-size: 25px;
+            alignment: center;
+        }
+
+        .heading {
+            display: block;
+            margin: 20px 0;
+        }
+
+        input[type=radio] {
+
+            display: none;
+            color: #122b40;
+        }
+
+        input[type=radio] + label {
+            background: url('https://lh3.googleusercontent.com/CSygHWUdWSpIIfoPv3gwc0PctzOTVFGSCcSel4lOtxBBofmpt1QJxOF8MwrXbi0lIxxnKw2Cj6btMFTJZIGxWpkNpHZL41cOa5sgeSgtlsmat7YjkQlrU2XbmhPrxZwElMf9hucSAfEgF0VRLQy58ATRdf1mQULv5VcfnWFyus03KF8Egtg_pwW1_LRnklFEAUUZ_TyzEqFM3cp6G_aDyQpNCKxNvoLWkrcV-tgxqxQGAqC45JAkWWNXSxKgXD8TINX_xO1oml6fh_qVC32SwSQZqkk8Mkhvi2V3DSME0BzcS7wlku5tUK9ijkksro3Wp9kS7Ng4kyPDpkhZAh0kaiKXe4vUXfpZhhXuVjMwaP04HmMFJ7tjKt7bKvIHo0LcKv1zbbQsJ5ZTbI9wRabnUk9dWZtKE0w9BwiNbHuw1JrJBzmSCon9aQZD2DCD72DZEgaUchpdWKi-jShqHvrhaUYUeOUQiImDmo9NBKocQIW76p69uns8tbm1XXohE6tc-PKj8Cx66YtZLm4oUsvppee7Sw92GBFNvMPP9BGZSvxZmpV6TV5rNga1JBJOCMKw76SuYRNob9jCPmjzVMYjmFN8GknmaqOti7kh-QP7IlTUleyq=w25-h24-no') left top no-repeat;
+            display: block;
+            min-height: 10px;
+            padding-left: 50px;
+            color: #122b40;
+            font-style: italic;
+        }
+
+        input[type=radio]:checked + label {
+            background: url('https://lh3.googleusercontent.com/QSVgoBuOonsWKUZm6m0NKwekEvkfMOWrPFfevisISZjzeu2uQkxMOY1MUh3QgorRu2qc1kwKX4So7-mGJ-hayMAitq15L63KQNBfsOcm1qmWDU657CNl4lauYhgVz7f59IMrZBg8FWdgh26VDCvGMwUqaK6CBVv13AdKbxDMeDqiZS73EgzF5kBW5smh1nxCY5Gqk8yCmDsYh4KixdZWKGW7BqXLZn7cB2fQV4-o0DePjN69GJLXmddJ6H32CBgiFKE4smBvb1ByWpREmRYpFEUaHuQdbhHiiebI4Kipz35I6OxsVxKC6HOIQC3Xk6JVePhgudB2_-8Nyq2M9rWqIap8kAhmN-FI8iRdSLXhTV4FEeTHqokQ0qEXEZ5N9dRKoXT3al1Alcwrson_OtaALHldR9O7BO6Iq5_BV7-ERpoSYD8wGGhCcWQbjKkz5qHTa8yWRAfZaCLnK8Dzs0DPJtgMjQirittz8cpQQxQM4fhzXvG2x_Dtev4Y1YcZbzsaU6FpamC188SkjEDGOjYnf6CTk0VVbPk1DXFPIEGbOmc7b1unsq7uHOOkuRkGnTQ_d8aLNNPpeDvxP4agpI-ycfdH2ciG4sRXSKcdeAXGIHhNaI9T=w25-h24-no') left top no-repeat;
+            color: blue;
+            font-style: normal;
+        }
+
+        input[type=checkbox] {
+            display: none;
+        }
+
+        input[type=checkbox] + label {
+            background: url('https://lh3.googleusercontent.com/Xxv2PonyC_el80dSzxdDFkgF7gM_Ru7u9ErRZS9hJeC9V1W073WowYQIhyivqHd74mt7GQBpL8aK9Aqsv9Kf2Ku_hjmsXsAZstjM0jFW4iQ85BYM41OnftEitTSzC0VagQ0hAxAYBbvTlOztGsDf5WOTW39gixPLf7DTZ72-YKANYzf1nMSH6Pc2b4_MTf4deEku7cS_xenmFAwlO5wM9lAs2TXRbOJBmuJmlIm1f6Zv7CNQR96yldK98z9QtDkDiZib2YxdFNXK_eLec8yWy-syA3imgmBDrlCR7BGZzVN36PTJDe5yChArZ-Gn2QHZAwsMCtKys_tKjngmgnYvTyj182U3jTz1Lt0N9OLpv_N4ouK8o4QEvvGs8BOTx9jAnlHoDY8D_QsKLgf_Vo1OG_DCJj67b3MTu9BYU4o3UXQgjTx7R-fHrl8V_zSHpaJyN61dwt0wVX9kerZxfxdFLnKu2CQOBITobLfZK0Q9T4REe2goZOqX0EQHfvLWuLlw7cur_VdXJctEKYCqINzeYxFqeyh1VGRkOjaY-ke73m8KkG2EYSlym7p1sYnX53xzNG66C5vCvHRm7624WZj9a2pTXSwjLCGEcQYtZ96nPTUYmrn-=s23-no') left top no-repeat;
+            display: block;
+            min-height: 23px;
+            padding-left: 50px;
+
+        }
+
+        input[type=checkbox] + label + hover {
+            background: #ccc;
+        }
+
+        input[type=checkbox]:checked + label {
+            background: url('https://lh3.googleusercontent.com/HtfShMuTVS5ellcvc4pNootlL8UKbR93Q6XHDDhcXmlxB6ImLN_A5WpYZSGDT_NJjPIK7MUl2jlwdFnD6RNYKak6bEYJ0X453PgqaNS_TEWp8Ck4fysY6Rx08jfENtWmpPETSqOeB3BoSLVuD8ZUdXlJ37ArYTmDbsCQA41zTuD1lT2m59ze9odMF2PB8FEQimdJtkyq1572ywgIdZwlimHTn3fgLK2OHza42kl22Wr4_JX1Ih1yEaqjQQTYS-5uGyiZat0SqRNoxdoYilsqcgQ0fLGiKjaPQb7gGbVjl1NFzfP5Mbyu7sOIQQ8sbRAZx63rNbD-fhvG5bLFuYulqyO6VBTBJ82KtumHkUV1ejR0sRn6hK-eFWJ7jvl1wnoqM3Ps6yFh7Jsl67r_9Yr5WF-nTwGYX979k0R7ZGmeL82tg2PGdzUlfiez6iuE6jByvEMsLC3QCLbUhA8-IY9pX-bi3b1YHq4jPk1Up5o1m15i1QuQk0fE4QuRNPBrd8L54bSjFF7mqmAdDwvC5y8wuj8O3GPYF5KA9AupDJIsE5C5-DcbkIhjvcBDaLHSpDq8KLI5BRUE9PunQl9GUrW3BdFagrJ1l79MmysIwewy_yGHRbnI=s23-no') left top no-repeat;
+            padding-left: 50px;
+            color: #f00;
+            font-style: normal;
+        }
+
+        .control-group {
+            display: inline-block;
+            width: fit-content;
+            height: 210px;
+            margin: 10px;
+            padding: 30px;
+            text-align: left;
+            vertical-align: top;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+        }
+
+        .choice:hover {
+            background: #ccc;
+        }
+
+        .control__indicator {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: red;
+        }
+
+
+    </style>
+
+
+    <style>
+
+        h4 { color: #111; font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 300; line-height: 32px; margin: 0 0 72px; text-align: center; }
+
+    </style>
+
+
 </head>
+
 <body>
-<h1>Test</h1>
-<button id="choice1" style="visibility: visible" onclick="multipleChoice(this)">Multiple Choice</button>
-<button id="choice2" style="visibility: visible" onclick="fillInTheBlanks(this)">Fill in the blanks</button>
+<h1 align="center">Test</h1>
 
-<h3 id="line" style="visibility: hidden"></h3>
 
-<form id="formid" style="visibility: hidden">
-    <input type="radio" id="radio_btn1" name="gender" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
-    <label>{{ option_dict[0][0] }}</label><br>
-    <input type="radio" id="radio_btn2" name="gender" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
-    <label>{{ option_dict[1][0] }}</label><br>
-    <input type="radio" id="radio_btn3" name="gender" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
-    <label>{{ option_dict[2][0] }}</label><br>
-    <input type="radio" id="radio_btn4" name="gender" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
-    <label>{{ option_dict[3][0] }}</label><br>
-</form>
+<div style="display: inline-block">
+    <div style="display: block">
+        <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple
+            Choice</a>
+    </div>
+    <div style="display: block">
+        <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in the
+            blanks</a>
+    </div>
+
+</div>
+
+
+<!--<button id="choice1" style="visibility: visible" onclick="multipleChoice(this)">Multiple Choice</button>
+<button id="choice2" style="visibility: visible" onclick="fillInTheBlanks(this)">Fill in the blanks</button>-->
+
+<h3 id="line" style="visibility: hidden" align="center"></h3>
+
+
+<div class="control-group">
+    <form id="formid" style="visibility: hidden">
+
+        <input type="radio" name="gender" id="radio_btn1" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
+        <label class="choice" for="radio_btn1">{{ option_dict[0][0] }}</label><br/>
+
+        <input type="radio" name="gender" id="radio_btn2" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
+        <label class="choice" for="radio_btn2">{{ option_dict[1][0] }}</label><br/>
+
+        <input type="radio" name="gender" id="radio_btn3" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
+        <label class="choice" for="radio_btn3">{{ option_dict[2][0] }}</label><br/>
+
+        <input type="radio" name="gender" id="radio_btn4" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
+        <label class="choice" for="radio_btn4">{{ option_dict[3][0] }}</label><br/>
+    </form>
+</div>
+<hr/>
+
 
 <script>
     var isWhat = true;
 
     function multipleChoice(source) {
         isWhat = false;
-        var list=[];
+        var list = [];
         document.getElementById(source.id).style.visibility = 'hidden';
         document.getElementById("choice2").style.visibility = 'hidden';
 
@@ -50,7 +208,7 @@
     }
 
     function fillInTheBlanks(source) {
-        var list=[];
+        var list = [];
         document.getElementById(source.id).style.visibility = 'hidden';
         document.getElementById("choice1").style.visibility = 'hidden';
 
@@ -107,7 +265,7 @@
 
         $.ajax({
             url: '/nexttestword',
-            data: {'answer': answer, 'sessionID': sessionID, 'buttonID': source.id, 'isWhat':isWhat},
+            data: {'answer': answer, 'sessionID': sessionID, 'buttonID': source.id, 'isWhat': isWhat},
             dataType: 'json',
             type: 'POST',
             success: function (response) {
@@ -116,11 +274,34 @@
                     document.getElementById("formid").style.visibility = 'hidden';
                     document.getElementById("next").style.visibility = 'hidden';
                     document.getElementById("submit").style.visibility = 'hidden';
+                    document.getElementById("correct").style.visibility = 'hidden';
+                    document.getElementById("wrong").style.visibility = 'hidden';
+
+                    $.ajax({
+                        url: '/testsummary',
+                        data: {
+                            'sessionID': sessionID,
+                            'isWhat': isWhat,
+                            'correct': response.correct,
+                            'wrong': response.wrong
+                        },
+                        dataType: 'html',
+                        type: 'POST',
+                        success: function (response) {
+                            //$("html").html($("html", response).html());
+                            //console.log(response.word);
+                            //$('body').append(response);
+                            $('body').replaceWith(response);
+                        },
+                        error: function (error) {
+                            console.log('Error in receiving');
+                        }
+                    });
                 }
                 else {
                     //console.log(response.option_dict[0][0]);
                     document.getElementById("line").innerHTML = response.test_line;
-                    document.getElementById("correct").innerHTML = 'Correct : ' +  response.correct;
+                    document.getElementById("correct").innerHTML = 'Correct : ' + response.correct;
                     document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
 
                     document.getElementById("correct").style.visibility = 'visible';
@@ -157,16 +338,15 @@
 
         $.ajax({
             url: '/thisans',
-            data: {'sessionID': sessionID, 'isWhat':isWhat},
+            data: {'sessionID': sessionID, 'isWhat': isWhat},
             dataType: 'json',
             type: 'POST',
             success: function (response) {
                 //document.getElementById("anstext").innerHTML = response.ans;
-                if(response.ans === answer) {
-                    document.getElementById("anstext").innerHTML = "Correct : You have selected "+ answer;
+                if (response.ans === answer) {
+                    document.getElementById("anstext").innerHTML = "Correct : You have selected " + answer;
                 }
-                else
-                {
+                else {
                     document.getElementById("anstext").innerHTML = "Wrong : You have selected " + answer + ". Correct answer is " + response.ans;
                 }
 
@@ -184,12 +364,15 @@
 
 <!--<h4 id="clicked"></h4>-->
 
-<button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
+<div class="wrapper">
+    <button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
+    <button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
+</div>
 
-<button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
-<h4 id="anstext"></h4>
-<h4 id="correct" style="visibility: hidden"></h4>
-<h4 id="wrong" style="visibility: hidden"></h4>
+
+<h4 id="anstext" align="center"></h4>
+<h4 id="correct" style="visibility: hidden" align="center"></h4>
+<h4 id="wrong" style="visibility: hidden" align="center"></h4>
 
 </body>
 </html>
