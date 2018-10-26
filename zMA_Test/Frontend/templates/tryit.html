@@ -15,15 +15,7 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
 
 <head>
     <meta charset="UTF-8">
@@ -113,7 +105,6 @@
             perspective: 600px;
             position: relative;
 
-
         }
 
         .card.is-switched .card__wrapper {
@@ -128,7 +119,7 @@
         .card__side {
             backface-visibility: hidden;
             position: absolute;
-            top: 0;
+            top: 20%;
             left: 0;
             width: 100%;
 
@@ -175,7 +166,7 @@
         body {
 
             text-align: center;
-            padding: 1.5rem;
+
         }
 
         h1, h2 {
@@ -185,7 +176,8 @@
         .card {
             margin: 2rem auto;
             max-width: 800px;
-
+            margin-top: 30%;
+            margin-left: 13%;
         }
 
         .card__side {
@@ -291,6 +283,8 @@
 <body>
 {% include 'header.html' %}
 
+
+<div style="display: inline-block">
 <div class="sidenav">
     <div class="card">
         <h3>Mastered</h3>
@@ -351,6 +345,7 @@
 
 </div>
 
+</div>
 
 
 
@@ -527,6 +522,15 @@
     }
 
 </script>
+<footer class="page-footer font-small unique-color-dark pt-4"
+        style="position: relative; margin-top: 50%;width: 100%">
 
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright:
+      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
 </body>
 </html>>

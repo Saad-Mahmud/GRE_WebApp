@@ -8,9 +8,14 @@ import os
 template_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 template_dir = os.path.join(template_dir, 'Frontend')
 template_dir = os.path.join(template_dir, 'templates')
+
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+static_dir = os.path.join(static_dir, 'Frontend')
+static_dir = os.path.join(static_dir, 'static')
+
 print(template_dir)
 
-APP_MAIN = Flask(__name__, template_folder=template_dir)
+APP_MAIN = Flask(__name__, template_folder=template_dir,static_folder=static_dir)
 APP_MAIN.config.from_object(Config.Config)
 
 APPBS=Bootstrap(APP_MAIN)

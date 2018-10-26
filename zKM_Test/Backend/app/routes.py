@@ -381,12 +381,13 @@ def edit_profile():
 
 
 def send_reset_email(user):
-    token = user.get_reset_token()
+   ''' token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
-    msg.body=f'''To reset your password visit following link:
+    msg.body=fTo reset your password visit following link:
 {url_for('reset_token', token=token, _external=True)}
-'''
-    mail.send(msg)
+
+    mail.send(msg)'''
+   return
 
 
 @APP_MAIN.route('/reset_password',methods=['POST','GET'])
@@ -431,6 +432,8 @@ def dictionary():
 @APP_MAIN.route('/test')
 @login_required
 def test():
+    print("here")
+    Gre_data("amit99")
     pass
 
 

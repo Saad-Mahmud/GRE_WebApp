@@ -6,6 +6,7 @@ from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
 
 def fetch_easy_rating(country_id=0):
     already_seen_words = user_word_history.objects(username="moumita")[0]
+
     temp_list = Words_Rating.objects()
 
     temps = [
@@ -66,6 +67,7 @@ def create_session_practice(status, words, idx):
 
 
 def create_user_word_history():
+    print ("asd")
     wordHistory = user_word_history("moumita")
     wordHistory2 = wordHistory.save()
     return wordHistory2

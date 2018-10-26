@@ -1,25 +1,19 @@
-<nav class="navbar navbar-expand-lg navbar-dark unique-color-dark">
+<div >
+<nav class="navbar navbar-expand-lg navbar-dark unique-color-dark" style="position:
+absolute; top: 0;width: 100%">
 
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">
         <img src="{{ url_for('static', filename='img/logo.png') }}" height="60" alt="vlab logo">
     </a>
 
-    <a class="navbar-brand" href="#">VocLAB</a>
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">VocLAB</a>
 
     <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <a class="nav-link" href="#">Home</a>
       </li>
     </ul>
     </div>
 </nav>
+</div>
