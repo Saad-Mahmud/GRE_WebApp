@@ -25,20 +25,7 @@ class FetchWords2():
         return sorted_ratings
 
     def practice_ratings(self, type):
-        new_list = []
         sorted_ratings = self.sorted_words(type)
-        '''for word in sorted_ratings:
-            if word['wordID'] not in self.alreadySeenWords.status:
-                new_list.append(word)
-            else:
-                if self.alreadySeenWords.status[word['wordID']] != 'green':
-                    new_list.append(word)
-                    print("sorted ratings words ", word['wordID'])
-
-        if len(new_list) >= 10:
-            return new_list[0:10]
-        else:
-            return sorted_ratings[0:10]'''
         return sorted_ratings[0:10]
 
     def practice_words(self, type):
@@ -49,16 +36,5 @@ class FetchWords2():
         for w1 in rated_words:
             for w2 in words_dict:
                 if w1['wordID'] == w2.wordID:
-                    #print("meaningggggg : ", w2.word, w2.meanings)
                     final_list.append([w2.wordID, w2.word, w2.meanings, w2.usages, w2.translations, w2.TYPE])
-                    '''final_list.append(
-                        {
-                            'wordID': w2.wordID,
-                            'word': w2.word,
-                            'TYPE': w2.TYPE,
-                            'meaning': w2.meanings[0],
-                            'usage': w2.usages[0],
-                            'translations': w2.translations
-                        })'''
-
         return final_list

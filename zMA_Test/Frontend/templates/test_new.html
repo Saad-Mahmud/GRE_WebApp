@@ -53,25 +53,10 @@
 
 
     <style>
-        .wrapper {
-            text-align: center;
-            position: relative;
-            top: 50px;
-
-        }
-    </style>
-
-
-    <style>
         label {
             font-family: Georgia;
             font-size: 25px;
             alignment: center;
-        }
-
-        .heading {
-            display: block;
-            margin: 20px 0;
         }
 
         input[type=radio] {
@@ -169,13 +154,6 @@
             left: 450px;
         }
 
-        .myclass2 {
-            display: flex;
-            min-height: 600px;
-            position: relative;
-            top: 400px;
-            left: 50px;
-        }
     </style>
 
 
@@ -205,23 +183,6 @@
 
     </style>
 
-    <style>
-        /* .quest {
-
-         }
-
-         .btns {
-             position: absolute;
-             top: 8%;
-
-         }
-
-         .showans {
-             position: relative;
-             top: 15%;
-         }
-         */
-    </style>
 
     <style>
         .sidenav {
@@ -249,12 +210,6 @@
             color: #f1f1f1;
         }
 
-        .main {
-            margin-left: 160px; /* Same as the width of the sidenav */
-            font-size: 28px; /* Increased text to enable scrolling */
-            padding: 0px 10px;
-        }
-
         @media screen and (max-height: 450px) {
             .sidenav {
                 padding-top: 15px;
@@ -264,12 +219,37 @@
                 font-size: 18px;
             }
         }
+
+        progress[value]::-webkit-progress-value {
+            background: whiteSmoke -webkit-linear-gradient(-45deg,
+            transparent 33%, rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%, transparent 66%),
+            -webkit-linear-gradient(top,
+                    rgba(255, 255, 255, .25),
+                    rgba(0, 0, 0, .25)),
+            -webkit-linear-gradient(left, #09c, #f44);
+
+            border-radius: 2px;
+            background-size: 35px 20px, 100% 100%, 100% 100%;
+        }
+    </style>
+
+
+    <style>
+        h2, h1 {
+            font-weight: bold;
+            color: #761c19;
+        }
+
+        h6 {
+            font-weight: bold;
+        }
     </style>
 
 
 </head>
 
-<body>
+<body style="background-color: #A9A9A9">
 {% include 'header.html' %}
 
 <div class="sidenav">
@@ -296,45 +276,21 @@
     </div>
 </div>
 
-
-<!--
-
-<div align="center">
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="submit" style='visibility:hidden' onclick="displayAns(this, '{{ sessionID }}')">Submit</a>
-        </div>
-
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="next" style='visibility:hidden' onclick="nextTestWord(this, '{{ sessionID }}')">Next</a>
-        </div>
-    </div>
--->
-
-<!--<button id="choice1" style="visibility: visible" onclick="multipleChoice(this)">Multiple Choice</button>
-<button id="choice2" style="visibility: visible" onclick="fillInTheBlanks(this)">Fill in the blanks</button>
-
-<h3 id="line" style="visibility: hidden" align="center"></h3>-->
-
-
 <div class="control-group" style="display: block">
-    <h2 class="quest" align="center" id="line" style="visibility: visible"></h2>
+    <h2 class="quest" align="center" id="line" style="color: #761c19" style="visibility: visible"></h2>
     <form id="formid" style="visibility: hidden">
-
         <input type="radio" name="gender" id="radio_btn1" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
         <label class="choice" for="radio_btn1">{{ option_dict[0][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn2" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
         <label class="choice" for="radio_btn2">{{ option_dict[1][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn3" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
         <label class="choice" for="radio_btn3">{{ option_dict[2][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn4" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
         <label class="choice" for="radio_btn4">{{ option_dict[3][0] }}</label><br/>
     </form>
 
-    <div class="btns" style="display: block">
 
+    <div class="btns" style="display: block">
         <div style="display: inline-flex">
             <a href="#" class="myButton" id="submit" style='visibility:hidden'
                onclick="displayAns(this, '{{ sessionID }}')">Submit</a>
@@ -343,42 +299,15 @@
             <a href="#" class="myButton" id="next" style='visibility:hidden'
                onclick="nextTestWord(this, '{{ sessionID }}')">Next</a>
         </div>
-
     </div>
-
     <div class="showans" style="display: block">
         <h6 id="anstext"></h6>
     </div>
 </div>
 
-
 <div class="cor">
 
-
 </div>
-
-
-<!--
-<div id="selclass" class="myclass" style="display: inline-block">
-    <h1 align="center" id="choose_text">Choose a Test Method</h1>
-    <div align="center">
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple Choice</a>
-        </div>
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in the blanks</a>
-        </div>
-    </div>
-</div>
--->
-
-
-<!--
-<div class="wrapper">
-    <button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
-    <button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
-</div>
--->
 
 
 <script>
@@ -387,27 +316,19 @@
     function multipleChoice(source) {
         isWhat = false;
         var list = [];
-        //document.getElementById(source.id).style.visibility = 'hidden';
-        //document.getElementById("choice2").style.visibility = 'hidden';
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice2");
-        //removeDummy("setclass")
-
-
         list[0] = '{{ multi_dict[0][0] }}';
         list[1] = '{{ multi_dict[1][0] }}';
         list[2] = '{{ multi_dict[2][0] }}';
         list[3] = '{{ multi_dict[3][0] }}';
 
         setValues(list, '{{ multi_word }}')
-
     }
 
     function fillInTheBlanks(source) {
         var list = [];
-        //document.getElementById(source.id).style.visibility = 'hidden';
-        //document.getElementById("choice1").style.visibility = 'hidden';
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice1")
@@ -424,7 +345,6 @@
         var elem = document.getElementById(id);
         elem.parentNode.removeChild(elem);
         return false;
-        //elem.remove();
     }
 
     function setValues(list, line) {
@@ -450,7 +370,6 @@
     }
 
     function check(ans) {
-        //document.getElementById("clicked").innerHTML = 'You have clicked ' + ans;
     }
 
     function nextTestWord(source, sessionID) {
@@ -464,10 +383,8 @@
         var answer;
 
         document.getElementById("anstext").innerHTML = ' ';
-        //document.getElementById("clicked").innerHTML = ' ';
         document.getElementById("submit").style.visibility = 'visible';
         document.getElementById("next").style.visibility = 'hidden';
-        //removeDummy("next");
 
         var exampleForm = document.forms['formid'];
         for (var i = 0; i < exampleForm.length; i++) {
@@ -488,8 +405,6 @@
                     document.getElementById("formid").style.visibility = 'hidden';
                     document.getElementById("next").style.visibility = 'hidden';
                     document.getElementById("submit").style.visibility = 'hidden';
-                    //removeDummy("next");
-                    //removeDummy("submit");
                     document.getElementById("correct").style.visibility = 'hidden';
                     document.getElementById("wrong").style.visibility = 'hidden';
 
@@ -504,11 +419,6 @@
                         dataType: 'html',
                         type: 'POST',
                         success: function (response) {
-                            //$("html").html($("html", response).html());
-                            //console.log(response.word);
-                            //$('body').append(response);
-                            //console.log(response);
-                            //$('html').replaceWith(response)
                             $('body').replaceWith(response);
                         },
                         error: function (error) {
@@ -517,12 +427,10 @@
                     });
                 }
                 else {
-                    //console.log(response.option_dict[0][0]);
                     document.getElementById("line").innerHTML = response.test_line;
                     document.getElementById("correct").innerHTML = 'Correct : ' + response.correct;
                     document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
 
-                    //$('.progress').val(response.correct);
                     $("#corbar").val(response.correct);
                     $("#wrongbar").val(response.wrong);
 
@@ -569,7 +477,6 @@
             dataType: 'json',
             type: 'POST',
             success: function (response) {
-                //document.getElementById("anstext").innerHTML = response.ans;
                 if (response.ans === answer) {
                     document.getElementById("anstext").style.color = "#006400";
                     document.getElementById("anstext").innerHTML = "Correct : You have selected " + answer;
@@ -590,20 +497,5 @@
     }
 
 </script>
-
-<!--<h4 id="clicked"></h4>
-
-<div class="wrapper">
-    <button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
-    <button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
-</div>-->
-
-<!--
-<h4 id="anstext" align="center"></h4>
-<h4 id="correct" style="visibility: hidden" align="center"></h4>
-<h4 id="wrong" style="visibility: hidden" align="center"></h4>
--->
-
-
 </body>
 </html>
