@@ -41,10 +41,20 @@
     <div><p>{{ post.author.username }}: says - {{ post.body }}</p></div>
     {% endfor %}
     {% if current_user.is_authenticated %}
-        <button type="button"><a href="{{ url_for('dictionary') }}"> Dictionary</a></button>
-        <button type="button"><a href="{{ url_for('test') }}"> Test</a></button>
-        <button type="button"><a href="{{ url_for('practice') }}"> Practice</a></button>
-        <button type="button"><a href="{{ url_for('user',username=current_user.username) }}"> Profile</a></button>
-        <button type="button"><a href="{{ url_for('stat') }}"> Statistics</a></button>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('dictionary') }}"> Dictionary</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('test') }}"> Test</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('practice') }}"> Practice</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('user',username=current_user.username) }}"> Profile</a></button>
+        </p>
+        <p></p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('stat') }}"> Statistics</a></button>
+        </p>
     {% endif %}
 {% endblock %}#}

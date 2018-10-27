@@ -270,6 +270,7 @@ def rating(username):
     rate = rate[0]
     return rate
 
+
 def ranking(ajax_var):
     col = db['gre_data']
     curser = col.find({})
