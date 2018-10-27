@@ -219,6 +219,7 @@ def additional(username):
                                country=request.form.get('cnt_name'),
                                gender=form.gender.data)
             gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
+            flash("Congrats!!you can now log in !!!")
             return redirect(url_for('login'))
         else:
             return redirect(url_for('index'))
@@ -373,7 +374,7 @@ def edit_profile():
             current_user.update(pic=picture_file)
         current_user.update(about_me=form.about_me.data)
         current_user.reload()
-        flash("Your changes have been saved! No one cares, by the way!")
+        flash("Your changes have been saved!")
         return redirect(url_for('user', username=current_user.username))
     elif request.method=='GET':
         form.about_me.data = current_user.about_me
@@ -383,16 +384,15 @@ def edit_profile():
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
-    msg.body=f'''To reset your password visit following link:
-{url_for('reset_token', token=token, _external=True)}
-'''
+#     msg.body=f'''To reset your password visit following link:
+# {url_for('reset_token', token=token, _external=True)}
+# '''
     mail.send(msg)
 
 
 @APP_MAIN.route('/reset_password',methods=['POST','GET'])
+@login_required
 def reset_request():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.objects(email=form.email.data)[0]
@@ -403,9 +403,8 @@ def reset_request():
 
 
 @APP_MAIN.route('/reset_password/<token>',methods=['POST','GET'])
+@login_required
 def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid token')

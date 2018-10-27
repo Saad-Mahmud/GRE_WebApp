@@ -2,7 +2,38 @@
 
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}</h1>
-    <h2> To make dummy user run dummy.py ,,, to make dummy stat , see routes.py</h2>
+    <h2> To make dummy user run dummy.py </h2>
+    {% if current_user.usertype=='A' %}
+       <h4><a href="{{ url_for('admin') }}">Registration History</a> </h4>
+    {% endif %}
+    {% for post in posts %}
+    <div><p>{{ post.author.username }}: says - {{ post.body }}</p></div>
+    {% endfor %}
+    {% if current_user.is_authenticated %}
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('dictionary') }}"> Dictionary</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('test') }}"> Test</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('practice') }}"> Practice</a></button>
+        </p>
+        <p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('user',username=current_user.username) }}"> Profile</a></button>
+        </p>
+        <p></p>
+        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('stat') }}"> Statistics</a></button>
+        </p>
+    {% endif %}
+{% endblock %}
+
+{#
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Hi, {{ current_user.username }}</h1>
+    <h2> To make dummy user run dummy.py</h2>
     {% if current_user.usertype=='A' %}
        <h4><a href="{{ url_for('admin') }}">Registration History</a> </h4>
     {% endif %}
@@ -16,4 +47,4 @@
         <button type="button"><a href="{{ url_for('user',username=current_user.username) }}"> Profile</a></button>
         <button type="button"><a href="{{ url_for('stat') }}"> Statistics</a></button>
     {% endif %}
-{% endblock %}
+{% endblock %}#}

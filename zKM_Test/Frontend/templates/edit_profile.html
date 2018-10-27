@@ -1,4 +1,99 @@
-{% extends "base.html" %}
+{#{% extends 'base.html' %}#}
+{% import 'bootstrap/wtf.html' as wtf%}
+
+
+<head>
+    <title>FFFFFFFF</title>
+    <style>
+        #myDIV {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            x.style.display = "block";
+
+
+            }
+        function myFunction2() {
+            var x = document.getElementById("myDIV");
+            x.style.display = "none";
+        }
+    </script>
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+</head>
+<body>
+{% block app_content %}
+        <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">GRE WebApp</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">{{ ('Home') }}</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a> </li>
+                    <li><a href="{{ url_for('about') }}">About Us</a> </li>
+                    {% else %}
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">{{ ('Profile') }}</a></li>
+                    <li><a href="{{ url_for('reset_request') }}">Forgot Password?</a> </li>
+                    <li><a href="{{ url_for('logout') }}">{{ ('Logout') }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+    <h1>Edit Profile</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(cols=100, rows=4) }}<br>
+            {% for error in form.about_me.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <br>
+            <p>{{ form.submit() }}</p>
+    </form>
+
+    <p><button class="btn btn-secondary" onclick="myFunction()">Change Profile Picture</button></p>
+     <div id="myDIV">
+         <p>
+      Go to  <a href="https://gravatar.com/" target="null"><i><u>https://gravatar.com/</u></i></a>  and Log In with you email. Then change your profile picture to show it on your profile.
+         </p>
+         <p>
+        <button class="btn btn-secondary" onclick="myFunction2()">OK</button>
+         </p>
+     </div>
+    <br>
+    <br>
+    <div>
+    <button class="btn btn-secondary" type="button"><a href="{{ url_for('user',username=current_user.username) }}">Back</a></button>
+    </div>
+    </div>
+{% endblock %}
+</body>
+
+
+{#
+
+<!--{% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
@@ -23,4 +118,4 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-{% endblock %}
+{% endblock %}-->#}

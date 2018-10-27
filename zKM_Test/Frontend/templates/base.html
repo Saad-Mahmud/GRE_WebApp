@@ -45,6 +45,7 @@
                     <li><a href="{{ url_for('about') }}">About Us</a> </li>
                     {% else %}
                     <li><a href="{{ url_for('user', username=current_user.username) }}">{{ ('Profile') }}</a></li>
+                    <li><a href="{{ url_for('reset_request') }}">Forgot Password?</a> </li>
                     <li><a href="{{ url_for('logout') }}">{{ ('Logout') }}</a></li>
                     {% endif %}
                 </ul>
