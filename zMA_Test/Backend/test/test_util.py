@@ -7,4 +7,4 @@ def show_test_stat(status):
             correct += 1
         else:
             wrong += 1
-    return  correct, wrong
+    return correct, wrong

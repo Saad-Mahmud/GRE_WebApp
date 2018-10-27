@@ -53,25 +53,10 @@
 
 
     <style>
-        .wrapper {
-            text-align: center;
-            position: relative;
-            top: 50px;
-
-        }
-    </style>
-
-
-    <style>
         label {
             font-family: Georgia;
             font-size: 25px;
             alignment: center;
-        }
-
-        .heading {
-            display: block;
-            margin: 20px 0;
         }
 
         input[type=radio] {
@@ -120,14 +105,17 @@
 
         .control-group {
             display: inline-block;
-            width: fit-content;
+
             height: 100px;
             margin: 10px;
             padding: 30px;
-            position: relative;
+            position: absolute;
+            top: 20%;
+            left: 30%;
             text-align: left;
             vertical-align: top;
             box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+
         }
 
         .choice:hover {
@@ -150,6 +138,11 @@
             text-align: center;
         }
 
+        h5 {
+            color: #efefef;
+
+        }
+
     </style>
 
     <style>
@@ -161,13 +154,6 @@
             left: 450px;
         }
 
-        .myclass2 {
-            display: flex;
-            min-height: 600px;
-            position: relative;
-            top: 400px;
-            left: 50px;
-        }
     </style>
 
 
@@ -197,109 +183,131 @@
 
     </style>
 
+
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            background-color: #232435;
+            overflow-x: hidden;
+            padding-top: 20%;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+        progress[value]::-webkit-progress-value {
+            background: whiteSmoke -webkit-linear-gradient(-45deg,
+            transparent 33%, rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%, transparent 66%),
+            -webkit-linear-gradient(top,
+                    rgba(255, 255, 255, .25),
+                    rgba(0, 0, 0, .25)),
+            -webkit-linear-gradient(left, #09c, #f44);
+
+            border-radius: 2px;
+            background-size: 35px 20px, 100% 100%, 100% 100%;
+        }
+    </style>
+
+
+    <style>
+        h2, h1 {
+            font-weight: bold;
+            color: #761c19;
+        }
+
+        h6 {
+            font-weight: bold;
+        }
+    </style>
+
+
 </head>
 
-<body>
+<body style="background-color: #A9A9A9">
 {% include 'header.html' %}
 
-<h2 align="center" id="line" style="visibility: visible"></h2>
+<div class="sidenav">
+    <h5 id="correct">Correct: 0</h5>
+    <progress id="corbar" class="progress" max="10"></progress>
+
+    <h5 id="wrong">Wrong: 0</h5>
+    <progress id="wrongbar" class="progress" max="10"></progress>
+
+</div>
+
 
 <div id="selclass" class="myclass" style="display: inline-block">
     <h1 align="center" id="choose_text">Choose a Test Method</h1>
     <div align="center">
         <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple Choice</a>
+            <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple
+                Choice</a>
         </div>
         <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in the blanks</a>
+            <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in
+                the blanks</a>
         </div>
     </div>
 </div>
 
-
-
-
-<!--
-
-<div align="center">
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="submit" style='visibility:hidden' onclick="displayAns(this, '{{ sessionID }}')">Submit</a>
-        </div>
-
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="next" style='visibility:hidden' onclick="nextTestWord(this, '{{ sessionID }}')">Next</a>
-        </div>
-    </div>
--->
-
-<!--<button id="choice1" style="visibility: visible" onclick="multipleChoice(this)">Multiple Choice</button>
-<button id="choice2" style="visibility: visible" onclick="fillInTheBlanks(this)">Fill in the blanks</button>
-
-<h3 id="line" style="visibility: hidden" align="center"></h3>-->
-
-
-<div class="control-group">
+<div class="control-group" style="display: block">
+    <h2 class="quest" align="center" id="line" style="color: #761c19" style="visibility: visible"></h2>
     <form id="formid" style="visibility: hidden">
-
         <input type="radio" name="gender" id="radio_btn1" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
         <label class="choice" for="radio_btn1">{{ option_dict[0][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn2" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
         <label class="choice" for="radio_btn2">{{ option_dict[1][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn3" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
         <label class="choice" for="radio_btn3">{{ option_dict[2][0] }}</label><br/>
-
         <input type="radio" name="gender" id="radio_btn4" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
         <label class="choice" for="radio_btn4">{{ option_dict[3][0] }}</label><br/>
     </form>
-</div>
 
 
-<div>
-    <div align="center">
+    <div class="btns" style="display: block">
         <div style="display: inline-flex">
-            <a href="#" class="btn btn-danger" id="submit" style='visibility:hidden'
+            <a href="#" class="myButton" id="submit" style='visibility:hidden'
                onclick="displayAns(this, '{{ sessionID }}')">Submit</a>
         </div>
         <div style="display: inline-flex">
-            <a href="#" class="btn btn-danger" id="next" style='visibility:hidden'
+            <a href="#" class="myButton" id="next" style='visibility:hidden'
                onclick="nextTestWord(this, '{{ sessionID }}')">Next</a>
         </div>
     </div>
-</div>
-
-<h4 id="anstext"></h4>
-<h4 id="correct" style="visibility: hidden"></h4>
-<h4 id="wrong" style="visibility: hidden"></h4>
-
-
-<!--
-<div id="selclass" class="myclass" style="display: inline-block">
-    <h1 align="center" id="choose_text">Choose a Test Method</h1>
-    <div align="center">
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple Choice</a>
-        </div>
-        <div align="center" style="display: inline-block">
-            <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in the blanks</a>
-        </div>
+    <div class="showans" style="display: block">
+        <h6 id="anstext"></h6>
     </div>
 </div>
--->
 
+<div class="cor">
 
-
-
-
-
-
-<!--
-<div class="wrapper">
-    <button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
-    <button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
 </div>
--->
 
 
 <script>
@@ -308,27 +316,19 @@
     function multipleChoice(source) {
         isWhat = false;
         var list = [];
-        //document.getElementById(source.id).style.visibility = 'hidden';
-        //document.getElementById("choice2").style.visibility = 'hidden';
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice2");
-        //removeDummy("setclass")
-
-
         list[0] = '{{ multi_dict[0][0] }}';
         list[1] = '{{ multi_dict[1][0] }}';
         list[2] = '{{ multi_dict[2][0] }}';
         list[3] = '{{ multi_dict[3][0] }}';
 
         setValues(list, '{{ multi_word }}')
-
     }
 
     function fillInTheBlanks(source) {
         var list = [];
-        //document.getElementById(source.id).style.visibility = 'hidden';
-        //document.getElementById("choice1").style.visibility = 'hidden';
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice1")
@@ -345,7 +345,6 @@
         var elem = document.getElementById(id);
         elem.parentNode.removeChild(elem);
         return false;
-        //elem.remove();
     }
 
     function setValues(list, line) {
@@ -371,15 +370,19 @@
     }
 
     function check(ans) {
-        //document.getElementById("clicked").innerHTML = 'You have clicked ' + ans;
     }
 
     function nextTestWord(source, sessionID) {
+
+        document.getElementById("radio_btn1").disabled = false;
+        document.getElementById("radio_btn2").disabled = false;
+        document.getElementById("radio_btn3").disabled = false;
+        document.getElementById("radio_btn4").disabled = false;
+
         console.log(isWhat);
         var answer;
 
         document.getElementById("anstext").innerHTML = ' ';
-        //document.getElementById("clicked").innerHTML = ' ';
         document.getElementById("submit").style.visibility = 'visible';
         document.getElementById("next").style.visibility = 'hidden';
 
@@ -416,11 +419,6 @@
                         dataType: 'html',
                         type: 'POST',
                         success: function (response) {
-                            //$("html").html($("html", response).html());
-                            //console.log(response.word);
-                            //$('body').append(response);
-                            //console.log(response);
-                            //$('html').replaceWith(response)
                             $('body').replaceWith(response);
                         },
                         error: function (error) {
@@ -429,10 +427,12 @@
                     });
                 }
                 else {
-                    //console.log(response.option_dict[0][0]);
                     document.getElementById("line").innerHTML = response.test_line;
                     document.getElementById("correct").innerHTML = 'Correct : ' + response.correct;
                     document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
+
+                    $("#corbar").val(response.correct);
+                    $("#wrongbar").val(response.wrong);
 
                     document.getElementById("correct").style.visibility = 'visible';
                     document.getElementById("wrong").style.visibility = 'visible';
@@ -458,6 +458,11 @@
     }
 
     function displayAns(source, sessionID) {
+        document.getElementById("radio_btn1").disabled = true;
+        document.getElementById("radio_btn2").disabled = true;
+        document.getElementById("radio_btn3").disabled = true;
+        document.getElementById("radio_btn4").disabled = true;
+
         var answer;
         var exampleForm = document.forms['formid'];
         for (var i = 0; i < exampleForm.length; i++) {
@@ -472,11 +477,12 @@
             dataType: 'json',
             type: 'POST',
             success: function (response) {
-                //document.getElementById("anstext").innerHTML = response.ans;
                 if (response.ans === answer) {
+                    document.getElementById("anstext").style.color = "#006400";
                     document.getElementById("anstext").innerHTML = "Correct : You have selected " + answer;
                 }
                 else {
+                    document.getElementById("anstext").style.color = "#c30101";
                     document.getElementById("anstext").innerHTML = "Wrong : You have selected " + answer + ". Correct answer is " + response.ans;
                 }
 
@@ -491,19 +497,5 @@
     }
 
 </script>
-
-<!--<h4 id="clicked"></h4>
-
-<div class="wrapper">
-    <button id="submit" style="visibility: hidden" onclick="displayAns(this, '{{ sessionID }}')">Submit</button>
-    <button id="next" style="visibility: hidden" onclick="nextTestWord(this, '{{ sessionID }}')">Next</button>
-</div>-->
-
-<!--
-<h4 id="anstext" align="center"></h4>
-<h4 id="correct" style="visibility: hidden" align="center"></h4>
-<h4 id="wrong" style="visibility: hidden" align="center"></h4>
--->
-
 </body>
 </html>

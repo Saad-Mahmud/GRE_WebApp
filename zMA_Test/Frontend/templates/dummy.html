@@ -16,71 +16,29 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
-<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
-
 <head>
     <meta charset="UTF-8">
     <title>VocLAB</title>
+
+    <style>
+
+
+    </style>
 </head>
-
-
 <body>
 <!--Header -->
 {% include 'header.html' %}
 <!-- Header -->
 
-<div class="buttons" align="center" style="margin-top: 20%">
+<div class="buttons">
     <a href="http://127.0.0.1:5000/practice" class="btn btn-danger" >Practice</a>
     <a href="http://127.0.0.1:5000/testpage" class="btn btn-danger" >Test</a>
 
 </div>
 
-<footer class="page-footer font-small unique-color-dark pt-4" style="margin-top: 50%">
 
-    <!-- Footer Elements -->
-    <div class="container">
-
-      <!-- Grid row-->
-      <div class="row">
-
-        <!-- Grid column -->
-        <div class="col-md-12">
-          <div class="mb-5 flex-center">
-
-            <!-- Facebook -->
-            <a class="fb-ic">
-              <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!-- Twitter -->
-            <a class="tw-ic">
-              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-
-            <!--Linkedin -->
-            <a class="li-ic">
-              <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-
-            <!--Pinterest-->
-            <a class="gt-ic">
-              <i class="fa fa-github fa-lg white-text fa-2x"> </i>
-            </a>
-          </div>
-        </div>
-        <!-- Grid column -->
-
-      </div>
-      <!-- Grid row-->
-
-    </div>
-    <!-- Footer Elements -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2018 Copyright:
-      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
-    </div>
-    <!-- Copyright -->
-
-  </footer>
+<!-- Footer -->
+{% include 'footer.html' %}
+<!-- Footer -->
 </body>
 </html>
