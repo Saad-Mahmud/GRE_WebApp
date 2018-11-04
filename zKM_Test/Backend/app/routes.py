@@ -737,7 +737,8 @@ def summary():
     correct_ans=[]
     your_ans=[]
 
-    for the_key, the_value in status.iteritems():
+#if it does not work,, change status.iteritems() to status.items() or vice versa
+    for the_key, the_value in status.items():
         correct_ans.append(the_key)
         your_ans.append(the_value)
 
@@ -756,18 +757,6 @@ def summary():
 # @login_required
 # def test():
 #     return test_page()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @APP_MAIN.route('/practice')
