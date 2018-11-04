@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_login import LoginManager
+
 from zMA_Test.Backend.config import Config
 from mongoengine import connect
 import pymongo
@@ -12,6 +14,9 @@ print(template_dir)
 
 APP_MAIN = Flask(__name__, template_folder=template_dir)
 APP_MAIN.config.from_object(Config.Config)
+
+APPLOGIN = LoginManager(APP_MAIN)
+APPLOGIN.login_view = 'login'
 
 APPBS=Bootstrap(APP_MAIN)
 client = pymongo.MongoClient("localhost", 27017)

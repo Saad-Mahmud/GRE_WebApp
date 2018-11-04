@@ -62,7 +62,7 @@
             <td>{{ local[i][0] }}</td>
             <td>{{ local[i][1] }}</td>
             <td>{% print(i+1) %} </td>
-             {% if ajax_var.isNone or ajax_var=='select country'%}
+             {% if ajax_var==None or ajax_var=='select country'%}
             <td>{{ current_user.country }}</td>
             {% else %}
             <td>{{ ajax_var }}</td>
@@ -112,7 +112,7 @@
       ],
       // Our series array that contains series objects or in this case series data arrays
       series: [
-        [{% for i in stat_data.history %}
+        [{% for i in stat_data.all_scores %}
             {{ i }},
             {% endfor %}
         ]

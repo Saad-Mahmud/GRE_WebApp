@@ -1,13 +1,14 @@
-from flask import Flask
-from zKM_Test.Backend.config import Config
-from mongoengine import connect
-import pymongo
-from flask_login import LoginManager
-from flask_register import RegisterManager
-from flask_bootstrap import Bootstrap
 import os
-from zKM_Test.Backend.config import Config
+
+import pymongo
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
+from flask_register import RegisterManager
+from mongoengine import connect
+
+from zKM_Test.Backend.config import Config
 
 template_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 template_dir1 = os.path.join(template_dir, 'Frontend')
@@ -21,8 +22,8 @@ APP_MAIN.config.from_object(Config.Config)
 
 APPBS=Bootstrap(APP_MAIN)
 client = pymongo.MongoClient("localhost", 27017)
-db = client.tutorial_mega
-connect('tutorial_mega', host='127.0.0.1', port=27017)
+db = client.zSaad_Test
+connect('zSaad_Test', host='127.0.0.1', port=27017)
 APPLOGIN = LoginManager(APP_MAIN)
 APPLOGIN.login_view = 'login'
 APPLOGIN.session_protection = "Strong"
