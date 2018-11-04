@@ -1,24 +1,22 @@
+import json
 import operator
-import random,copy
-import time
-
-from zMA_Test.Backend.app import routes
-from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model,mail
-from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
-from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm, LocalStatForm
-from flask import render_template, flash, redirect, url_for, abort, session, make_response
-from flask_oauth import OAuth
-from flask_login import current_user, login_user, logout_user , login_required, fresh_login_required
-from flask_register import register_required
-from werkzeug.urls import url_parse
-from werkzeug.security import generate_password_hash
-from flask import request,json,request
+import os
+import random
 from datetime import datetime, timedelta
-import json,os
-from flask_oauth import OAuth
 
+from flask import json, request
+from flask import render_template, flash, redirect, url_for, abort, session, make_response
+from flask_login import current_user, login_user, logout_user, login_required
+from flask_oauth import OAuth
+from flask_register import register_required
+from werkzeug.security import generate_password_hash
+from werkzeug.urls import url_parse
+
+from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
+from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, AdditionalForm, RequestResetForm, \
+    ResetPasswordForm, LocalStatForm
+from zKM_Test.Backend.app.model import User, Gre_data
 from zMA_Test.Backend.app.model import session_test
-from zMA_Test.Backend.app.routes import test_page
 from zMA_Test.Backend.test.FetchWords import FetchWords2
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
 from zMA_Test.Backend.test.test_util import show_test_stat
@@ -757,6 +755,18 @@ def summary():
 # @login_required
 # def test():
 #     return test_page()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @APP_MAIN.route('/practice')
