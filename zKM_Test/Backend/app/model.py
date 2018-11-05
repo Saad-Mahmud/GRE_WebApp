@@ -20,7 +20,6 @@ class User(UserMixin,Document):
     pic = StringField()
     usertype = StringField()
 
-
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
@@ -33,9 +32,11 @@ class User(UserMixin,Document):
         digest, size)
         else:
             return self.upic.format(digest,size)
+
     def get_reset_token(self, expires_sec=1800):
         s = Mub(APP_MAIN.config['SECRET_KEY'],expires_sec)
         return s.dumps({'user_id':self.username}).decode('utf-8')
+
     @staticmethod
     def verify_reset_token(token):
         s = Mub(APP_MAIN.config['SECRET_KEY'])
@@ -46,9 +47,11 @@ class User(UserMixin,Document):
 
         return User.objects(username=user_id)
 
+
 class Country(UserMixin, Document):
     country_id = IntField(required=True, primary_key=True)
     country_name = StringField(required=True, max_length=50, unique=True    )
+
 
 class Gre_data(UserMixin, Document):
     username = StringField(required=True, primary_key=True)
@@ -59,10 +62,15 @@ class Gre_data(UserMixin, Document):
     avg_score = FloatField()
     rating = FloatField()
     country = StringField()
+    rating_chart = ListField()
+    rate_date = ListField()
+    all_scores = ListField()
+
 
 class Moumita(UserMixin, Document):
     userid = StringField(required=True, primary_key=True)
     wordid = StringField()
+
 
 @APPLOGIN.user_loader
 def load_user(username):

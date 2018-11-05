@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/css/mdb.min.css" rel="stylesheet">
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
+
+
+ <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .card {
+  perspective: 600px;
+  position: relative;
+}
+.card.is-switched .card__wrapper {
+  animation: rotate 0.5s linear both;
+}
+.card__wrapper {
+  transform-style: preserve-3d;
+  animation: rotate-inverse 0.5s linear both;
+}
+.card__side {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.card__side.is-active {
+  position: static;
+}
+.card__side--back {
+  transform: rotateY(180deg);
+}
+@keyframes rotate {
+  0% {
+    transform: rotateY(0);
+  }
+  70% {
+    transform: rotateY(200deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+@keyframes rotate-inverse {
+  0% {
+    transform: rotateY(180deg);
+  }
+  70% {
+    transform: rotateY(-20deg);
+  }
+  100% {
+    transform: rotateY(0);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: #5a5a5a;
+  text-align: center;
+  padding: 1.5rem;
+}
+h1, h2 {
+  margin: 0;
+}
+.card {
+  margin: 2rem auto;
+  max-width: 350px;
+}
+.card__side {
+  padding: 1em;
+  border-radius: 5px;
+  color: white;
+  background-color: #ff4136;
+}
+.card__side--back {
+  background-color: #0074d9;
+}
+.btn {
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 25px;
+  font-size: 22px;
+  text-decoration: none;
+  margin: 20px;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.btn:active {
+  transform: translate(0px, 5px);
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .25);
+}
+.btn--blue {
+  background-color: #55acee;
+  box-shadow: 0px 5px 0px 0px #3c93d5;
+}
+.btn--blue:hover {
+  background-color: #6fc6ff;
+}
+.title {
+  color: #fff;
+}
+
+
+    </style>
+
+<style>
+  /*   body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+   /* font-size: 28px; /* Increased text to enable scrolling */
+  /*  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}*/
+</style>
+
+     <style>
+         * {
+  box-sizing: border-box;
+}
+
+body {
+  height: 2000px;
+  background-color: #ddd;
+  font-size: 0.8em;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-outer-container {
+  padding: 1em 1.5em;
+  background-color: #fff;
+  width: 230px;
+  border-right: 1px solid #ccc;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  overflow-y: hidden;
+}
+.nav-outer-container:hover {
+  overflow-y: scroll;
+}
+
+.nav-main-sections-container {
+  list-style-type: none;
+}
+
+.nav-main-section-links {
+  background-color: white;
+}
+
+.nav-main-section-link {
+  list-style-type: none;
+}
+
+.nav-main-section-link-a {
+  text-decoration: none;
+  color: #333;
+  width: 100%;
+  display: block;
+  padding: 0.5em;
+}
+.nav-main-section-link-a:hover {
+  background-color: #666666;
+  color: #fff;
+}
+.nav-main-section-link-a:hover .nav-link-numbers,
+.nav-main-section-link-a:hover .icon {
+  color: #fff;
+}
+.nav-main-section-link-a:focus {
+  background-color: #990000;
+  color: #fff;
+}
+.nav-main-section-link-a:focus .nav-link-numbers,
+.nav-main-section-link-a:focus .icon {
+  color: #fff;
+}
+.nav-main-section-link-a .link-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-link-icon,
+.nav-link-img {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-link-img > img {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.icon {
+  font-size: 1.5em;
+  color: #555;
+}
+
+.nav-link-text {
+  width: 80%;
+  padding: 0 0.2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-link-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #999999;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.nav-main-section-header {
+  font-size: 1em;
+  margin: 0.2em 0;
+  padding: 0.5em;
+}
+
+.nav-main-section-header-a {
+  text-decoration: none;
+  color: #990000;
+}
+.nav-main-section-header-a:hover {
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+     </style>
+
+</head>
+<body>
+{% include 'header.html' %}
+
+<div class="nav-outer-container">
+  <div class="nav-content-container">
+
+    <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+
+
+  </div>
+</div>
+<button id="btn" class="btn btn--blue">Flip card</button>
+
+<div class="card js-card">
+  <div class="card__wrapper">
+    <div class="card__side is-active">
+      <h1>FRONT</h1>
+      <h1>FRONT</h1>
+      <h1>FRONT</h1>
+    </div>
+    <div class="card__side card__side--back">
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+      <h2>BACK</h2>
+    </div>
+  </div>
+</div>
+
+<h1 class="title">WHAT THE HEIGHT!</h1>
+
+
+{% include 'footer.html' %}
+<script>
+
+    let cardTransitionTime = 500;
+
+let $card = $('.js-card')
+let switching = false
+
+$('#btn').click(flipCard)
+
+function flipCard () {
+   if (switching) {
+      return false
+   }
+   switching = true
+
+   $card.toggleClass('is-switched')
+   window.setTimeout(function () {
+      $card.children().children().toggleClass('is-active')
+      switching = false
+   }, cardTransitionTime / 2)
+}
+
+</script>
+
+
+</body>
+</html>

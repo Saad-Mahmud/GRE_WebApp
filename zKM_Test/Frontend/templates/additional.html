@@ -2,12 +2,12 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>To Guide you through shit</h1>
+    <h1>To Guide you through:</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
     <p>
-        {{ form.age.label }}<br>
-        {{ form.age(size=16) }}<br>
+        {{ form.age.label(class="form-control-label") }}<br>
+        {{ form.age(class="form-control form-control-lg") }}<br>
         {% for error in form.age.errors %}
         <span style="color:red;">[{{ error }}]</span>
         {% endfor %}
@@ -17,8 +17,8 @@
         {{ form.gender(size=16) }}<br>
     </p>
     <p>
-        <select name="cnt_name">
-            <option value="select country">Select a country</option><br>
+        <select name="cnt_name" class="form-control selcls">
+            <option value="select country" >Select a country</option><br>
             {% for i in arr %}
                 <option value="{{i}}">{% print(i) %}</option><br>
             {% endfor %}
@@ -26,13 +26,13 @@
 
     </p>
      <p>
-            {{ form.confirm_password.label }}<br>
-            {{ form.confirm_password(size=32) }}<br>
+            {{ form.confirm_password.label(class="form-control-label") }}<br>
+            {{ form.confirm_password(class="form-control form-control-lg") }}<br>
             {% for error in form.confirm_password.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
      </p>
 
-    <p>{{ form.submit() }}</p>
+    <p>{{ form.submit(class="btn btn-outline-info") }}</p>
     </form>
 {% endblock %}

@@ -7,6 +7,7 @@ class session_practice(Document):
     idx = IntField()
     status = DictField()
 
+
 class session_test(Document):
     words = ListField(required=True)
     idx = IntField()
@@ -14,15 +15,17 @@ class session_test(Document):
     ques_multi = ListField()
     ques_blank = ListField()
 
+
 class user_word_history(Document):
     username = StringField(required=True, primary_key=True)
     status = DictField()
 
 
-class Gre_data(Document):
-    username = StringField(required=True, primary_key=True)
-    history = DictField()
-    how_many_test = IntField()
-    best_score = FloatField()
-    avg_score = FloatField()
-    rating = FloatField()
+
+# class Gre_data(Document):
+#     username = StringField(required=True, primary_key=True)
+#     history = DictField()
+#     how_many_test = IntField()
+#     best_score = FloatField()
+#     avg_score = FloatField()
+#     rating = FloatField()

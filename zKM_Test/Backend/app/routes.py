@@ -1,20 +1,30 @@
+import json
 import operator
-import random,copy
-import time
-
-from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, forms,model,mail
-from zKM_Test.Backend.app.model import User, Gre_data, Country, Moumita
-from zKM_Test.Backend.app.forms import LoginForm,RegistrationForm, EditProfileForm,AdditionalForm, RequestResetForm, ResetPasswordForm, LocalStatForm
-from flask import render_template, flash, redirect, url_for, abort, session, make_response
-from flask_oauth import OAuth
-from flask_login import current_user, login_user, logout_user , login_required, fresh_login_required
-from flask_register import register_required
-from werkzeug.urls import url_parse
-from werkzeug.security import generate_password_hash
-from flask import request,json,request
+import os
+import random
 from datetime import datetime, timedelta
-import json,os
+from random import randint
+
+from flask import json, request, send_file
+from flask import render_template, flash, redirect, url_for, abort, session, make_response
+from flask_login import current_user, login_user, logout_user, login_required
 from flask_oauth import OAuth
+from flask_register import register_required
+from werkzeug.security import generate_password_hash
+from werkzeug.urls import url_parse
+
+from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
+from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, AdditionalForm, RequestResetForm, \
+    ResetPasswordForm, LocalStatForm
+from zKM_Test.Backend.app.model import User, Gre_data
+from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history
+from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
+from zMA_Test.Backend.practice.practice_util import showstat
+from zMA_Test.Backend.test.FetchWords import FetchWords2
+from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
+from zMA_Test.Backend.test.test_util import show_test_stat
+from zSaad_Test.Backend.initDB.words import Words_Test
+
 try:
     from urllib.request import Request,urlopen, URLError
 except ImportError:
@@ -143,8 +153,8 @@ def register():
                     password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
         #reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
         user.save()
-        gre_data = Gre_data(username=form.username.data)
-        gre_data.save()
+        # gre_data = Gre_data(username=form.username.data)
+        # gre_data.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
         session.pop('access_token', None)
         return redirect(url_for('additional',username=form.username.data))
@@ -209,7 +219,8 @@ def additional(username):
         arr.append(i['country_name'])
     if form.validate_on_submit():
         user = User.objects(username=username)
-        gre_data = Gre_data(username=username)
+        #gre_data = Gre_data(username=username)
+        name = username
         if len(user)==0:
             return render_template(url_for('login'))
         else:
@@ -218,7 +229,24 @@ def additional(username):
             user = user.update(age=form.age.data,
                                country=request.form.get('cnt_name'),
                                gender=form.gender.data)
-            gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
+            #gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
+
+
+
+
+
+
+            date = datetime.utcnow()
+            create_gre_test(name, {}, date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
+            create_user_word_history(name)
+
+
+
+
+
+
+
+            flash("Congrats!!you can now log in !!!")
             return redirect(url_for('login'))
         else:
             return redirect(url_for('index'))
@@ -268,6 +296,7 @@ def rating(username):
     rate = Gre_data.objects(username=username)
     rate = rate[0]
     return rate
+
 
 def ranking(ajax_var):
     col = db['gre_data']
@@ -373,7 +402,7 @@ def edit_profile():
             current_user.update(pic=picture_file)
         current_user.update(about_me=form.about_me.data)
         current_user.reload()
-        flash("Your changes have been saved! No one cares, by the way!")
+        flash("Your changes have been saved!")
         return redirect(url_for('user', username=current_user.username))
     elif request.method=='GET':
         form.about_me.data = current_user.about_me
@@ -381,19 +410,17 @@ def edit_profile():
 
 
 def send_reset_email(user):
-   ''' token = user.get_reset_token()
+    token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
-    msg.body=fTo reset your password visit following link:
-{url_for('reset_token', token=token, _external=True)}
-
-    mail.send(msg)'''
-   return
+#     msg.body=f'''To reset your password visit following link:
+# {url_for('reset_token', token=token, _external=True)}
+# '''
+    mail.send(msg)
 
 
 @APP_MAIN.route('/reset_password',methods=['POST','GET'])
+@login_required
 def reset_request():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.objects(email=form.email.data)[0]
@@ -404,9 +431,8 @@ def reset_request():
 
 
 @APP_MAIN.route('/reset_password/<token>',methods=['POST','GET'])
+@login_required
 def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid token')
@@ -429,19 +455,480 @@ def dictionary():
     pass
 
 
-@APP_MAIN.route('/test')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @login_required
-def test():
-    print("here")
-    Gre_data("amit99")
-    pass
+@APP_MAIN.route('/testpage')
+def test_page():
+    return render_template("test_page.html")
+
+
+@APP_MAIN.route('/test/<type>')
+def test(type):
+    fetch_words = FetchWords2()
+    test_words = fetch_words.practice_words(type)
+    status = {}
+    ques_multi = []
+    ques_blank = []
+    sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
+
+    print('fffffffffffffffffffff', sessionID.id)
+
+
+    pointer_f = session_test.objects(id=sessionID.id)[0]
+
+    date = datetime.utcnow()
+    pointer_f.words = test_words
+    #create_gre_test('amit99', {}, date, 0, 0.0, 0.0, 0.0, 'BD', {}, {})
+
+    #username = unicodedata.normalize('NFKD', current_user.username).encode('ascii', 'ignore')
+    #print(type(username))
+    #test_words = fetch_easy_words2()
+    #status = {}
+    #ques_multi = []
+    #ques_blank = []
+    #sessionID = create_session_test(status, test_words, 0, questions)
+    #temp = Gre_data.objects(username="amit99")[0]
+    temp = Gre_data.objects(username=current_user.username)[0]
+
+    #print("session mmm {}".format(sessionID.id))
+    print(test_words[0])
+    random_idx = random.sample(range(1, 10), 3)
+    option = []
+    option_multiple_choice = []
+
+    option.append(test_words[0][1])
+    option_multiple_choice.append(test_words[0][2][0])
+    print('amiiiiiiii', test_words[0][2][0])
+
+    # print("aaaaaaaaaaaaaa", type(test_words[0][1]))
+    for i in range(3):
+        option.append(test_words[random_idx[i]][1])
+        option_multiple_choice.append(test_words[random_idx[i]][2][0])
+
+    random_idx2 = random.sample(range(1, 5), 4)
+    option_dict = {}
+    option_multiple_choice_dict = {}
+
+    for i in range(4):
+        #option_dict[unicodedata.normalize('NFKD', option[i]).encode('ascii', 'ignore')] = random_idx2[i]
+        option_dict[option[i]] = random_idx2[i]
+        #option_multiple_choice_dict[unicodedata.normalize('NFKD', option_multiple_choice[i]).encode('ascii', 'ignore')] = random_idx2[i]
+        option_multiple_choice_dict[option_multiple_choice[i]] = random_idx2[i]
+
+    #print('TTTTTTTTTTTTTTTTTTTTTTTTT', test_words[0][3][0])
+    test_multi_choice_word = ''
+    #test_line = unicodedata.normalize('NFKD', test_words[0][3][0]).encode('ascii', 'ignore')
+    test_line = test_words[0][3][0]
+    print(test_line)
+    test_multi_choice_word += 'Meaning of '
+    #choice_word = unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii', 'ignore')
+    choice_word = test_words[0][1]
+    choice_word = choice_word.upper()
+    test_multi_choice_word += choice_word
+
+    print('multichoice', test_multi_choice_word)
+#    print(type(test_multi_choice_word))
+
+    sorted_dict = sorted(option_dict.items(), key=operator.itemgetter(1))
+    sorted_multi_choice_dict = sorted(option_multiple_choice_dict.items(), key=operator.itemgetter(1))
+
+    print('#######################')
+#    print(type(sorted_multi_choice_dict))
+#    print(type(sorted_dict))
+    print('#######################')
+
+    #test_line = test_line.replace((unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii', 'ignore')), "___")
+    test_line = test_line.replace(test_words[0][1], "___")
+
+    #ans_blanks = unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii', 'ignore')
+    #ans_multi = unicodedata.normalize('NFKD', test_words[0][2][0]).encode('ascii', 'ignore')
+
+    #print(ans_multi)
+    ques_multi.append(test_multi_choice_word)
+    ques_blank.append(test_line)
+
+    pointer_f.ques_blank = ques_blank
+    pointer_f.ques_multi = ques_multi
+
+    pointer_f.save()
+
+    #sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
+
+    return render_template('test_new.html', test_word=test_words[0], test_line=test_line,
+                           multi_word=test_multi_choice_word, option_dict=sorted_dict,
+                           multi_dict=sorted_multi_choice_dict, sessionID=sessionID.id)
+
+
+@APP_MAIN.route('/nexttestword', methods=['POST'])
+def nextTestWord():
+    #username = unicodedata.normalize('NFKD', current_user.username).encode('ascii', 'ignore')
+    #username = 'amit99'
+    username = current_user.username
+    answer = request.form['answer']
+    sessionID = request.form['sessionID']
+    isWhat = request.form['isWhat']
+
+    #isWhat = unicodedata.normalize('NFKD', isWhat).encode('ascii', 'ignore')
+    print("pppppppppppppp", sessionID)
+    pointer_f = session_test.objects(id=sessionID)[0]
+    pointer = pointer_f.idx + 1
+    test_words = pointer_f.words
+
+    if isWhat == 'true':
+        pointer_f.status[test_words[pointer_f.idx][1]] = answer
+        print('GivenAnsssssssssssssss1', answer)
+        print('ActualAnssssssssssssss1', test_words[pointer_f.idx][1])
+    else:
+        test_words[pointer_f.idx][2][0] = test_words[pointer_f.idx][2][0].replace("."," ")
+        test_words[pointer_f.idx][2][0] = test_words[pointer_f.idx][2][0].replace("$", " ")
+        pointer_f.status[test_words[pointer_f.idx][2][0]] = answer
+        print('GivenAnsssssssssssssss2', answer)
+        print('ActualAnssssssssssssss2', test_words[pointer_f.idx][2][0])
+
+    pointer_f.idx = pointer
+    pointer_f.save()
+
+    if pointer < len(test_words):
+        test_word = test_words[pointer]
+        option = []
+
+        if isWhat == 'true':
+            option.append(test_word[1])
+        else:
+            option.append(test_word[2][0])
+
+        if pointer <= 3:
+            random_idx1 = random.sample(range(0, pointer), 1)
+            random_idx2 = random.sample(range(pointer + 1, 10), 2)
+            random_idx = random_idx1 + random_idx2
+        elif pointer <= 7:
+            random_idx1 = random.sample(range(0, pointer), 2)
+            random_idx2 = random.sample(range(pointer + 1, 10), 1)
+            random_idx = random_idx1 + random_idx2
+        else:
+            random_idx = random.sample(range(0, pointer), 3)
+
+        for i in range(3):
+            if isWhat == 'true':
+                option.append(test_words[random_idx[i]][1])
+            else:
+                option.append(test_words[random_idx[i]][2][0])
+
+        random_idx_option = random.sample(range(1, 5), 4)
+        option_dict = {}
+
+        for i in range(4):
+            #option_dict[unicodedata.normalize('NFKD', option[i]).encode('ascii', 'ignore')] = random_idx_option[i]
+            option_dict[option[i]] = random_idx_option[i]
+
+        sorted_dict = sorted(option_dict.items(), key=operator.itemgetter(1))
+        correct, wrong = show_test_stat(pointer_f.status)
+        if isWhat == 'true':
+            #test_line = unicodedata.normalize('NFKD', test_word[3][0]).encode('ascii', 'ignore')
+            #test_line = test_line.replace((unicodedata.normalize('NFKD', test_word[1]).encode('ascii', 'ignore')),
+             #                             "___")
+
+            test_line = test_word[3][0]
+            test_line = test_line.replace(test_word[1], "___")
+            pointer_f.ques_blank.append(test_line)
+
+            pointer_f.save()
+            return json.dumps({'test_word': test_word, 'test_line': test_line, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
+        else:
+            test_multi_choice_word = ''
+            test_multi_choice_word += 'Meaning of '
+            #choice_word = unicodedata.normalize('NFKD', test_word[1]).encode('ascii', 'ignore')
+            choice_word = test_word[1]
+            choice_word = choice_word.upper()
+            test_multi_choice_word += choice_word
+            pointer_f.ques_multi.append(test_multi_choice_word)
+            pointer_f.save()
+            return json.dumps({'test_word': test_word, 'test_line': test_multi_choice_word, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
+
+    else:
+        test_word = ['$null$']
+        session_data = session_test.objects(id=sessionID)[0]
+        print("abcdefgh", session_data.status)
+        test_key = 'test' + sessionID
+        gre_test_words = {
+            test_key: session_data.status
+        }
 
 
 
+        print("==================================")
+        correct, wrong = show_test_stat(pointer_f.status)
+        print(correct, wrong)
+
+        gre_data = Gre_data.objects(username=username)[0]
+        print(gre_data.username)
+        gre_data.history[test_key] = session_data.status
+        gre_data.test_date = datetime.utcnow()
+        gre_data.how_many_test = gre_data.how_many_test + 1
+
+        current_score = correct * 10
+
+        if gre_data.best_score < current_score:
+            gre_data.best_score = current_score
+
+        gre_data.rating = gre_data.rating + current_score
+        gre_data.avg_score = gre_data.rating / gre_data.how_many_test
+
+        gre_data.rating_chart.append(gre_data.rating)
+        gre_data.rate_date.append(gre_data.test_date)
+        gre_data.all_scores.append(current_score)
+
+        gre_data.save()
+        pointer_f.save()
+
+        print("Ppppppppppppppppppppp", gre_test_words)
+        return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
+
+
+@APP_MAIN.route('/thisans', methods=['POST'])
+def nextAns():
+    sessionID = request.form['sessionID']
+    isWhat = request.form['isWhat']
+    #isWhat = unicodedata.normalize('NFKD', isWhat).encode('ascii', 'ignore')
+
+    pointer_f = session_test.objects(id=sessionID)[0]
+    test_words = pointer_f.words
+
+
+    if isWhat == 'true':
+        answer = test_words[pointer_f.idx][1]
+    else:
+        answer = test_words[pointer_f.idx][2][0]
+
+    return json.dumps({'ans': answer})
+
+@APP_MAIN.route('/testsummary', methods=['POST'])
+def summary():
+    sessionID = request.form['sessionID']
+    print(sessionID)
+    isWhat = request.form['isWhat']
+    print(isWhat)
+    correct = request.form['correct']
+    print(correct)
+    wrong = request.form['wrong']
+    print(wrong)
+
+    pointer_f = session_test.objects(id=sessionID)[0]
+    test_words = pointer_f.words
+
+    if isWhat=='true':
+        ques = pointer_f.ques_blank
+    else:
+        ques = pointer_f.ques_multi
+
+    print("baaaaaaaaaaaaaaaaaaaaallllllllllll", len(ques))
+
+    status = pointer_f.status
+    correct_ans=[]
+    your_ans=[]
+
+#if it does not work,, change status.iteritems() to status.items() or vice versa
+    for the_key, the_value in status.items():
+        correct_ans.append(the_key)
+        your_ans.append(the_value)
+
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print(correct_ans)
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+    print(your_ans)
+
+    print(correct)
+
+    return render_template("test_summary.html", correct=correct, wrong=wrong, isWhat=isWhat,
+                           test_words=test_words, ques=ques, correct_ans=correct_ans, your_ans=your_ans)
+
+
+# @APP_MAIN.route('/test')
+# @login_required
+# def test():
+#     return test_page()
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+# @APP_MAIN.route('/practice')
+# @login_required
+# def practice():
+#     pass
+#
+
+
+@login_required
 @APP_MAIN.route('/practice')
-@login_required
-def practice():
-    pass
+def practice_intro():
+    return render_template("practice.html")
+
+
+@APP_MAIN.route('/practice/<type>')
+def practice(type):
+    print("type ", type)
+    fetchwords = FetchWords(current_user.username)
+    words = fetchwords.practice_words(type)
+    status = {word['wordID']:'firstseen' for word in words}
+    sessionID = create_session_practice(status, words, 0)
+    #userWordHistory = create_user_word_history()
+
+    return render_template('tryit.html', word=words[0], sessionID=sessionID.id)
+
+
+@APP_MAIN.route('/fliped', methods=['POST'])
+def translate():
+    sessionID = request.form['sessionID']
+    pointer_f = session_practice.objects(id=sessionID)[0]
+
+    pointer = pointer_f.idx # fetched pointer
+    words = pointer_f.words # fetched word list
+
+    if len(words)!=0:
+        word = words[pointer]
+    else:
+        word = {'wordID':"$null$"}
+
+    return json.dumps({'word': word})
+
+
+
+
+
+@APP_MAIN.route('/nextword', methods=['POST'])
+def nextWord():
+
+    #user_history = user_word_history.objects(username="moumita")[0]
+    user_history = user_word_history.objects(username=current_user.username)[0]
+    sessionID = request.form['sessionID']
+    buttonID = request.form['buttonID']
+    pointer_f = session_practice.objects(id=sessionID)[0]
+
+    pointer = pointer_f.idx # fetched, incremented pointer, saved the incremented pointer
+    words = pointer_f.words
+    oldStatus = pointer_f.status
+    newStatus = oldStatus
+    currentWord = words[pointer]
+    currentWordID = currentWord['wordID']
+
+    if buttonID=='ik':
+        if newStatus[currentWordID]=='firstseen':
+            newStatus[currentWordID] = 'yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+        elif newStatus[currentWordID]=='red':
+            newStatus[currentWordID] = 'yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand,currentWord)
+
+        elif newStatus[currentWordID]=='yellow':
+            newStatus[currentWordID] = 'green'
+            words.remove(currentWord)
+
+    elif buttonID=='idk':
+        if newStatus[currentWordID]=='firstseen':
+            newStatus[currentWordID] = 'red'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+        elif newStatus[currentWordID]=='yellow':
+            newStatus[currentWordID]='yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+    if len(words) != 0:
+        pointer = (pointer + 1) % len(words)
+        newWord = words[pointer]
+        pointer_f.words = words
+        pointer_f.status = newStatus
+        pointer_f.idx = pointer
+        pointer_f.save()
+    else:
+        pointer = -1
+        newWord = {'wordID': '$null$'}
+
+
+    print("word status ",  newStatus[currentWordID])
+    user_history.status[currentWordID] = newStatus[currentWordID]
+    user_history.save()
+    mastered, reviewing, learning = showstat(newStatus)
+
+    return json.dumps({'word': newWord, 'learning': learning, 'reviewing':reviewing, 'mastered':mastered})
+
+
+@APP_MAIN.route('/tryit')
+def tryit():
+    return render_template('flashcard.html')
+
+import os
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+static_dir = os.path.join(static_dir, 'Frontend')
+static_dir = os.path.join(static_dir, 'static')
+static_dir = os.path.join(static_dir, 'audio')
+
+@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/words/audio/<path:filename>')
+def download_file(filename):
+    file = ''
+    for i in range(len(filename)-4):
+        file =file+filename[i]
+    print(file)
+    filename = os.path.join(static_dir, filename)
+    if(Words_Test.objects(word=file)==[]):
+        return
+    return send_file(filename)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @APP_MAIN.route('/stat',methods=['POST','GET'])

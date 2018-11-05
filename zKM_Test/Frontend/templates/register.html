@@ -6,7 +6,12 @@
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
-            <button type="button"><a href="{{ url_for('gregister') }}"> Sign Up with Google!</a></button>
+
         </div>
+
     </div>
+    <br>
+    <P>
+            <button class="btn btn-secondary" type="button"><a href="{{ url_for('gregister') }}"> Sign Up with Google!</a></button>
+        </P>
 {% endblock %}
