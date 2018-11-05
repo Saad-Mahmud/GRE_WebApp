@@ -3,8 +3,9 @@ import operator
 import os
 import random
 from datetime import datetime, timedelta
+from random import randint
 
-from flask import json, request
+from flask import json, request, send_file
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_oauth import OAuth
@@ -16,10 +17,13 @@ from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
 from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, AdditionalForm, RequestResetForm, \
     ResetPasswordForm, LocalStatForm
 from zKM_Test.Backend.app.model import User, Gre_data
-from zMA_Test.Backend.app.model import session_test
+from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history
+from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
+from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.FetchWords import FetchWords2
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
 from zMA_Test.Backend.test.test_util import show_test_stat
+from zSaad_Test.Backend.initDB.words import Words_Test
 
 try:
     from urllib.request import Request,urlopen, URLError
@@ -227,8 +231,16 @@ def additional(username):
                                gender=form.gender.data)
             #gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
 
+
+
+
+
+
             date = datetime.utcnow()
             create_gre_test(name, {}, date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
+            create_user_word_history(name)
+
+
 
 
 
@@ -768,11 +780,155 @@ def summary():
 
 
 
+#
+# @APP_MAIN.route('/practice')
+# @login_required
+# def practice():
+#     pass
+#
 
-@APP_MAIN.route('/practice')
+
 @login_required
-def practice():
-    pass
+@APP_MAIN.route('/practice')
+def practice_intro():
+    return render_template("practice.html")
+
+
+@APP_MAIN.route('/practice/<type>')
+def practice(type):
+    print("type ", type)
+    fetchwords = FetchWords(current_user.username)
+    words = fetchwords.practice_words(type)
+    status = {word['wordID']:'firstseen' for word in words}
+    sessionID = create_session_practice(status, words, 0)
+    #userWordHistory = create_user_word_history()
+
+    return render_template('tryit.html', word=words[0], sessionID=sessionID.id)
+
+
+@APP_MAIN.route('/fliped', methods=['POST'])
+def translate():
+    sessionID = request.form['sessionID']
+    pointer_f = session_practice.objects(id=sessionID)[0]
+
+    pointer = pointer_f.idx # fetched pointer
+    words = pointer_f.words # fetched word list
+
+    if len(words)!=0:
+        word = words[pointer]
+    else:
+        word = {'wordID':"$null$"}
+
+    return json.dumps({'word': word})
+
+
+
+
+
+@APP_MAIN.route('/nextword', methods=['POST'])
+def nextWord():
+
+    #user_history = user_word_history.objects(username="moumita")[0]
+    user_history = user_word_history.objects(username=current_user.username)[0]
+    sessionID = request.form['sessionID']
+    buttonID = request.form['buttonID']
+    pointer_f = session_practice.objects(id=sessionID)[0]
+
+    pointer = pointer_f.idx # fetched, incremented pointer, saved the incremented pointer
+    words = pointer_f.words
+    oldStatus = pointer_f.status
+    newStatus = oldStatus
+    currentWord = words[pointer]
+    currentWordID = currentWord['wordID']
+
+    if buttonID=='ik':
+        if newStatus[currentWordID]=='firstseen':
+            newStatus[currentWordID] = 'yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+        elif newStatus[currentWordID]=='red':
+            newStatus[currentWordID] = 'yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand,currentWord)
+
+        elif newStatus[currentWordID]=='yellow':
+            newStatus[currentWordID] = 'green'
+            words.remove(currentWord)
+
+    elif buttonID=='idk':
+        if newStatus[currentWordID]=='firstseen':
+            newStatus[currentWordID] = 'red'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+        elif newStatus[currentWordID]=='yellow':
+            newStatus[currentWordID]='yellow'
+            words.remove(currentWord)
+            rand = randint(0, len(words))
+            words.insert(rand, currentWord)
+
+    if len(words) != 0:
+        pointer = (pointer + 1) % len(words)
+        newWord = words[pointer]
+        pointer_f.words = words
+        pointer_f.status = newStatus
+        pointer_f.idx = pointer
+        pointer_f.save()
+    else:
+        pointer = -1
+        newWord = {'wordID': '$null$'}
+
+
+    print("word status ",  newStatus[currentWordID])
+    user_history.status[currentWordID] = newStatus[currentWordID]
+    user_history.save()
+    mastered, reviewing, learning = showstat(newStatus)
+
+    return json.dumps({'word': newWord, 'learning': learning, 'reviewing':reviewing, 'mastered':mastered})
+
+
+@APP_MAIN.route('/tryit')
+def tryit():
+    return render_template('flashcard.html')
+
+import os
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+static_dir = os.path.join(static_dir, 'Frontend')
+static_dir = os.path.join(static_dir, 'static')
+static_dir = os.path.join(static_dir, 'audio')
+
+@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/words/audio/<path:filename>')
+def download_file(filename):
+    file = ''
+    for i in range(len(filename)-4):
+        file =file+filename[i]
+    print(file)
+    filename = os.path.join(static_dir, filename)
+    if(Words_Test.objects(word=file)==[]):
+        return
+    return send_file(filename)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @APP_MAIN.route('/stat',methods=['POST','GET'])

@@ -1,11 +1,14 @@
 import operator
 
+from flask_login import current_user
+
 from zMA_Test.Backend.app.model import session_practice, user_word_history
 from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
 
 
 def fetch_easy_rating(country_id=0):
-    already_seen_words = user_word_history.objects(username="moumita")[0]
+    #already_seen_words = user_word_history.objects(username="moumita")[0]
+    already_seen_words = user_word_history.objects(username=current_user.username)[0]
     temp_list = Words_Rating.objects()
 
     temps = [
@@ -65,8 +68,9 @@ def create_session_practice(status, words, idx):
     return session2
 
 
-def create_user_word_history():
-    wordHistory = user_word_history("moumita")
+def create_user_word_history(username):
+    #wordHistory = user_word_history("moumita")
+    wordHistory = user_word_history(username)
     wordHistory2 = wordHistory.save()
     return wordHistory2
 
@@ -77,10 +81,11 @@ def update_user_word_status(oldStatus, newStatus):
 
 
 class FetchWords():
-    def __init__(self):
+    def __init__(self, username):
         self.allWordsRatings = Words_Rating.objects()
         self.allWords = Words_Test.objects()
-        self.alreadySeenWords = user_word_history.objects(username="moumita")[0]
+        #self.alreadySeenWords = user_word_history.objects(username="moumita")[0]
+        self.alreadySeenWords = user_word_history.objects(username=username)[0]
         self.wordRatingList = [
         {
             'wordID': w.wordID,
