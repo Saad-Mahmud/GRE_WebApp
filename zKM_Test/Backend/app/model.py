@@ -50,7 +50,7 @@ class User(UserMixin,Document):
 
 class Country(UserMixin, Document):
     country_id = IntField(required=True, primary_key=True)
-    country_name = StringField(required=True, max_length=50, unique=True    )
+    country_name = StringField(required=True, max_length=50, unique=True)
 
 
 class Gre_data(UserMixin, Document):

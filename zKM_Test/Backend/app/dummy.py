@@ -64,7 +64,7 @@ cntttt = ["Bangladesh","America","England","Syria","Uganda","Honululu","India","
 #                                      rate_date=rate_date, rating_chart=rating_chart)
 
 
-
+"""
 for i in range(1,11,1):
     cnt = Country(country_id=i,
                   country_name=cntttt[i-1])
@@ -75,6 +75,7 @@ collection = db['country']
 cursor = collection.find({})
 for i in cursor:
     print(i['country_name'])
+    """
 
 
 # from flask import Flask
