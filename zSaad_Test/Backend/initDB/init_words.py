@@ -9,6 +9,26 @@ word_dir = os.path.join(word_dir, 'initDB')
 Language_name = ['English','Bangali','Arabic','Chinese','French','German','Hindi','Italian','Japanese','Spanish']
 encoding = "ISO-8859-1"
 
+class CSVtoWord():
+
+    def __init__(self,this_word,translation):
+        wordID = "" + this_word["word"][0] + "_[" + this_word["word"] + "]"
+        word = this_word["word"].strip()
+        meanings = [this_word["meanings"].strip()]
+        usages = [this_word["usages"].strip()]
+        TYPE = this_word["TYPE"].strip()
+        translations = {}
+        for i in range(len(Language_name)):
+            if (word != translation[Language_name[i]]):
+                translations[Language_name[i]] = translation[Language_name[i]]
+        self.wordObj = Words_Test(wordID=wordID, word=word, meanings=meanings, usages=usages, translations=translation,
+                          TYPE=TYPE)
+
+
+    def save(self):
+        self.wordObj.save()
+
+
 class DataLoader():
 
     def __init__(self):
@@ -27,19 +47,11 @@ class DataLoader():
         return True
 
     def next_word(self):
-        aa=self.df.iloc[self.pointer]
-        trans = self.dftr.iloc[self.pointer]
-        self.pointer=self.pointer+1
-        wordID = ""+aa["word"][0]+"_["+aa["word"]+"]"
-        word = aa["word"].strip()
-        meanings = [aa["meanings"].strip()]
-        usages = [aa["usages"].strip()]
-        TYPE = aa["TYPE"].strip()
-        translation = {}
-        for i in range(len(Language_name)):
-            if(word != trans[Language_name[i]]):
-                translation[Language_name[i]] = trans[Language_name[i]]
-        return Words_Test(wordID=wordID,word=word,meanings=meanings,usages=usages,translations=translation,TYPE=TYPE)
+        this_word=self.df.iloc[self.pointer]
+        translation = self.dftr.iloc[self.pointer]
+        self.pointer = self.pointer + 1
+        data = CSVtoWord(this_word,translation)
+        return data
 
     def next_ratings(self):
         aa=self.df.iloc[self.pointer]
