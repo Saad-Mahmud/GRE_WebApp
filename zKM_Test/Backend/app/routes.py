@@ -23,7 +23,7 @@ from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.builder_pattern import OptionBuilder
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data
 from zMA_Test.Backend.test.test_util import show_test_stat
-from zSaad_Test.Backend.words.words import Words
+from zSaad_Test.Backend.words.Words import Words
 
 try:
     from urllib.request import Request,urlopen, URLError

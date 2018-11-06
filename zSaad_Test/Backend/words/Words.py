@@ -1,8 +1,5 @@
 from mongoengine import *
 
-class Words_Rating(Document):
-    wordID = StringField(required=True, max_length=50, primary_key=True)
-    Ratings = ListField()
 
 class Words(Document):
     wordID = StringField(required=True, max_length=50, primary_key=True)

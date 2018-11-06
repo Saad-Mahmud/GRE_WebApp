@@ -1,16 +1,13 @@
 import random
 from zSaad_Test.Backend.app.model import Suggestions
 import datetime
-
-TYPEr =['Translation','Meaning','Usage','Error','New Words','Bug']
-statusr = ['US','TD']
-report = 'This is a generic suggestion for testing.This is a generic suggestion for testing.' + 'This is a generic suggestion for testing.This is a generic suggestion for testing.'
+from zSaad_Test.Backend.initDB import initDB_Config as Conf
 
 
 def init_errordb():
     Suggestions.objects.delete()
     for i in range(100):
-        tp = TYPEr[random.randint(0,5)]
-        st = statusr[random.randint(0,1)]
+        tp = Conf.TYPEr[random.randint(0,5)]
+        st = Conf.statusr[random.randint(0,1)]
         dt = str(datetime.datetime.now())
-        Suggestions(TYPE=tp,report=report,status=st,date=dt).save()
+        Suggestions(TYPE=tp,report=Conf.report,status=st,date=dt).save()

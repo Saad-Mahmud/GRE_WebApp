@@ -1,6 +1,6 @@
 from zSaad_Test.Backend.app import APP_MAIN
 from flask import render_template,redirect,url_for,flash,send_from_directory,request,json
-from zSaad_Test.Backend.words.words import Words
+from zSaad_Test.Backend.words.Words import Words
 from werkzeug.utils import secure_filename
 from zSaad_Test.Backend.app.model import Suggestions
 import datetime

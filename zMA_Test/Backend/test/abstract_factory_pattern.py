@@ -1,7 +1,8 @@
 #factory pattern
 from zMA_Test.Backend.app.model import user_word_history
 from zMA_Test.Backend.practice.factory_pattern import LevelFactory
-from zSaad_Test.Backend.words.words import Words_Rating, Words
+from zSaad_Test.Backend.words.Words import Words
+from zSaad_Test.Backend.words.Words_Rating import Words_Rating
 
 
 class Mode(object):
