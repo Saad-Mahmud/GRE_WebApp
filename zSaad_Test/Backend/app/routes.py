@@ -1,8 +1,7 @@
 from zSaad_Test.Backend.app import APP_MAIN
 from flask import render_template,redirect,url_for,flash,send_from_directory,request,json
-from zSaad_Test.Backend.initDB.words import Words_Test
+from zSaad_Test.Backend.words.words import Words
 from werkzeug.utils import secure_filename
-from zSaad_Test.Backend.app.forms import WordSuggestionForm,WordSuggestionForm2
 from zSaad_Test.Backend.app.model import Suggestions
 import datetime
 
@@ -25,7 +24,7 @@ def download_file(filename):
     for i in range(len(filename)-4):
         file =file+filename[i]
     print(file)
-    if(Words_Test.objects(word=file)==[]):
+    if(Words.objects(word=file)==[]):
         return
     return send_from_directory(APP_MAIN.config['AUDIO_FOLDER'],
                                filename)
@@ -40,9 +39,9 @@ def dictionary(page):
              'Q','R','S','T','U','V','W','X','Y','Z']
 
     if(page=='all'):
-        wordlist=Words_Test.objects
+        wordlist=Words.objects
     elif(page[0]>='a' and page[0]<='z' and len(page)==1):
-        wordlist = Words_Test.objects(wordID__startswith=page[0])
+        wordlist = Words.objects(wordID__startswith=page[0])
     else:
         return render_template('404.html')
 
@@ -65,7 +64,7 @@ def dictionary(page):
 def suggestion(wordID):
     if(wordID==''):
         return render_template('404.html')
-    elif(len(Words_Test.objects(wordID=wordID))==0):
+    elif(len(Words.objects(wordID=wordID))==0):
         return render_template('404.html')
 
     return render_template('suggestions_word.html', form=['Translation','Meaning','Usage','Error'])
@@ -95,17 +94,17 @@ def translate():
 @APP_MAIN.route('/admindelete/',defaults={'delid':''})
 @APP_MAIN.route('/admindelete/<string:delid>')
 def admindelete(delid):
-    if (len(Words_Test.objects(wordID=delid)) == 0):
+    if (len(Words.objects(wordID=delid)) == 0):
         return render_template('404.html')
-    return render_template('deleteword.html', word = Words_Test.objects(wordID=delid)[0])
+    return render_template('deleteword.html', word = Words.objects(wordID=delid)[0])
 
 
 @APP_MAIN.route('/admintranslate/',defaults={'trnsid':''})
 @APP_MAIN.route('/admintranslate/<string:trnsid>')
 def admintranslate(trnsid):
-    if (len(Words_Test.objects(wordID=trnsid)) == 0):
+    if (len(Words.objects(wordID=trnsid)) == 0):
         return render_template('404.html')
-    return render_template('admintranslate.html', word = Words_Test.objects(wordID=trnsid)[0])
+    return render_template('admintranslate.html', word = Words.objects(wordID=trnsid)[0])
 
 
 
@@ -119,9 +118,9 @@ def admin_words(page):
              'Q','R','S','T','U','V','W','X','Y','Z']
     print(title)
     if(page=='all'):
-        wordlist=Words_Test.objects
+        wordlist=Words.objects
     elif(page[0]>='a' and page[0]<='z' and len(page)==1):
-        wordlist = Words_Test.objects(wordID__startswith=page[0])
+        wordlist = Words.objects(wordID__startswith=page[0])
     else:
         return render_template('404.html')
     words = [
@@ -140,11 +139,11 @@ def admin_words(page):
 @APP_MAIN.route('/admindeleteword', methods=['POST'])
 def admindeleteword():
     s1= request.form['wordID']
-    if(len(Words_Test.objects(wordID=s1)) == 0):
+    if(len(Words.objects(wordID=s1)) == 0):
         return json.dumps({'status': 'success'})
     else:
         print("here")
-        Words_Test.objects(wordID=s1)[0].delete()
+        Words.objects(wordID=s1)[0].delete()
         return json.dumps({'status': 'success'})
 
 @APP_MAIN.route('/adminaddtrans', methods=['POST'])
@@ -153,11 +152,11 @@ def adminaddtrans():
     trans = request.form['Trans']
     wordID = request.form['id']
 
-    if(len(Words_Test.objects(wordID=wordID)) == 0):
+    if(len(Words.objects(wordID=wordID)) == 0):
         return json.dumps({'status': 'success'})
     else:
         print("here")
-        a = Words_Test.objects(wordID=wordID)[0]
+        a = Words.objects(wordID=wordID)[0]
         print(a.word)
         a.translations[lang] = trans
         
@@ -197,9 +196,9 @@ def adminaudio(wordID):
             file.save(os.path.join(APP_MAIN.config['AUDIO_FOLDER'], filename_))
             return redirect(url_for('admin_words'))
     else:
-        if (len(Words_Test.objects(wordID=wordID)) == 0):
+        if (len(Words.objects(wordID=wordID)) == 0):
             return render_template('404.html')
-        return render_template('adminaudio.html', word = Words_Test.objects(wordID=wordID)[0])
+        return render_template('adminaudio.html', word = Words.objects(wordID=wordID)[0])
 
 ALLOWED_EXTENSIONS = ['mp3', 'mpeg']
 def allowed_file(filename):

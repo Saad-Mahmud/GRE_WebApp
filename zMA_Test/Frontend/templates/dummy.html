@@ -27,18 +27,92 @@
 </head>
 <body>
 <!--Header -->
-{% include 'header.html' %}
+<nav class="navbar navbar-expand-lg navbar-dark unique-color-dark">
+
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" height="60" alt="vlab logo">
+    </a>
+
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">VocLAB</a>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+            <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('practice_intro')}}">Practice <span class="sr-only"></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('test_page')}}">Test</a>
+      </li>
+
+
+
+    </ul>
+    </div>
+</nav>
 <!-- Header -->
-
-<div class="buttons">
-    <a href="http://127.0.0.1:5000/practice" class="btn btn-danger" >Practice</a>
-    <a href="http://127.0.0.1:5000/testpage" class="btn btn-danger" >Test</a>
-
+<div class="view" align="center" style="
+background-image: url('http://mdbootstrap.com/img/Photos/Others/images/91.jpg');
+background-repeat: no-repeat; background-size: cover;
+background-position: center center;">
+    <p style="color: white; margin-top: 25%;margin-bottom: 25%; margin-left: 5%; margin-right: 5%" align="center ">The GRE® (Graduate Record Exam) Test is the standardised test used to
+        fetch admissions in various graduate schools or business graduate
+        schools in various countries, especially the United States.
+        More than 100,000 graduate school applicants from approximately 160
+        countries take the GRE General Test at 700 test centres. Aspirants
+        interested in pursuing a master's degree, specialised master's course,
+        MS, MBA, MEM or doctoral degree can sit for the GRE Test. In addition
+        to the GRE revised general test, there are six GRE subjects tests that
+        evaluate candidates’ knowledge in their respective field. GRE test is
+        conducted by ETS®(Educational Testing Service).</p>
 </div>
 
 
-<!-- Footer -->
-{% include 'footer.html' %}
-<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark pt-4" style="position: relative; ">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+          <div class="mb-5 flex-center">
+
+            <!-- Facebook -->
+            <a class="fb-ic">
+              <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+            <!-- Twitter -->
+            <a class="tw-ic">
+              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Linkedin -->
+            <a class="li-ic">
+              <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Pinterest-->
+            <a class="gt-ic">
+              <i class="fa fa-github fa-lg white-text fa-2x"> </i>
+            </a>
+          </div>
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright:
+      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
 </body>
 </html>

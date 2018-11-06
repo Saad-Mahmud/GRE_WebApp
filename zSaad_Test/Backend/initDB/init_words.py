@@ -1,4 +1,4 @@
-from zSaad_Test.Backend.initDB.words import Words_Test, Words_Rating
+from zSaad_Test.Backend.words.words import Words_Test, Words_Rating,Words
 import pandas as pd
 import os
 import random
@@ -21,7 +21,7 @@ class CSVtoWord():
         for i in range(len(Language_name)):
             if (word != translation[Language_name[i]]):
                 translations[Language_name[i]] = translation[Language_name[i]]
-        self.wordObj = Words_Test(wordID=wordID, word=word, meanings=meanings, usages=usages, translations=translation,
+        self.wordObj = Words(wordID=wordID, word=word, meanings=meanings, usages=usages, translations=translation,
                           TYPE=TYPE)
 
 

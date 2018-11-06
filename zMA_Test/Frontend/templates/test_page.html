@@ -74,7 +74,27 @@
 </head>
 <body style="background-color: #A9A9A9">
 
-{% include 'header.html' %}
+<nav style="position: absolute; top: 0;width: 100%" class="navbar navbar-expand-lg navbar-dark unique-color-dark">
+
+    <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" height="60" alt="vlab logo">
+    </a>
+
+    <a class="navbar-brand" href="#">VocLAB</a>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('practice_intro')}}">Practice <span class="sr-only"></span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('test_page')}}">Test</a>
+      </li>
+
+    </ul>
+    </div>
+</nav>
+
 
 <div class="myclass" style="display: inline-block;">
     <h2 align="center">Select Complexity Level</h2>
@@ -93,7 +113,53 @@
 
 </div>
 
-{% include 'footer.html' %}
+<footer class="page-footer font-small unique-color-dark pt-4" style="position: relative; margin-top: 10%">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+          <div class="mb-5 flex-center">
+
+            <!-- Facebook -->
+            <a class="fb-ic">
+              <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+            <!-- Twitter -->
+            <a class="tw-ic">
+              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Linkedin -->
+            <a class="li-ic">
+              <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Pinterest-->
+            <a class="gt-ic">
+              <i class="fa fa-github fa-lg white-text fa-2x"> </i>
+            </a>
+          </div>
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright:
+      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
 
 </body>
 </html>

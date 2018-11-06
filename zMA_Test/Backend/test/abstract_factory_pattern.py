@@ -1,13 +1,13 @@
 #factory pattern
 from zMA_Test.Backend.app.model import user_word_history
 from zMA_Test.Backend.practice.factory_pattern import LevelFactory
-from zSaad_Test.Backend.initDB.words import Words_Rating, Words_Test
+from zSaad_Test.Backend.words.words import Words_Rating, Words
 
 
 class Mode(object):
     def __init__(self):
         self.allWordsRatings = Words_Rating.objects()
-        self.allWords = Words_Test.objects()
+        self.allWords = Words.objects()
         #self.alreadySeenWords = user_word_history.objects(username="moumita")[0]
 
 

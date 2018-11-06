@@ -1,6 +1,5 @@
 import json
 import operator
-import os
 import random
 from datetime import datetime, timedelta
 from random import randint
@@ -23,7 +22,7 @@ from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
 from zMA_Test.Backend.test.test_util import show_test_stat
-from zSaad_Test.Backend.initDB.words import Words_Test
+from zSaad_Test.Backend.words.words import Words
 
 try:
     from urllib.request import Request,urlopen, URLError
@@ -800,7 +799,7 @@ def download_file(filename):
         file =file+filename[i]
     print(file)
     filename = os.path.join(static_dir, filename)
-    if(Words_Test.objects(word=file)==[]):
+    if(Words.objects(word=file)==[]):
         return
     return send_file(filename)
 

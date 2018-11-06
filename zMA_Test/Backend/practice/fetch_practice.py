@@ -1,7 +1,6 @@
 from zMA_Test.Backend.app.model import session_practice, user_word_history
 from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
-from zMA_Test.Backend.test.adapter_pattern import Adapter
-from zSaad_Test.Backend.initDB.words import Words_Test
+from zSaad_Test.Backend.words.words import Words
 
 
 def create_session_practice(status, words, idx):
@@ -26,7 +25,7 @@ def update_user_word_status(oldStatus, newStatus):
 class FetchWords():
 
     def __init__(self,username):
-        self.allWords = Words_Test.objects()
+        self.allWords = Words.objects()
         self.username = username
 
     def practice_words(self, type, mode):

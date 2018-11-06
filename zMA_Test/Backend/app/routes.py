@@ -2,18 +2,17 @@ import operator
 import random
 from random import randint
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import render_template, request, json, send_file
-from flask_login import current_user
 
 from zKM_Test.Backend.app.model import Gre_data
 from zMA_Test.Backend.app import APP_MAIN
 from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history
 from zMA_Test.Backend.practice.fetch_practice import create_session_practice, FetchWords
 from zMA_Test.Backend.practice.practice_util import showstat
-from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
+from zMA_Test.Backend.test.fetch_test import create_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat
-from zSaad_Test.Backend.initDB.words import Words_Test
+from zSaad_Test.Backend.words.words import Words
 
 
 @APP_MAIN.route('/')
@@ -411,6 +410,6 @@ def download_file(filename):
         file =file+filename[i]
     print(file)
     filename = os.path.join(static_dir, filename)
-    if(Words_Test.objects(word=file)==[]):
+    if(Words.objects(word=file)==[]):
         return
     return send_file(filename)
