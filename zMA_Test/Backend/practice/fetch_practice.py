@@ -1,6 +1,6 @@
 from zMA_Test.Backend.app.model import session_practice, user_word_history
 from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
-from zSaad_Test.Backend.words.Words import Words
+from zSaad_Test.Backend.words.Words import Words_Test
 
 
 def create_session_practice(status, words, idx):
@@ -25,7 +25,8 @@ def update_user_word_status(oldStatus, newStatus):
 class FetchWords():
 
     def __init__(self,username):
-        self.allWords = Words.objects()
+        self.allWords = Words_Test.objects()
+        print('sellllllllllllffffff', self.allWords)
         self.username = username
 
     def practice_words(self, type, mode):
@@ -36,10 +37,15 @@ class FetchWords():
         #rated_words = self.practice_ratings(type)
         words_dict = self.allWords
 
+        print('rated ', rated_words)
+        print('words_dict ', words_dict)
+
         for w1 in rated_words:
             for w2 in words_dict:
                 if w1['wordID'] == w2.wordID:
                     #print("meaningggggg : ", w2.word, w2.meanings)
+                    print('w1', w1)
+                    print('w2', w2)
                     final_list.append(
                         {
                             'wordID': w2.wordID,

@@ -469,6 +469,7 @@ def test(type):
     status = {}
     ques_multi = []
     ques_blank = []
+    print('aaaaaaaaaaaaa', test_words)
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
     pointer_f = session_test.objects(id=sessionID.id)[0]
     pointer_f.words = test_words
