@@ -21,6 +21,7 @@ from zMA_Test.Backend.app.model import session_test, session_practice, user_word
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.FetchWords import FetchWords2
+from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
 from zMA_Test.Backend.test.test_util import show_test_stat
 from zSaad_Test.Backend.initDB.words import Words_Test
@@ -484,8 +485,16 @@ def test_page():
 
 @APP_MAIN.route('/test/<type>')
 def test(type):
-    fetch_words = FetchWords2()
-    test_words = fetch_words.practice_words(type)
+    dummy = FetchWords(current_user.username).practice_words(type,'test')
+
+
+    #test_words = FetchWords2().practice_words(type,'test')
+    # test_words_dict = fetch_words.practice_words(type,"test")
+    #
+    listadapter = Adapter()
+    test_words = listadapter.getList(dummy)
+    print("lalaalalaaaaaaaaaa ", test_words)
+    #print("tttttttttttttttt", dummy_words)
     status = {}
     ques_multi = []
     ques_blank = []
@@ -517,13 +526,13 @@ def test(type):
     option_multiple_choice = []
 
     option.append(test_words[0][1])
-    option_multiple_choice.append(test_words[0][2][0])
-    print('amiiiiiiii', test_words[0][2][0])
+    option_multiple_choice.append(test_words[0][2])#[0]////////////////////////////////////////////
+    print('amiiiiiiii', test_words[0][2])#[0]////////////////////////////////////////////
 
     # print("aaaaaaaaaaaaaa", type(test_words[0][1]))
     for i in range(3):
         option.append(test_words[random_idx[i]][1])
-        option_multiple_choice.append(test_words[random_idx[i]][2][0])
+        option_multiple_choice.append(test_words[random_idx[i]][2])#[0]////////////////////////////////////////////
 
     random_idx2 = random.sample(range(1, 5), 4)
     option_dict = {}
@@ -538,7 +547,7 @@ def test(type):
     #print('TTTTTTTTTTTTTTTTTTTTTTTTT', test_words[0][3][0])
     test_multi_choice_word = ''
     #test_line = unicodedata.normalize('NFKD', test_words[0][3][0]).encode('ascii', 'ignore')
-    test_line = test_words[0][3][0]
+    test_line = test_words[0][3]#[0]////////////////////////////////////////////
     print(test_line)
     test_multi_choice_word += 'Meaning of '
     #choice_word = unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii', 'ignore')
@@ -553,8 +562,8 @@ def test(type):
     sorted_multi_choice_dict = sorted(option_multiple_choice_dict.items(), key=operator.itemgetter(1))
 
     print('#######################')
-#    print(type(sorted_multi_choice_dict))
-#    print(type(sorted_dict))
+    print(sorted_multi_choice_dict)
+    print(sorted_dict)
     print('#######################')
 
     #test_line = test_line.replace((unicodedata.normalize('NFKD', test_words[0][1]).encode('ascii', 'ignore')), "___")
@@ -599,11 +608,11 @@ def nextTestWord():
         print('GivenAnsssssssssssssss1', answer)
         print('ActualAnssssssssssssss1', test_words[pointer_f.idx][1])
     else:
-        test_words[pointer_f.idx][2][0] = test_words[pointer_f.idx][2][0].replace("."," ")
-        test_words[pointer_f.idx][2][0] = test_words[pointer_f.idx][2][0].replace("$", " ")
-        pointer_f.status[test_words[pointer_f.idx][2][0]] = answer
+        test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("."," ")#[0]////////////////////////////////////////////
+        test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("$", " ")#[0]////////////////////////////////////////////
+        pointer_f.status[test_words[pointer_f.idx][2]] = answer#[0]////////////////////////////////////////////
         print('GivenAnsssssssssssssss2', answer)
-        print('ActualAnssssssssssssss2', test_words[pointer_f.idx][2][0])
+        print('ActualAnssssssssssssss2', test_words[pointer_f.idx][2])#[0]////////////////////////////////////////////
 
     pointer_f.idx = pointer
     pointer_f.save()
@@ -615,7 +624,7 @@ def nextTestWord():
         if isWhat == 'true':
             option.append(test_word[1])
         else:
-            option.append(test_word[2][0])
+            option.append(test_word[2])#[0]////////////////////////////////////////////
 
         if pointer <= 3:
             random_idx1 = random.sample(range(0, pointer), 1)
@@ -632,7 +641,7 @@ def nextTestWord():
             if isWhat == 'true':
                 option.append(test_words[random_idx[i]][1])
             else:
-                option.append(test_words[random_idx[i]][2][0])
+                option.append(test_words[random_idx[i]][2])#[0]////////////////////////////////////////////
 
         random_idx_option = random.sample(range(1, 5), 4)
         option_dict = {}
@@ -648,7 +657,7 @@ def nextTestWord():
             #test_line = test_line.replace((unicodedata.normalize('NFKD', test_word[1]).encode('ascii', 'ignore')),
              #                             "___")
 
-            test_line = test_word[3][0]
+            test_line = test_word[3]#[0]////////////////////////////////////////////
             test_line = test_line.replace(test_word[1], "___")
             pointer_f.ques_blank.append(test_line)
 
@@ -718,7 +727,7 @@ def nextAns():
     if isWhat == 'true':
         answer = test_words[pointer_f.idx][1]
     else:
-        answer = test_words[pointer_f.idx][2][0]
+        answer = test_words[pointer_f.idx][2]#[0]////////////////////////////////////////////
 
     return json.dumps({'ans': answer})
 
@@ -798,7 +807,7 @@ def practice_intro():
 def practice(type):
     print("type ", type)
     fetchwords = FetchWords(current_user.username)
-    words = fetchwords.practice_words(type)
+    words = fetchwords.practice_words(type,"practice")
     status = {word['wordID']:'firstseen' for word in words}
     sessionID = create_session_practice(status, words, 0)
     #userWordHistory = create_user_word_history()

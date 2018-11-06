@@ -31,12 +31,13 @@ def test_page():
 def test(type):
     fetch_words = FetchWords2()
     test_words = fetch_words.practice_words(type)
+    print("lalalalala ")
     status = {}
     ques_multi = []
     ques_blank = []
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
 
-    print('fffffffffffffffffffff', sessionID.id)
+    print('fffffffffffffffffffff', sessionID.id, 'yhhhh', test_words)
 
 
     pointer_f = session_test.objects(id=sessionID.id)[0]
@@ -52,18 +53,18 @@ def test(type):
     #ques_multi = []
     #ques_blank = []
     #sessionID = create_session_test(status, test_words, 0, questions)
-    #temp = Gre_data.objects(username="amit99")[0]
-    temp = Gre_data.objects(username=current_user.username)[0]
+    temp = Gre_data.objects(username="moumita")[0]
+    #temp = Gre_data.objects(username=current_user.username)[0]
 
     #print("session mmm {}".format(sessionID.id))
-    print(test_words[0])
+    #print(test_words[0])
     random_idx = random.sample(range(1, 10), 3)
     option = []
     option_multiple_choice = []
 
     option.append(test_words[0][1])
     option_multiple_choice.append(test_words[0][2][0])
-    print('amiiiiiiii', test_words[0][2][0])
+    #print('amiiiiiiii', test_words[0][2][0])
 
     # print("aaaaaaaaaaaaaa", type(test_words[0][1]))
     for i in range(3):
@@ -127,8 +128,8 @@ def test(type):
 @APP_MAIN.route('/nexttestword', methods=['POST'])
 def nextTestWord():
     #username = unicodedata.normalize('NFKD', current_user.username).encode('ascii', 'ignore')
-    #username = 'amit99'
-    username = current_user.username
+    username = 'moumita'
+    #username = current_user.username
     answer = request.form['answer']
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
@@ -277,7 +278,7 @@ def summary():
     correct_ans=[]
     your_ans=[]
 
-    for the_key, the_value in status.iteritems():
+    for the_key, the_value in status.items():
         correct_ans.append(the_key)
         your_ans.append(the_value)
 
