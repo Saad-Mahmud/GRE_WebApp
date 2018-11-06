@@ -39,7 +39,7 @@ class FetchWords():
         for w1 in rated_words:
             for w2 in words_dict:
                 if w1['wordID'] == w2.wordID:
-                    print("meaningggggg : ", w2.word, w2.meanings)
+                    #print("meaningggggg : ", w2.word, w2.meanings)
                     final_list.append(
                         {
                             'wordID': w2.wordID,

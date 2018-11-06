@@ -20,7 +20,8 @@ from zMA_Test.Backend.app.model import session_test, session_practice, user_word
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
-from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test
+from zMA_Test.Backend.test.builder_pattern import OptionBuilder
+from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data
 from zMA_Test.Backend.test.test_util import show_test_stat
 from zSaad_Test.Backend.words.words import Words
 
@@ -462,7 +463,7 @@ def test_page():
 
 @APP_MAIN.route('/test/<type>')
 def test(type):
-    dummy = FetchWords(current_user.username).practice_words(type,'test')
+    dummy = FetchWords(current_user.username).practice_words(type, 'test')
     listadapter = Adapter()
     test_words = listadapter.getList(dummy)
     status = {}
@@ -470,55 +471,39 @@ def test(type):
     ques_blank = []
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
     pointer_f = session_test.objects(id=sessionID.id)[0]
-
-    date = datetime.utcnow()
     pointer_f.words = test_words
-    temp = Gre_data.objects(username=current_user.username)[0]
+    test_word = test_words[0]
+    temp_test_words1 = []
+    temp_test_words2 = []
 
-    print(test_words[0])
-    random_idx = random.sample(range(1, 10), 3)
-    option = []
-    option_multiple_choice = []
+    for i in range(10):
+        temp_test_words1.append(test_words[i][1])
+        temp_test_words2.append(test_words[i][2])
 
-    option.append(test_words[0][1])
-    option_multiple_choice.append(test_words[0][2])
-    print('amiiiiiiii', test_words[0][2])
+    option_builder = OptionBuilder()
+    OptionBuilder.initOptionList(option_builder, test_word[1])
+    OptionBuilder.initRandomIdx(option_builder)
+    OptionBuilder.setOptionList(option_builder, temp_test_words1)
+    OptionBuilder.setRandomOption(option_builder)
+    OptionBuilder.setOptionDict(option_builder)
+    OptionBuilder.setQuestionLine1(option_builder, test_word[3], test_word[1])
+    check1 = OptionBuilder.getOption(option_builder)
+    pointer_f.ques_blank.append(check1.test_line)
 
-    for i in range(3):
-        option.append(test_words[random_idx[i]][1])
-        option_multiple_choice.append(test_words[random_idx[i]][2])
-
-    random_idx2 = random.sample(range(1, 5), 4)
-    option_dict = {}
-    option_multiple_choice_dict = {}
-
-    for i in range(4):
-        option_dict[option[i]] = random_idx2[i]
-        option_multiple_choice_dict[option_multiple_choice[i]] = random_idx2[i]
-
-    test_multi_choice_word = ''
-    test_line = test_words[0][3]
-    print(test_line)
-    test_multi_choice_word += 'Meaning of '
-    choice_word = test_words[0][1]
-    choice_word = choice_word.upper()
-    test_multi_choice_word += choice_word
-
-    sorted_dict = sorted(option_dict.items(), key=operator.itemgetter(1))
-    sorted_multi_choice_dict = sorted(option_multiple_choice_dict.items(), key=operator.itemgetter(1))
-
-    test_line = test_line.replace(test_words[0][1], "___")
-    ques_multi.append(test_multi_choice_word)
-    ques_blank.append(test_line)
-
-    pointer_f.ques_blank = ques_blank
-    pointer_f.ques_multi = ques_multi
-
+    option_builder = OptionBuilder()
+    OptionBuilder.initOptionList(option_builder, test_word[2])
+    OptionBuilder.initRandomIdx(option_builder)
+    OptionBuilder.setOptionList(option_builder, temp_test_words2)
+    OptionBuilder.setRandomOption(option_builder)
+    OptionBuilder.setOptionDict(option_builder)
+    OptionBuilder.setQuestionLine2(option_builder, test_word[1])
+    check2 = OptionBuilder.getOption(option_builder)
+    pointer_f.ques_multi.append(check2.test_multi_choice_word)
     pointer_f.save()
 
-    return render_template('test_new.html', test_word=test_words[0], test_line=test_line,
-                           multi_word=test_multi_choice_word, option_dict=sorted_dict,
-                           multi_dict=sorted_multi_choice_dict, sessionID=sessionID.id)
+    return render_template('test_new.html', test_word=test_words[0], test_line=check1.test_line,
+                           multi_word=check2.test_multi_choice_word, option_dict=check1.sorted_dict,
+                           multi_dict=check2.sorted_dict, sessionID=sessionID.id)
 
 
 @APP_MAIN.route('/nexttestword', methods=['POST'])
@@ -544,86 +529,47 @@ def nextTestWord():
 
     if pointer < len(test_words):
         test_word = test_words[pointer]
-        option = []
+        temp_test_words1 = []
+        temp_test_words2 = []
+
+        for i in range(10):
+            temp_test_words1.append(test_words[i][1])
+            temp_test_words2.append(test_words[i][2])
 
         if isWhat == 'true':
-            option.append(test_word[1])
-        else:
-            option.append(test_word[2])
-
-        if pointer <= 3:
-            random_idx1 = random.sample(range(0, pointer), 1)
-            random_idx2 = random.sample(range(pointer + 1, 10), 2)
-            random_idx = random_idx1 + random_idx2
-        elif pointer <= 7:
-            random_idx1 = random.sample(range(0, pointer), 2)
-            random_idx2 = random.sample(range(pointer + 1, 10), 1)
-            random_idx = random_idx1 + random_idx2
-        else:
-            random_idx = random.sample(range(0, pointer), 3)
-
-        for i in range(3):
-            if isWhat == 'true':
-                option.append(test_words[random_idx[i]][1])
-            else:
-                option.append(test_words[random_idx[i]][2])
-
-        random_idx_option = random.sample(range(1, 5), 4)
-        option_dict = {}
-
-        for i in range(4):
-            option_dict[option[i]] = random_idx_option[i]
-
-        sorted_dict = sorted(option_dict.items(), key=operator.itemgetter(1))
-        correct, wrong = show_test_stat(pointer_f.status)
-        if isWhat == 'true':
-            test_line = test_word[3]
-            test_line = test_line.replace(test_word[1], "___")
-            pointer_f.ques_blank.append(test_line)
-
+            option_builder = OptionBuilder()
+            OptionBuilder.initOptionList(option_builder, test_word[1])
+            OptionBuilder.setRandomIdx(option_builder, pointer)
+            OptionBuilder.setOptionList(option_builder, temp_test_words1)
+            OptionBuilder.setRandomOption(option_builder)
+            OptionBuilder.setOptionDict(option_builder)
+            OptionBuilder.setQuestionLine1(option_builder, test_word[3], test_word[1])
+            check = OptionBuilder.getOption(option_builder)
+            pointer_f.ques_blank.append(check.test_line)
             pointer_f.save()
-            return json.dumps({'test_word': test_word, 'test_line': test_line, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
+            correct, wrong = show_test_stat(pointer_f.status)
+            return json.dumps({'test_word': test_word, 'test_line': check.test_line, 'option_dict': check.sorted_dict, 'correct': correct, 'wrong': wrong})
+
         else:
-            test_multi_choice_word = ''
-            test_multi_choice_word += 'Meaning of '
-            choice_word = test_word[1]
-            choice_word = choice_word.upper()
-            test_multi_choice_word += choice_word
-            pointer_f.ques_multi.append(test_multi_choice_word)
+            option_builder = OptionBuilder()
+            OptionBuilder.initOptionList(option_builder, test_word[2])
+            OptionBuilder.setRandomIdx(option_builder, pointer)
+            OptionBuilder.setOptionList(option_builder, temp_test_words2)
+            OptionBuilder.setRandomOption(option_builder)
+            OptionBuilder.setOptionDict(option_builder)
+            OptionBuilder.setQuestionLine2(option_builder, test_word[1])
+            check = OptionBuilder.getOption(option_builder)
+            pointer_f.ques_multi.append(check.test_multi_choice_word)
             pointer_f.save()
-            return json.dumps({'test_word': test_word, 'test_line': test_multi_choice_word, 'option_dict': sorted_dict, 'correct': correct, 'wrong': wrong})
+            correct, wrong = show_test_stat(pointer_f.status)
+            return json.dumps({'test_word': test_word, 'test_line': check.test_multi_choice_word, 'option_dict': check.sorted_dict, 'correct': correct, 'wrong': wrong})
 
     else:
         test_word = ['$null$']
         session_data = session_test.objects(id=sessionID)[0]
-        print("abcdefgh", session_data.status)
         test_key = 'test' + sessionID
-        gre_test_words = {
-            test_key: session_data.status
-        }
-
         correct, wrong = show_test_stat(pointer_f.status)
-        print(correct, wrong)
-
-        gre_data = Gre_data.objects(username=username)[0]
-        print(gre_data.username)
-        gre_data.history[test_key] = session_data.status
-        gre_data.test_date = datetime.utcnow()
-        gre_data.how_many_test = gre_data.how_many_test + 1
-
-        current_score = correct * 10
-
-        if gre_data.best_score < current_score:
-            gre_data.best_score = current_score
-
-        gre_data.rating = gre_data.rating + current_score
-        gre_data.avg_score = gre_data.rating / gre_data.how_many_test
-
-        gre_data.rating_chart.append(gre_data.rating)
-        gre_data.rate_date.append(gre_data.test_date)
-        gre_data.all_scores.append(current_score)
-
-        gre_data.save()
+        update_gre_data(username, test_key, session_data, correct)
         pointer_f.save()
 
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
@@ -633,10 +579,8 @@ def nextTestWord():
 def nextAns():
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
-
     pointer_f = session_test.objects(id=sessionID)[0]
     test_words = pointer_f.words
-
 
     if isWhat == 'true':
         answer = test_words[pointer_f.idx][1]
@@ -649,13 +593,9 @@ def nextAns():
 @APP_MAIN.route('/testsummary', methods=['POST'])
 def summary():
     sessionID = request.form['sessionID']
-    print(sessionID)
     isWhat = request.form['isWhat']
-    print(isWhat)
     correct = request.form['correct']
-    print(correct)
     wrong = request.form['wrong']
-    print(wrong)
 
     pointer_f = session_test.objects(id=sessionID)[0]
     test_words = pointer_f.words
@@ -791,6 +731,7 @@ static_dir = os.path.join(static_dir, 'Frontend')
 static_dir = os.path.join(static_dir, 'static')
 static_dir = os.path.join(static_dir, 'audio')
 
+
 @APP_MAIN.route('/words/audio/',defaults={'filename': ''})
 @APP_MAIN.route('/words/audio/<path:filename>')
 def download_file(filename):
@@ -802,23 +743,6 @@ def download_file(filename):
     if(Words.objects(word=file)==[]):
         return
     return send_file(filename)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @APP_MAIN.route('/stat',methods=['POST','GET'])
@@ -863,7 +787,6 @@ def admin():
             print(type(dict))
             return render_template('history.html', dict = dict)
     return redirect(url_for('index'))
-
 
 
 @APP_MAIN.before_request
