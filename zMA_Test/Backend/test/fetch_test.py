@@ -42,3 +42,54 @@ def update_gre_data(username, test_key, session_data, correct):
     gre_data.all_scores.append(current_score)
 
     gre_data.save()
+
+
+def update_initial_session_test(sessionID, test_words, test_line, test_multi_choice_word):
+    pointer_f = session_test.objects(id=sessionID.id)[0]
+    pointer_f.words = test_words
+    pointer_f.ques_blank.append(test_line)
+    pointer_f.ques_multi.append(test_multi_choice_word)
+    pointer_f.save()
+
+
+def update_next_session_test(sessionID, isWhat, answer, type, test_line):
+    pointer_f = session_test.objects(id=sessionID)[0]
+
+    if type == 1:
+        pointer = pointer_f.idx + 1
+        test_words = pointer_f.words
+        if isWhat == 'true':
+            pointer_f.status[test_words[pointer_f.idx][1]] = answer
+        else:
+            test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace(".", " ")
+            test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("$", " ")
+            pointer_f.status[test_words[pointer_f.idx][2]] = answer
+
+        pointer_f.idx = pointer
+        pointer_f.save()
+        return test_words, pointer
+
+    elif type == 2:
+        pointer_f.ques_blank.append(test_line)
+        pointer_f.save()
+        return pointer_f.status
+
+    elif type == 3:
+        pointer_f.ques_multi.append(test_line)
+        pointer_f.save()
+        return pointer_f.status
+
+    elif type == 4:
+        pointer_f.save()
+        return pointer_f.status
+
+    elif type == 5:
+        test_words = pointer_f.words
+        if isWhat == 'true':
+            answer = test_words[pointer_f.idx][1]
+        else:
+            answer = test_words[pointer_f.idx][2]
+        return answer
+
+    elif type == 6:
+        return pointer_f

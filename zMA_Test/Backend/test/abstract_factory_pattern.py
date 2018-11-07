@@ -11,7 +11,6 @@ class Mode(object):
         self.allWords = Words.objects()
         #self.alreadySeenWords = user_word_history.objects(username="moumita")[0]
 
-
     def set(self,type,username): pass
 
 

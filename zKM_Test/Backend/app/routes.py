@@ -21,7 +21,9 @@ from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.builder_pattern import ConcreteBuilder, Director
-from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data
+from zMA_Test.Backend.test.builder_pattern_summary import ConcreteBuilderSummary, DirectorSummary
+from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data, \
+    update_initial_session_test, update_next_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 from zSaad_Test.Backend.words.Words import Words
 
@@ -466,14 +468,10 @@ def test(type):
     dummy = FetchWords(current_user.username).practice_words(type, 'test')
     listadapter = Adapter()
     test_words = listadapter.getList(dummy)
-    for i in test_words:
-        print('initialllllllllllllllllllllllllll', i[1])
     status = {}
     ques_multi = []
     ques_blank = []
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
-    pointer_f = session_test.objects(id=sessionID.id)[0]
-    pointer_f.words = test_words
     test_word = test_words[0]
     temp_test_words1 = []
     temp_test_words2 = []
@@ -486,14 +484,12 @@ def test(type):
     director = Director(test_word[1], 0, temp_test_words1, test_word[3], test_word[1], test_word[1])
     director.construct(concrete_builder, 1)
     check1 = concrete_builder.option_object
-    pointer_f.ques_blank.append(check1.test_line)
 
     concrete_builder = ConcreteBuilder()
     director = Director(test_word[2], 0, temp_test_words2, test_word[3], test_word[1], test_word[1])
     director.construct(concrete_builder, 1)
     check2 = concrete_builder.option_object
-    pointer_f.ques_multi.append(check2.test_multi_choice_word)
-    pointer_f.save()
+    update_initial_session_test(sessionID, test_words, check1.test_line, check2.test_multi_choice_word)
 
     return render_template('test_new.html', test_word=test_words[0], test_line=check1.test_line,
                            multi_word=check2.test_multi_choice_word, option_dict=check1.sorted_dict,
@@ -507,20 +503,7 @@ def nextTestWord():
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
 
-    pointer_f = session_test.objects(id=sessionID)[0]
-    pointer = pointer_f.idx + 1
-    test_words = pointer_f.words
-
-    if isWhat == 'true':
-        pointer_f.status[test_words[pointer_f.idx][1]] = answer
-    else:
-        test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("."," ")
-        test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("$", " ")
-        pointer_f.status[test_words[pointer_f.idx][2]] = answer
-
-    pointer_f.idx = pointer
-    pointer_f.save()
-
+    test_words, pointer = update_next_session_test(sessionID, isWhat, answer, 1, ' ')
     if pointer < len(test_words):
         test_word = test_words[pointer]
         temp_test_words1 = []
@@ -536,9 +519,8 @@ def nextTestWord():
             director.construct(concrete_builder, 2)
             check = concrete_builder.option_object
 
-            pointer_f.ques_blank.append(check.test_line)
-            pointer_f.save()
-            correct, wrong = show_test_stat(pointer_f.status)
+            status = update_next_session_test(sessionID, isWhat, answer, 2, check.test_line)
+            correct, wrong = show_test_stat(status)
             return json.dumps({'test_word': test_word, 'test_line': check.test_line, 'option_dict': check.sorted_dict, 'correct': correct, 'wrong': wrong})
 
         else:
@@ -547,19 +529,19 @@ def nextTestWord():
             director.construct(concrete_builder, 2)
             check = concrete_builder.option_object
 
-            pointer_f.ques_multi.append(check.test_multi_choice_word)
-            pointer_f.save()
-            correct, wrong = show_test_stat(pointer_f.status)
+            status = update_next_session_test(sessionID, isWhat, answer, 3, check.test_multi_choice_word)
+            correct, wrong = show_test_stat(status)
+
             return json.dumps({'test_word': test_word, 'test_line': check.test_multi_choice_word, 'option_dict': check.sorted_dict, 'correct': correct, 'wrong': wrong})
 
     else:
         test_word = ['$null$']
-        session_data = session_test.objects(id=sessionID)[0]
+        session_data = update_next_session_test(sessionID, isWhat, answer, 6, ' ')
         test_key = 'test' + sessionID
-        correct, wrong = show_test_stat(pointer_f.status)
+        status = update_next_session_test(sessionID, isWhat, answer, 4, ' ')
+        correct, wrong = show_test_stat(status)
         update_gre_data(username, test_key, session_data, correct)
-        rating_change(pointer_f.status, test_words)
-        pointer_f.save()
+        rating_change(status, test_words)
 
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
 
@@ -568,13 +550,7 @@ def nextTestWord():
 def nextAns():
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
-    pointer_f = session_test.objects(id=sessionID)[0]
-    test_words = pointer_f.words
-
-    if isWhat == 'true':
-        answer = test_words[pointer_f.idx][1]
-    else:
-        answer = test_words[pointer_f.idx][2]
+    answer = update_next_session_test(sessionID, isWhat, ' ', 5, ' ')
 
     return json.dumps({'ans': answer})
 
@@ -585,30 +561,16 @@ def summary():
     isWhat = request.form['isWhat']
     correct = request.form['correct']
     wrong = request.form['wrong']
+    pointer_f = update_next_session_test(sessionID, isWhat, ' ', 6, ' ')
 
-    pointer_f = session_test.objects(id=sessionID)[0]
-    test_words = pointer_f.words
-    for i in test_words:
-        print('summarryyyyyyyyyyyyyyyyyyyyyyyy', i[1])
-
-    if isWhat=='true':
-        ques = pointer_f.ques_blank
-    else:
-        ques = pointer_f.ques_multi
-
-    status = pointer_f.status
-    correct_ans=[]
-    your_ans=[]
-
-#if it does not work,, change status.iteritems() to status.items() or vice versa
-    for the_key, the_value in status.items():
-        correct_ans.append(the_key)
-        your_ans.append(the_value)
-        print('yourrrrrrrrrrrrrrrrrrr', the_value)
-        print('correctttttttttttttttt', the_key)
+#   Builder pattern is used to build the summary
+    concrete_builder = ConcreteBuilderSummary()
+    director = DirectorSummary(pointer_f, isWhat)
+    director.constructSummary(concrete_builder)
+    check = concrete_builder.summary_object
 
     return render_template("test_summary.html", correct=correct, wrong=wrong, isWhat=isWhat,
-                           test_words=test_words, ques=ques, correct_ans=correct_ans, your_ans=your_ans)
+                           test_words=check.test_words, ques=check.ques, correct_ans=check.correct_ans, your_ans=check.your_ans)
 
 
 @login_required
