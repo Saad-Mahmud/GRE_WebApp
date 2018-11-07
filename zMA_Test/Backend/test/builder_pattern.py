@@ -1,9 +1,37 @@
 import random
-
+import abc
 import operator
 
+import six
 
-class OptionBuilder(object):
+
+class Director:
+    def __init__(self, word, pointer, test_words, wordline1, wordans, wordline2):
+        self._builder = None
+        self.word = word
+        self.pointer = pointer
+        self.test_words = test_words
+        self.wordline1 = wordline1
+        self.wordans = wordans
+        self.wordline2 = wordline2
+
+    def construct(self, builder, option):
+        self._builder = builder
+        self._builder.initOptionList(self.word)
+        if option == 1:
+            self._builder.initRandomIdx()
+        else:
+            self._builder.setRandomIdx(self.pointer)
+        self._builder.setOptionList(self.test_words)
+        self._builder.setRandomOption()
+        self._builder.setOptionDict()
+        self._builder.setQuestionLine1(self.wordline1, self.wordans)
+        self._builder.setQuestionLine2(self.wordline2)
+        self._builder.getOption()
+
+
+@six.add_metaclass(abc.ABCMeta)
+class Builder():
     def __init__(self):
         self.random_idx = []
         self.option = []
@@ -12,6 +40,46 @@ class OptionBuilder(object):
         self.sorted_dict = []
         self.test_line = ''
         self.test_multi_choice_word = ''
+        self.option_object = Option(self.option, self.random_idx_option, self.random_idx, self.option_dict, self.sorted_dict, self.test_line, self.test_multi_choice_word)
+
+    @abc.abstractmethod
+    def initOptionList(self, word):
+        pass
+
+    @abc.abstractmethod
+    def initRandomIdx(self):
+        pass
+
+    @abc.abstractmethod
+    def setRandomIdx(self, pointer):
+        pass
+
+    @abc.abstractmethod
+    def setOptionList(self, test_words):
+        pass
+
+    @abc.abstractmethod
+    def setRandomOption(self):
+        pass
+
+    @abc.abstractmethod
+    def setOptionDict(self):
+        pass
+
+    @abc.abstractmethod
+    def setQuestionLine1(self, wordline, wordans):
+        pass
+
+    @abc.abstractmethod
+    def setQuestionLine2(self, wordline):
+        pass
+
+    @abc.abstractmethod
+    def getOption(self):
+        pass
+
+
+class ConcreteBuilder(Builder):
 
     def initOptionList(self, word):
         self.option.append(word)
@@ -55,7 +123,7 @@ class OptionBuilder(object):
         self.test_multi_choice_word += choice_word
 
     def getOption(self):
-        return Option(self.option, self.random_idx_option, self.random_idx, self.option_dict, self.sorted_dict, self.test_line, self.test_multi_choice_word)
+        self.option_object = Option(self.option, self.random_idx_option, self.random_idx, self.option_dict, self.sorted_dict, self.test_line, self.test_multi_choice_word)
 
 
 class Option(object):

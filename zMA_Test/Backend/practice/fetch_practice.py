@@ -37,15 +37,11 @@ class FetchWords():
         #rated_words = self.practice_ratings(type)
         words_dict = self.allWords
 
-        print('rated ', rated_words)
-        print('words_dict ', words_dict)
-
         for w1 in rated_words:
             for w2 in words_dict:
                 if w1['wordID'] == w2.wordID:
                     #print("meaningggggg : ", w2.word, w2.meanings)
-                    print('w1', w1)
-                    print('w2', w2)
+
                     final_list.append(
                         {
                             'wordID': w2.wordID,
@@ -56,7 +52,6 @@ class FetchWords():
                             'translations': w2.translations
                         })
 
-        print("baaaaaaaaaaaaaaaa ", final_list)
 
         return final_list
 

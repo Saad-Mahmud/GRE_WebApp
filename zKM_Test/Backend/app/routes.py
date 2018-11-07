@@ -20,9 +20,9 @@ from zMA_Test.Backend.app.model import session_test, session_practice, user_word
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
-from zMA_Test.Backend.test.builder_pattern import OptionBuilder
+from zMA_Test.Backend.test.builder_pattern import ConcreteBuilder, Director
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data
-from zMA_Test.Backend.test.test_util import show_test_stat
+from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 from zSaad_Test.Backend.words.Words import Words
 
 try:
@@ -466,10 +466,11 @@ def test(type):
     dummy = FetchWords(current_user.username).practice_words(type, 'test')
     listadapter = Adapter()
     test_words = listadapter.getList(dummy)
+    for i in test_words:
+        print('initialllllllllllllllllllllllllll', i[1])
     status = {}
     ques_multi = []
     ques_blank = []
-    print('aaaaaaaaaaaaa', test_words)
     sessionID = create_session_test(status, test_words, 0, ques_multi, ques_blank)
     pointer_f = session_test.objects(id=sessionID.id)[0]
     pointer_f.words = test_words
@@ -481,24 +482,16 @@ def test(type):
         temp_test_words1.append(test_words[i][1])
         temp_test_words2.append(test_words[i][2])
 
-    option_builder = OptionBuilder()
-    OptionBuilder.initOptionList(option_builder, test_word[1])
-    OptionBuilder.initRandomIdx(option_builder)
-    OptionBuilder.setOptionList(option_builder, temp_test_words1)
-    OptionBuilder.setRandomOption(option_builder)
-    OptionBuilder.setOptionDict(option_builder)
-    OptionBuilder.setQuestionLine1(option_builder, test_word[3], test_word[1])
-    check1 = OptionBuilder.getOption(option_builder)
+    concrete_builder = ConcreteBuilder()
+    director = Director(test_word[1], 0, temp_test_words1, test_word[3], test_word[1], test_word[1])
+    director.construct(concrete_builder, 1)
+    check1 = concrete_builder.option_object
     pointer_f.ques_blank.append(check1.test_line)
 
-    option_builder = OptionBuilder()
-    OptionBuilder.initOptionList(option_builder, test_word[2])
-    OptionBuilder.initRandomIdx(option_builder)
-    OptionBuilder.setOptionList(option_builder, temp_test_words2)
-    OptionBuilder.setRandomOption(option_builder)
-    OptionBuilder.setOptionDict(option_builder)
-    OptionBuilder.setQuestionLine2(option_builder, test_word[1])
-    check2 = OptionBuilder.getOption(option_builder)
+    concrete_builder = ConcreteBuilder()
+    director = Director(test_word[2], 0, temp_test_words2, test_word[3], test_word[1], test_word[1])
+    director.construct(concrete_builder, 1)
+    check2 = concrete_builder.option_object
     pointer_f.ques_multi.append(check2.test_multi_choice_word)
     pointer_f.save()
 
@@ -538,28 +531,22 @@ def nextTestWord():
             temp_test_words2.append(test_words[i][2])
 
         if isWhat == 'true':
-            option_builder = OptionBuilder()
-            OptionBuilder.initOptionList(option_builder, test_word[1])
-            OptionBuilder.setRandomIdx(option_builder, pointer)
-            OptionBuilder.setOptionList(option_builder, temp_test_words1)
-            OptionBuilder.setRandomOption(option_builder)
-            OptionBuilder.setOptionDict(option_builder)
-            OptionBuilder.setQuestionLine1(option_builder, test_word[3], test_word[1])
-            check = OptionBuilder.getOption(option_builder)
+            concrete_builder = ConcreteBuilder()
+            director = Director(test_word[1], pointer, temp_test_words1, test_word[3], test_word[1], test_word[1])
+            director.construct(concrete_builder, 2)
+            check = concrete_builder.option_object
+
             pointer_f.ques_blank.append(check.test_line)
             pointer_f.save()
             correct, wrong = show_test_stat(pointer_f.status)
             return json.dumps({'test_word': test_word, 'test_line': check.test_line, 'option_dict': check.sorted_dict, 'correct': correct, 'wrong': wrong})
 
         else:
-            option_builder = OptionBuilder()
-            OptionBuilder.initOptionList(option_builder, test_word[2])
-            OptionBuilder.setRandomIdx(option_builder, pointer)
-            OptionBuilder.setOptionList(option_builder, temp_test_words2)
-            OptionBuilder.setRandomOption(option_builder)
-            OptionBuilder.setOptionDict(option_builder)
-            OptionBuilder.setQuestionLine2(option_builder, test_word[1])
-            check = OptionBuilder.getOption(option_builder)
+            concrete_builder = ConcreteBuilder()
+            director = Director(test_word[2], pointer, temp_test_words2, test_word[3], test_word[1], test_word[1])
+            director.construct(concrete_builder, 2)
+            check = concrete_builder.option_object
+
             pointer_f.ques_multi.append(check.test_multi_choice_word)
             pointer_f.save()
             correct, wrong = show_test_stat(pointer_f.status)
@@ -571,6 +558,7 @@ def nextTestWord():
         test_key = 'test' + sessionID
         correct, wrong = show_test_stat(pointer_f.status)
         update_gre_data(username, test_key, session_data, correct)
+        rating_change(pointer_f.status, test_words)
         pointer_f.save()
 
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
@@ -600,6 +588,8 @@ def summary():
 
     pointer_f = session_test.objects(id=sessionID)[0]
     test_words = pointer_f.words
+    for i in test_words:
+        print('summarryyyyyyyyyyyyyyyyyyyyyyyy', i[1])
 
     if isWhat=='true':
         ques = pointer_f.ques_blank
@@ -614,6 +604,8 @@ def summary():
     for the_key, the_value in status.items():
         correct_ans.append(the_key)
         your_ans.append(the_value)
+        print('yourrrrrrrrrrrrrrrrrrr', the_value)
+        print('correctttttttttttttttt', the_key)
 
     return render_template("test_summary.html", correct=correct, wrong=wrong, isWhat=isWhat,
                            test_words=test_words, ques=ques, correct_ans=correct_ans, your_ans=your_ans)
