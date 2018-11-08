@@ -31,7 +31,7 @@ from zMA_Test.Backend.test.builder_pattern_summary import ConcreteBuilderSummary
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data, \
     update_initial_session_test, update_next_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
-from zSaad_Test.Backend.words.Words import Words
+from zSaad_Test.Backend.Words.Words import Words
 
 try:
     from urllib.request import Request,urlopen, URLError
@@ -642,8 +642,8 @@ static_dir = os.path.join(static_dir, 'static')
 static_dir = os.path.join(static_dir, 'audio')
 
 
-@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
-@APP_MAIN.route('/words/audio/<path:filename>')
+@APP_MAIN.route('/Words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/Words/audio/<path:filename>')
 def download_file(filename):
     file = ''
     for i in range(len(filename)-4):
@@ -694,6 +694,7 @@ def admin():
 
             return render_template('history.html', dict = dict)
     return redirect(url_for('index'))
+
 
 
 @APP_MAIN.before_request

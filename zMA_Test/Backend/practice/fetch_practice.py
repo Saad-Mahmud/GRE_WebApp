@@ -1,6 +1,6 @@
 from zMA_Test.Backend.app.model import session_practice, user_word_history
 from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
-from zSaad_Test.Backend.words.Words import Words
+from zSaad_Test.Backend.Words.Words import Words
 
 
 def create_session_practice(status, words, idx):

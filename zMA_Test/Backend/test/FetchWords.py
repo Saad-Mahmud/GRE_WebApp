@@ -1,6 +1,6 @@
 """
 from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
-from zSaad_Test.Backend.initDB.words import Words_Test
+from zSaad_Test.Backend.initDB.Words import Words_Test
 
 
 class FetchWords2():

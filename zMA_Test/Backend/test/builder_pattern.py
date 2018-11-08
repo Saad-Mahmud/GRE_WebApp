@@ -100,7 +100,7 @@ class ConcreteBuilder(Builder):
             self.random_idx = random.sample(range(0, pointer), 3)
 
     def setOptionList(self, test_words):
-        #test_words are the list of all the 10 words only, not including meaning, usage etc
+        #test_words are the list of all the 10 Words only, not including meaning, usage etc
         for i in range(3):
             self.option.append(test_words[self.random_idx[i]])
 

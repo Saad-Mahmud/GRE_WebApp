@@ -1,9 +1,11 @@
-from zSaad_Test.Backend.words.WordDataLoader import WordDataLoader
-from zSaad_Test.Backend.words.WordRatingLoader import WordRatingLoader
-from zSaad_Test.Backend.initDB import initDB_Config as Conf
+from zSaad_Test.Backend.Words.WordDataLoader import WordDataLoader
+from zSaad_Test.Backend.Words.WordRatingLoader import WordRatingLoader
+from zSaad_Test.Backend.initDB import DBConf
 
 
 def init_DB_with_words():
+
+    Conf = DBConf.getInstance()
 
     try:
         dataloader = WordDataLoader(Conf.initDB_dir + "/word_data.csv", Conf.initDB_dir + "/transall.csv")

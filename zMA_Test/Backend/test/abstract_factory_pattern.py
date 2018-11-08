@@ -1,8 +1,8 @@
 #factory pattern
 from zMA_Test.Backend.app.model import user_word_history
 from zMA_Test.Backend.practice.factory_pattern import LevelFactory
-from zSaad_Test.Backend.words.Words import Words
-from zSaad_Test.Backend.words.Words_Rating import Words_Rating
+from zSaad_Test.Backend.Words.Words import Words
+from zSaad_Test.Backend.Words.Words_Rating import Words_Rating
 
 
 class Mode(object):
@@ -28,7 +28,7 @@ class PracticeMode(Mode):
             else:
                 if alreadySeenWords.status[word['wordID']] != 'green':
                     new_list.append(word)
-                    print("sorted ratings words ", word['wordID'], word['Ratings'])
+                    print("sorted ratings Words ", word['wordID'], word['Ratings'])
 
         if len(new_list) >= 10:
             return new_list[0:10]

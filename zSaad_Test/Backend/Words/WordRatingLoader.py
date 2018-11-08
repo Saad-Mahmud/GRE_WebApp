@@ -1,6 +1,6 @@
 import pandas as pd
 
-from zSaad_Test.Backend.words.CsvToRatingAdapter import CsvToRatingAdapter
+from zSaad_Test.Backend.Words.CsvToRatingAdapter import CsvToRatingAdapter
 
 class WordRatingLoader():
 

@@ -1,6 +1,6 @@
 from zSaad_Test.Backend.app import APP_MAIN
 from flask import render_template,redirect,url_for,flash,send_from_directory,request,json
-from zSaad_Test.Backend.words.Words import Words
+from zSaad_Test.Backend.Words.Words import Words
 from werkzeug.utils import secure_filename
 from zSaad_Test.Backend.app.model import Suggestions
 import datetime
@@ -17,8 +17,8 @@ except ImportError:
 def hello_world():
     return render_template("dummy.html")
 
-@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
-@APP_MAIN.route('/words/audio/<path:filename>')
+@APP_MAIN.route('/Words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/Words/audio/<path:filename>')
 def download_file(filename):
     file = ''
     for i in range(len(filename)-4):
@@ -59,8 +59,8 @@ def dictionary(page):
     ]
     return render_template('dictionary.html',links=links, title=title, words=words,length=len(words))
 
-@APP_MAIN.route('/suggestions/words/',defaults={'wordID': ''})
-@APP_MAIN.route('/suggestions/words/<string:wordID>')
+@APP_MAIN.route('/suggestions/Words/',defaults={'wordID': ''})
+@APP_MAIN.route('/suggestions/Words/<string:wordID>')
 def suggestion(wordID):
     if(wordID==''):
         return render_template('404.html')

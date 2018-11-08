@@ -10,7 +10,8 @@
 
       <div align="right">
           {% if suggestion.status=='US' %}
-              <a class="btn btn-success" role="button"  onclick="myADD('{{ suggestion.id }}')">Add To TODO List</a>
+              <a class="btn btn-success" role="button"  onclick="myADD('{{ suggestion.id }}')">
+                  Add To TODO List</a>
           {% endif %}
 
           <a onclick="myDel('{{ suggestion.id }}')" class="btn btn-danger" role="button" >

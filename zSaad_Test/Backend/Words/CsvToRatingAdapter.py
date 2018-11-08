@@ -1,7 +1,5 @@
 import pandas as pd
-
-from zSaad_Test.Backend.initDB import initDB_Config as Conf
-from zSaad_Test.Backend.words.Words_Rating import Words_Rating
+from zSaad_Test.Backend.Words.Words_Rating import Words_Rating
 import random
 
 class CsvToRatingAdapter():

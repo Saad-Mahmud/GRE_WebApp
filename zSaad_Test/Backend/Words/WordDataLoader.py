@@ -1,6 +1,6 @@
 import pandas as pd
 
-from zSaad_Test.Backend.words.CsvToWordAdapter import CsvToWordAdapter
+from zSaad_Test.Backend.Words.CsvToWordAdapter import CsvToWordAdapter
 
 
 class WordDataLoader():
