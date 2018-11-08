@@ -10,7 +10,6 @@ def create_session_practice(status, words, idx):
 
 
 def create_user_word_history(username):
-    #wordHistory = user_word_history("moumita")
     wordHistory = user_word_history(username)
     wordHistory2 = wordHistory.save()
     return wordHistory2
@@ -21,27 +20,20 @@ def update_user_word_status(oldStatus, newStatus):
     return mergedList
 
 
-
 class FetchWords():
-
     def __init__(self,username):
         self.allWords = Words.objects()
-        print('sellllllllllllffffff', self.allWords)
         self.username = username
 
     def practice_words(self, type, mode):
         final_list = []
         modefactory = ModeFactory()
         rated_words = modefactory.setmode(mode).set(type, self.username)
-
-        #rated_words = self.practice_ratings(type)
         words_dict = self.allWords
 
         for w1 in rated_words:
             for w2 in words_dict:
                 if w1['wordID'] == w2.wordID:
-                    #print("meaningggggg : ", w2.word, w2.meanings)
-
                     final_list.append(
                         {
                             'wordID': w2.wordID,
@@ -51,8 +43,6 @@ class FetchWords():
                             'usage': w2.usages[0],
                             'translations': w2.translations
                         })
-
-
         return final_list
 
 

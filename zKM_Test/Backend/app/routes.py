@@ -421,9 +421,13 @@ def test_page():
 
 @APP_MAIN.route('/test/<type>')
 def test(type):
+#...................................................Factory Pattern is used...............................................
     dummy = FetchWords(current_user.username).practice_words(type, 'test')
+
+#...................................Adapter Pattern is used to convert dictionary to a list...............................
     listadapter = Adapter()
-    test_words = listadapter.getList(dummy)
+    test_words = listadapter.request(dummy)
+
     status = {}
     ques_multi = []
     ques_blank = []
