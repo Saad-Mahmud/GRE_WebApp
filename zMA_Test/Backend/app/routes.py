@@ -10,7 +10,7 @@ from zMA_Test.Backend.app import APP_MAIN
 from zMA_Test.Backend.app.model import session_practice, session_test, user_word_history
 from zMA_Test.Backend.practice.fetch_practice import create_session_practice, FetchWords
 from zMA_Test.Backend.practice.practice_util import showstat
-from zMA_Test.Backend.test.fetch_test import create_session_test
+# from zMA_Test.Backend.test.fetch_test import create_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat
 from zSaad_Test.Backend.words.Words import Words
 

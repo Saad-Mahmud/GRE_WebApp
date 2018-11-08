@@ -13,9 +13,14 @@ from werkzeug.security import generate_password_hash
 from werkzeug.urls import url_parse
 
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
-from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, AdditionalForm, RequestResetForm, \
+from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, \
     ResetPasswordForm, LocalStatForm
+from zKM_Test.Backend.builder import RegBuilder
+from zKM_Test.Backend.builder.RateRank import RateRank
+from zKM_Test.Backend.facade.facadeForm import AdditionalForm
 from zKM_Test.Backend.app.model import User, Gre_data
+from zKM_Test.Backend.facade import FacadeAdditional
+from zKM_Test.Backend.iterator.Iterator import Iteration
 from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
@@ -150,11 +155,18 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data,
-                    email=form.email.data,
-                    password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
-        #reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
+        Concrete_Builder = RegBuilder.ConcreteBuilder()
+        director = RegBuilder.Director(form = form)
+        director.construct(Concrete_Builder)
+        user = Concrete_Builder.product
+        # user = User(username=form.username.data,
+        #             email=form.email.data,
+        #             password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
+        # user.save()
+        user = Concrete_Builder.getProduct()
         user.save()
+
+        # reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
         # gre_data = Gre_data(username=form.username.data)
         # gre_data.save()
         flash('Congratulation, you are now a member of GRE-Web App!!')
@@ -214,41 +226,14 @@ def additional(username):
         return redirect(url_for('index'))
     form = AdditionalForm()
 
-    collection = db['country']
-    cursor = collection.find({})
-    arr = []
-    for i in cursor:
-        arr.append(i['country_name'])
+#    ///////////////////////Iterator pattern///////////////////////////////
+    arr = Iteration()
+    arr = arr.IteratingCountry()
     if form.validate_on_submit():
-        user = User.objects(username=username)
-        #gre_data = Gre_data(username=username)
-        name = username
-        if len(user)==0:
-            return render_template(url_for('login'))
-        else:
-            user = user[0]
-        if user.check_password(form.confirm_password.data):
-            user = user.update(age=form.age.data,
-                               country=request.form.get('cnt_name'),
-                               gender=form.gender.data)
-            #gre_data = gre_data.update(country=request.form.get('cnt_name'),how_many_test=0,best_score=0,avg_score=0,rating=0)
-
-
-
-
-
-
-            date = datetime.utcnow()
-            create_gre_test(name, {}, date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
-            create_user_word_history(name)
-
-
-
-
-
-
-
-            flash("Congrats!!you can now log in !!!")
+        # /////////////////////////facade pattern //////////////////////////////
+        facade = FacadeAdditional.Addition()
+        facade = facade.additionalInfo(username=username,form=form)
+        if facade==True:
             return redirect(url_for('login'))
         else:
             return redirect(url_for('index'))
@@ -294,41 +279,9 @@ def logout():
     #return redirect(url_for('index'))
 
 
-def rating(username):
-    rate = Gre_data.objects(username=username)
-    rate = rate[0]
-    return rate
 
 
-def ranking(ajax_var):
-    col = db['gre_data']
-    curser = col.find({})
-    dict = {}
-    dict1 = {}
-    for i in curser:
-        try:
-            dict[i['_id']]= i['rating']
-        except:
-            dict[i['_id']]= 0
-        user = User.objects(username=i['_id'])
-        user = user[0]
-        if ajax_var is None or ajax_var == 'select country' or ajax_var==current_user.country:
-           if user.country == current_user.country:
-               try:
-                   dict1[i['_id']] = i['rating']
-               except:
-                   dict1[i['_id']] = 0
-        else:
-            if user.country == ajax_var:
-                try:
-                    dict1[i['_id']] = i['rating']
-                except:
-                    dict1[i['_id']] = 0
-    sorted_global = sorted(dict.items(), key=operator.itemgetter(1),reverse=True)
 
-    sorted_local = sorted(dict1.items(), key=operator.itemgetter(1),reverse=True)
-    #print(sorted_global,sorted_local)
-    return sorted_global,sorted_local
 '''
 @APP_MAIN.route('/statcountry',methods=['POST'])
 @login_required
@@ -363,9 +316,10 @@ def user(username):
         {'author': user, 'body': 'Test post #2'}
     ]
 
-    rate = rating(username)
+    rate = RateRank.rating(username)
+
     try:
-        rank,local = ranking(current_user.country)
+        rank,local = RateRank.ranking(current_user.country)
         for i in range(0,len(rank)):
             if rank[i][0]==current_user.username:
                 rankindx = i + 1
@@ -703,17 +657,15 @@ def download_file(filename):
 @APP_MAIN.route('/stat',methods=['POST','GET'])
 @login_required
 def stat():
-    collection = db['country']
-    cursor = collection.find({})
-    arr = []
-    for i in cursor:
-        arr.append(i['country_name'])
 
+#    ///////////////////////Iterator pattern///////////////////////////////
+    arr = Iteration()
+    arr = arr.IteratingCountry()
 
     cursor1 = db['user'].find({})
     ajax_var = request.form.get('cnt_name1')
     print(ajax_var)
-    rank, local = ranking(ajax_var)
+    rank, local = RateRank.ranking(ajax_var)
     form = LocalStatForm()
     stat_data = Gre_data.objects(username=current_user.username)
     stat_data = stat_data[0]
@@ -739,7 +691,6 @@ def admin():
                 if i['reg_date']>lastweek:
                     dict[i['_id']] = i['reg_date']
 
-            print(type(dict))
             return render_template('history.html', dict = dict)
     return redirect(url_for('index'))
 

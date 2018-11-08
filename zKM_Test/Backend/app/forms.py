@@ -1,13 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
-from flask_wtf import FlaskForm
 from zKM_Test.Backend.app.model import User
-from wtforms import StringField, PasswordField, BooleanField, SubmitField,RadioField, FileField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import PasswordField, BooleanField, FileField
+from wtforms.validators import ValidationError, Email, EqualTo
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length
-from flask_login import current_user
 from flask_wtf.file import FileAllowed
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -38,14 +34,6 @@ class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=300)])
     pic = FileField('Update Pic', validators=[FileAllowed(['jpg','png'])])
     submit = SubmitField('Submit')
-
-
-class AdditionalForm(FlaskForm):
-    age = StringField('Age', validators=[DataRequired()])
-    gender = RadioField('Gender', choices=[('Male','Male'),('Female','Female')], validators=[DataRequired()])
-   # country = StringField('Country', validators=[DataRequired()])
-    confirm_password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Proceed')
 
 
 class RequestResetForm(FlaskForm):
