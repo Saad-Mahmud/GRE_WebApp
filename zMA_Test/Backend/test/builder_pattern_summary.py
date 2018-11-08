@@ -2,6 +2,8 @@ import abc
 
 import six
 
+from zMA_Test.Backend.test.iterator_pattern import WordList
+
 
 class DirectorSummary:
     def __init__(self, pointer_f, isWhat):
@@ -54,9 +56,13 @@ class ConcreteBuilderSummary(BuilderSummary):
         else:
             self.ques = pointer_f.ques_multi
 
+#........................................Iterator pattern is used to iterate the wordlist...................................................
     def setAns(self, pointer_f):
         words = pointer_f.words
-        for word in words:
+        wordlist = WordList(words)
+        iterator = wordlist.iterator()
+        while iterator.has_next():
+            word = iterator.next()
             for the_key, the_value in pointer_f.status.items():
                 if word[1] == the_key:
                     self.correct_ans.append(the_value[0])
