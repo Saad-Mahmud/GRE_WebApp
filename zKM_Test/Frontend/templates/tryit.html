@@ -105,7 +105,6 @@
             margin-top: -35px;
             font-size: 60px;
 
-
         }
     </style>
 
@@ -117,7 +116,6 @@
             background-color: #464646;
 
         }
-
 
         .card.is-switched .card__wrapper {
             animation: rotate 0.5s linear both;
@@ -177,7 +175,7 @@
         body {
 
             text-align: center;
-           /* padding: 1.5rem;*/
+            /* padding: 1.5rem;*/
         }
 
         h1, h2 {
@@ -198,8 +196,6 @@
             color: white;
             background-color: #3b97df;
             height: 350px;
-
-
 
         }
 
@@ -241,8 +237,6 @@
         .title {
             color: #fff;
         }
-
-
 
 
     </style>
@@ -297,19 +291,22 @@
     </style>
 
     <style>
-        .flipbtn{
+        .flipbtn {
             position: absolute;
             left: 55%;
         }
-        .idkbtn{
+
+        .idkbtn {
             position: absolute;
             left: 35%;
         }
-        .ikbtn{
+
+        .ikbtn {
             position: absolute;
             left: 65%;
         }
-        .stat{
+
+        .stat {
             position: absolute;
             top: 50%;
             left: 5%;
@@ -321,16 +318,16 @@
 {% include 'header.html' %}
 
 
-    <div class="sidenav">
+<div class="sidenav">
 
-    <div  style="display: block" class="pie">
+    <div style="display: block" class="pie">
         <div class="clip1">
             <div class="slice1"></div>
         </div>
         <div class="clip2">
             <div class="slice2"></div>
         </div>
-        <div class="status" >0 of 10</div>
+        <div class="status">0 of 10</div>
     </div>
 
     <div class="stat" style="display: block">
@@ -342,7 +339,6 @@
 </div>
 
 
-
 <div class="card js-card " style="display: block">
     <div class="card__wrapper">
         <div class="card__side is-active align-items-center d-flex justify-content-center">
@@ -352,15 +348,13 @@
             {% include 'dictview.html' %}
         </div>
     </div>
-    </div>
-
+</div>
 
 
 <div class="myclass" style="display: inline-block; vertical-align: center">
 
 
-
-    <div  style="display: block">
+    <div style="display: block">
         <div class="idkbtn" style="display: inline-block">
             <a href="#" class="btn btn-danger" id="idk" style='visibility:hidden'
                onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
@@ -373,11 +367,13 @@
         </div>
 
     </div>
-    <div class="flipbtn" style="display: block" >
+    <div class="flipbtn" style="display: block">
         <a href="#" class="btn btn-danger" id="flip" style='visibility:visible'
            onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
 
     </div>
+
+
 
 </div>
 
@@ -388,7 +384,6 @@
 
     let $card = $('.js-card');
     let switching = false;
-
 
 
     function flipCard(sessionID, id2hide, id2show, id3show) {
@@ -405,6 +400,7 @@
                     document.getElementById(id2hide).style.visibility = 'hidden'
                     document.getElementById(id3hide).style.visibility = 'hidden';
                     document.getElementById(id2show).style.visibility = 'hidden';
+
                 }
                 else {
 
@@ -428,13 +424,13 @@
                     document.getElementById("meaning").innerHTML = response.word['meaning'];
                     document.getElementById("usage").innerHTML = response.word['usage'];
 
-                     document.getElementById("flip").style.visibility = 'hidden';
-                     if(document.getElementById('flip').style.visibility==='hidden') {
+                    document.getElementById("flip").style.visibility = 'hidden';
+                    if (document.getElementById('flip').style.visibility === 'hidden') {
 
 
-                         document.getElementById('ik').style.visibility = 'visible';
-                         document.getElementById('idk').style.visibility = 'visible';
-                     }
+                        document.getElementById('ik').style.visibility = 'visible';
+                        document.getElementById('idk').style.visibility = 'visible';
+                    }
 
 
                 }
@@ -456,7 +452,6 @@
 
             $card.children().children().toggleClass('is-active')
             switching = false
-
 
 
         }, cardTransitionTime / 2)
@@ -520,10 +515,27 @@
                 */
                 if (response.word['wordID'] === '$null$') {
 
-                    document.getElementById("cardside1").innerHTML = 'Congratulations!You have learned everything';
+                    document.getElementById("cardside1").innerHTML = 'Congratulations!You have learned new words\nPlease see the summary';
                     document.getElementById(id2hide).style.visibility = 'hidden'
                     document.getElementById(id3hide).style.visibility = 'hidden';
                     document.getElementById(id2show).style.visibility = 'hidden';
+
+                    $.ajax({
+                        url: '/practicesummary',
+                        data: {
+                            'sessionID': sessionID
+                        },
+                        dataType: 'html',
+                        type: 'POST',
+                        success: function (response) {
+                            $('body').replaceWith(response);
+                        },
+                        error: function (error) {
+                            console.log('Error in receiving');
+                        }
+                    });
+
+
                 }
                 else {
 

@@ -3,8 +3,8 @@ from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
 from zSaad_Test.Backend.Words.Words import Words
 
 
-def create_session_practice(status, words, idx):
-    session = session_practice(status=status, words=words, idx=idx)
+def create_session_practice(status, words, idx, edited_words):
+    session = session_practice(status=status, words=words, idx=idx, edited_words=edited_words)
     session2 = session.save()
     return session2
 

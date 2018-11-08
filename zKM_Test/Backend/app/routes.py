@@ -24,6 +24,7 @@ from zKM_Test.Backend.iterator.Iterator import Iteration
 from zKM_Test.Backend.observer.Observer1 import Notification
 from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history, test_summary
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
+from zMA_Test.Backend.practice.practice_summary import create_summary
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.builder_pattern import ConcreteBuilder, Director
@@ -571,7 +572,8 @@ def practice(type):
     fetchwords = FetchWords(current_user.username)
     words = fetchwords.practice_words(type,"practice")
     status = {word['wordID']:'firstseen' for word in words}
-    sessionID = create_session_practice(status, words, 0)
+
+    sessionID = create_session_practice(status, words, 0, words)
     #userWordHistory = create_user_word_history()
 
     return render_template('tryit.html', word=words[0], sessionID=sessionID.id)
@@ -583,7 +585,7 @@ def translate():
     pointer_f = session_practice.objects(id=sessionID)[0]
 
     pointer = pointer_f.idx # fetched pointer
-    words = pointer_f.words # fetched word list
+    words = pointer_f.edited_words # fetched word list
 
     if len(words)!=0:
         word = words[pointer]
@@ -603,13 +605,20 @@ def nextWord():
     pointer_f = session_practice.objects(id=sessionID)[0]
 
     pointer = pointer_f.idx # fetched, incremented pointer, saved the incremented pointer
-    words = pointer_f.words
+    words = pointer_f.edited_words
     oldStatus = pointer_f.status
     newStatus = oldStatus
     currentWord = words[pointer]
     currentWordID = currentWord['wordID']
+    history = pointer_f.history
+
+    if currentWordID not in history:
+        history[currentWordID] = {buttonID}
+    else:
+        history[currentWordID].append(buttonID)
 
     if buttonID=='ik':
+
         if newStatus[currentWordID]=='firstseen':
             newStatus[currentWordID] = 'yellow'
             words.remove(currentWord)
@@ -642,13 +651,16 @@ def nextWord():
     if len(words) != 0:
         pointer = (pointer + 1) % len(words)
         newWord = words[pointer]
-        pointer_f.words = words
+        pointer_f.edited_words = words
         pointer_f.status = newStatus
         pointer_f.idx = pointer
+        pointer_f.history = history
         pointer_f.save()
     else:
         pointer = -1
         newWord = {'wordID': '$null$'}
+        pointer_f.history = history
+        pointer_f.save()
 
 
     print("word status ",  newStatus[currentWordID])
@@ -658,6 +670,21 @@ def nextWord():
 
     return json.dumps({'word': newWord, 'learning': learning, 'reviewing':reviewing, 'mastered':mastered})
 
+@APP_MAIN.route('/practicesummary', methods=['POST'])
+def practice_summary():
+    print("summary te ashche")
+    sessionID = request.form['sessionID']
+    pointer_f = session_practice.objects(id=sessionID)[0]
+
+
+
+    words = pointer_f.words
+    history = pointer_f.history
+    correct, wrong = create_summary(words,history)
+
+    for key,v in correct.items():
+        print("corrrect ", key, v)
+    return render_template('practicesummary.html', words=words, correct=correct, wrong=wrong )
 
 @APP_MAIN.route('/tryit')
 def tryit():
