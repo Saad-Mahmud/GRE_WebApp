@@ -9,22 +9,24 @@
     {% for post in posts %}
     <div><p>{{ post.author.username }}: says - {{ post.body }}</p></div>
     {% endfor %}
+    <div align="center">
+    <p>
+        <a style="height:140px;width:200px" class="btn btn-default btn-lg" role="button"  href="{{ url_for('dictionary') }}"><br><br> Dictionary</a>
+    </p>
+    </div>
     {% if current_user.is_authenticated %}
+        {#<p>
+        <a class="btn btn-default" role="button" href="{{ url_for('dictionary') }}"> Dictionary</a>
+        </p>#}
+        <div align="center">
         <p>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('dictionary') }}"> Dictionary</a></button>
+        <a style="height:100px;width:180px" class="btn btn-default btn-lg" role="button" href="{{ url_for('test_page') }}"><br> Test</a>
+        <a style="height:100px;width:180px" class="btn btn-default btn-lg" role="button" href="{{ url_for('practice_intro') }}"><br> Practice</a>
+        <a style="height:100px;width:180px" class="btn btn-default btn-lg" role="button" href="{{ url_for('user',username=current_user.username) }}"><br> Profile</a>
+
+        <a style="height:100px;width:180px" class="btn btn-default btn-lg" role="button" href="{{ url_for('stat') }}"><br> Statistics</a>
         </p>
-        <p>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('test_page') }}"> Test</a></button>
-        </p>
-        <p>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('practice_intro') }}"> Practice</a></button>
-        </p>
-        <p>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('user',username=current_user.username) }}"> Profile</a></button>
-        </p>
-        <p></p>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><a href="{{ url_for('stat') }}"> Statistics</a></button>
-        </p>
+        </div>
     {% endif %}
 {% endblock %}
 

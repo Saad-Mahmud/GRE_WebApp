@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block js %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -73,7 +73,7 @@
 </table>
 
 <h3>Charts:</h3>
-<h5>{{ current_user.username }}'s Rating Graph</h5>
+{#<h5>{{ current_user.username }}'s Rating Graph</h5>#}
 <div class="ct-chart0 .ct-perfect-fourth"></div>
 <h5>Test vs Score</h5>
 <div class="ct-chart .ct-perfect-fourth"></div>
@@ -152,7 +152,7 @@
     // Create a new line chart object where as first parameter we pass in a selector
     // that is resolving to our chart container element. The Second parameter
     // is the actual data object.
-     let mychart0 = new Chartist.Line('.ct-chart0', data0, options);
+     //let mychart0 = new Chartist.Line('.ct-chart0', data0, options);
     let mychart = new Chartist.Line('.ct-chart', data, options);
 
     let mychart2 = new Chartist.Bar('.ct-chart2', data1, options);

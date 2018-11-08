@@ -335,8 +335,10 @@ def user(username):
     except:
         rankindx = None
         locindx = None
+    stat_data = Gre_data.objects(username=current_user.username)
+    stat_data = stat_data[0]
 
-    return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx)
+    return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx,stat_data=stat_data)
 
 def save_pic(form_picture):
     random_hex = urandom(8).hex()
