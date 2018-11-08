@@ -86,6 +86,14 @@
 
         {% endfor %}
     </table>
+
+    <form action="{{ url_for('definedprevsum') }}" method="post">
+        Enter a number to check the previous test summary:<br>
+        <input type="number" name="summarypath" value="1">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
 </div>
 
 </body>

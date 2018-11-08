@@ -560,6 +560,19 @@ def previoussummary():
         return render_template("test_no_summary.html")
 
 
+@APP_MAIN.route('/definedprevsum', methods=['POST'])
+def definedprevsum():
+    sumpath = request.form['summarypath']
+#............................................Memento is used to restore a defined summary....................................
+    caretaker = Caretaker()
+    originator = Originator()
+    if int(sumpath) > caretaker.mementos.__len__():
+        return render_template("test_no_summary.html")
+    else:
+        last_sum = originator.restore(caretaker.getMemento(int(sumpath)-1))
+        return render_template("test_prev_summary.html", last_sum=last_sum)
+
+
 @login_required
 @APP_MAIN.route('/practice')
 def practice_intro():
@@ -670,12 +683,11 @@ def nextWord():
 
     return json.dumps({'word': newWord, 'learning': learning, 'reviewing':reviewing, 'mastered':mastered})
 
+
 @APP_MAIN.route('/practicesummary', methods=['POST'])
 def practice_summary():
-    print("summary te ashche")
     sessionID = request.form['sessionID']
     pointer_f = session_practice.objects(id=sessionID)[0]
-
 
 
     words = pointer_f.words
