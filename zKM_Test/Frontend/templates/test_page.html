@@ -90,6 +90,10 @@
         <a href="{{ url_for('test', type='hard') }}" class="myButton" id="hard" style='visibility:visible'
            onclick="hard(this, '{{ sessionID }}')">Hard</a>
     </div>
+    <div style="display: inline-block">
+        <a href="{{ url_for('previoussummary') }}" class="myButton" id="history" style='visibility:visible'
+           onclick="previoussummary(this, '{{ sessionID }}')">Previous Summary</a>
+    </div>
 
 </div>
 

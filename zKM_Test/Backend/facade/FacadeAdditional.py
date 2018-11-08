@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import render_template, url_for, request, redirect, flash
 
 from zKM_Test.Backend.app.model import User, Gre_data
-from zMA_Test.Backend.test.fetch_test import create_session_test,create_gre_test,update_gre_data
+from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data, create_test_summary
 from zMA_Test.Backend.practice.fetch_practice import create_user_word_history
 
 class Addition:
@@ -37,6 +37,7 @@ class CheckUser:
             date = datetime.utcnow()
             create_gre_test(name, {}, date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
             create_user_word_history(name)
+            print('aaaaaaaaaaaaaaaaaaaaaaaaa',create_test_summary(name, []))
             flash("Congrats!!you can now log in !!!")
             return True
         else:

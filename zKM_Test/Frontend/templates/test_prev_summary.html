@@ -19,7 +19,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Test Summary</title>
+    <title>Previous Summary</title>
 
     <style>
         table {
@@ -54,19 +54,19 @@
 
     <style>
         .summary {
+
             position: absolute;
             top: 12%;
             margin-left: 5%;
         }
+
     </style>
 </head>
 <body>
 {% include 'header.html' %}
 
-
 <div class="summary" style="display: block">
-    <h2 align="center">Congratulation, Test has ended</h2>
-    <h2 align="center">Correct: {{ correct }} and Wrong: {{ wrong }}</h2>
+    <h2 align="center">Previous Test Summary</h2>
 
     <table align="center" style="display: block">
 
@@ -79,13 +79,14 @@
         {% for i in range(10) %}
 
             <tr>
-                <td>{{ ques[i] }}</td>
-                <td>{{ your_ans[i] }}</td>
-                <td>{{ correct_ans[i] }}</td>
+                <td>{{ last_sum[0][i] }}</td>
+                <td>{{ last_sum[1][i] }}</td>
+                <td>{{ last_sum[2][i] }}</td>
             </tr>
 
         {% endfor %}
     </table>
 </div>
+
 </body>
 </html>

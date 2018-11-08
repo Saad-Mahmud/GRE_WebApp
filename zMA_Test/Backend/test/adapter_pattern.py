@@ -22,6 +22,6 @@ class Adapter(Target):
 class Adaptee:
     def specific_request(self, final_dict):
         final_list = []
-        for w2 in final_dict:
-            final_list.append([w2['wordID'], w2['word'], w2['meaning'], w2['usage'], w2['translations'], w2['TYPE']])
+        for word in final_dict:
+            final_list.append([word['wordID'], word['word'], word['meaning'], word['usage'], word['translations'], word['TYPE']])
         return final_list

@@ -22,14 +22,15 @@ from zKM_Test.Backend.app.model import User, Gre_data
 from zKM_Test.Backend.facade import FacadeAdditional
 from zKM_Test.Backend.iterator.Iterator import Iteration
 from zKM_Test.Backend.observer.Observer1 import Notification
-from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history
+from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history, test_summary
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
 from zMA_Test.Backend.test.adapter_pattern import Adapter
 from zMA_Test.Backend.test.builder_pattern import ConcreteBuilder, Director
 from zMA_Test.Backend.test.builder_pattern_summary import ConcreteBuilderSummary, DirectorSummary
 from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_test, update_gre_data, \
-    update_initial_session_test, update_next_session_test
+    update_initial_session_test, update_next_session_test, update_test_summary
+from zMA_Test.Backend.test.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 from zSaad_Test.Backend.Words.Words import Words
 
@@ -442,6 +443,7 @@ def test(type):
         temp_test_words1.append(test_words[i][1])
         temp_test_words2.append(test_words[i][2])
 
+#..................................................Builder pattern is used..............................................
     concrete_builder = ConcreteBuilder()
     director = Director(test_word[1], 0, temp_test_words1, test_word[3], test_word[1], test_word[1])
     director.construct(concrete_builder, 1)
@@ -475,6 +477,7 @@ def nextTestWord():
             temp_test_words1.append(test_words[i][1])
             temp_test_words2.append(test_words[i][2])
 
+#.................................................Builder Pattern is used.................................................
         if isWhat == 'true':
             concrete_builder = ConcreteBuilder()
             director = Director(test_word[1], pointer, temp_test_words1, test_word[3], test_word[1], test_word[1])
@@ -527,14 +530,33 @@ def summary():
     wrong = request.form['wrong']
     pointer_f = update_next_session_test(sessionID, isWhat, ' ', 6, ' ')
 
-#   Builder pattern is used to build the summary
+#......................................Builder pattern is used to build the summary..........................................
     concrete_builder = ConcreteBuilderSummary()
     director = DirectorSummary(pointer_f, isWhat)
     director.constructSummary(concrete_builder)
     check = concrete_builder.summary_object
 
+# .....................................Memento pattern is used to save the summary...........................................
+    prev_sum = update_test_summary(current_user.username, check.ques, check.your_ans, check.correct_ans)
+    caretaker = Caretaker()
+    originator = Originator()
+    originator.setState(prev_sum)
+    caretaker.addMemento(originator.save())
+
     return render_template("test_summary.html", correct=correct, wrong=wrong, isWhat=isWhat,
                            test_words=check.test_words, ques=check.ques, correct_ans=check.correct_ans, your_ans=check.your_ans)
+
+
+@APP_MAIN.route('/previoussummary')
+def previoussummary():
+#.......................................Memento Pattern is used to restore the summary......................................
+    caretaker = Caretaker()
+    originator = Originator()
+    if caretaker.mementos.__len__() > 0:
+        last_sum = originator.restore(caretaker.getMemento(caretaker.mementos.__len__() - 1))
+        return render_template("test_prev_summary.html", last_sum=last_sum)
+    else:
+        return render_template("test_no_summary.html")
 
 
 @login_required

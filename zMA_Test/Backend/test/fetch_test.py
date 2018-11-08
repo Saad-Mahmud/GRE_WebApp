@@ -1,6 +1,8 @@
 from zKM_Test.Backend.app.model import Gre_data
-from zMA_Test.Backend.app.model import session_test
+from zMA_Test.Backend.app.model import session_test, test_summary
 from datetime import datetime
+
+from zMA_Test.Backend.test.iterator_pattern import WordList
 
 
 def create_session_test(status, words, idx, ques_multi, ques_blank):
@@ -22,6 +24,11 @@ def create_gre_test(username, history, test_date, how_many_test, best_score, avg
     gre_test = gre_test.save()
     return gre_test
 
+def create_test_summary(username, summary):
+    sum = test_summary(username=username, summary=summary)
+    sum = sum.save()
+    return sum
+
 
 def update_gre_data(username, test_key, session_data, correct):
     gre_data = Gre_data.objects(username=username)[0]
@@ -42,6 +49,17 @@ def update_gre_data(username, test_key, session_data, correct):
     gre_data.all_scores.append(current_score)
 
     gre_data.save()
+
+
+def update_test_summary(username, ques, your_ans, correct_ans):
+    prev_sum = []
+    prev_sum.append(ques)
+    prev_sum.append(your_ans)
+    prev_sum.append(correct_ans)
+    test_sum = test_summary.objects(username=username)[0]
+    test_sum.summary.append(prev_sum)
+    test_sum.save()
+    return prev_sum
 
 
 def update_initial_session_test(sessionID, test_words, test_line, test_multi_choice_word):

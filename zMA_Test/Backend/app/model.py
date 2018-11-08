@@ -20,6 +20,10 @@ class user_word_history(Document):
     username = StringField(required=True, primary_key=True)
     status = DictField()
 
+class test_summary(Document):
+    username = StringField(required=True, primary_key=True)
+    summary = ListField()
+
 
 
 # class Gre_data(Document):
