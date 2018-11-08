@@ -15,12 +15,13 @@ from werkzeug.urls import url_parse
 from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
 from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, \
     ResetPasswordForm, LocalStatForm
-from zKM_Test.Backend.builder import RegBuilder
+from zKM_Test.Backend.builder import RegBuilder, AdapterPattern
 from zKM_Test.Backend.builder.RateRank import RateRank
 from zKM_Test.Backend.facade.facadeForm import AdditionalForm
 from zKM_Test.Backend.app.model import User, Gre_data
 from zKM_Test.Backend.facade import FacadeAdditional
 from zKM_Test.Backend.iterator.Iterator import Iteration
+from zKM_Test.Backend.observer.Observer1 import Notification
 from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_util import showstat
@@ -158,12 +159,13 @@ def register():
         Concrete_Builder = RegBuilder.ConcreteBuilder()
         director = RegBuilder.Director(form = form)
         director.construct(Concrete_Builder)
-        user = Concrete_Builder.product
+        user1 = Concrete_Builder.product
         # user = User(username=form.username.data,
         #             email=form.email.data,
         #             password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
         # user.save()
-        user = Concrete_Builder.getProduct()
+        user = AdapterPattern.Adapter()
+        user = user.Adapting(user1)
         user.save()
 
         # reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
@@ -495,6 +497,8 @@ def nextTestWord():
         status = update_next_session_test(sessionID, isWhat, answer, 4, ' ')
         correct, wrong = show_test_stat(status)
         update_gre_data(username, test_key, session_data, correct)
+        observeKM = Notification()
+        observeKM.Ovserved()
         rating_change(status, test_words)
 
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})

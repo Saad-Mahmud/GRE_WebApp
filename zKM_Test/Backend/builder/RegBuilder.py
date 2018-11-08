@@ -90,7 +90,7 @@ class ConcreteBuilder(Builder):
 
     def getProduct(self):
         self.product = Product(self.username,self.email,self.password_hash,self.reg_date,self.usertype,self.about_me)
-        return User(username=self.username,email=self.email,password_hash=self.password_hash,reg_date=self.reg_date,usertype=self.usertype,about_me=self.about_me)
+        #return User(username=self.username,email=self.email,password_hash=self.password_hash,reg_date=self.reg_date,usertype=self.usertype,about_me=self.about_me)
 
 class Product(object):
     def __init__(self,username,email,password_hash,reg_date,usertype,about_me):
@@ -101,5 +101,4 @@ class Product(object):
         self.usertype = usertype
         self.about_me = about_me
 
-        print("Registration ")
 

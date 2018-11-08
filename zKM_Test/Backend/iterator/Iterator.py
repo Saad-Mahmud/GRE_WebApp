@@ -47,13 +47,13 @@ class Iteration:
             menu.add(i['country_name'])
 
 
-        print("Displaying Menu:")
+        #print("Displaying Menu:")
         iterator = menu.iterator()
 
         while iterator.has_next():
             item = iterator.next()
             arr.append(item)
-            print(item)
+            #print(item)
 
         return arr
 
