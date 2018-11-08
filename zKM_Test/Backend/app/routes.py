@@ -565,9 +565,6 @@ def translate():
     return json.dumps({'word': word})
 
 
-
-
-
 @APP_MAIN.route('/nextword', methods=['POST'])
 def nextWord():
 

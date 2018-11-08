@@ -56,14 +56,18 @@ def update_next_session_test(sessionID, isWhat, answer, type, test_line):
     pointer_f = session_test.objects(id=sessionID)[0]
 
     if type == 1:
+        valueList = []
         pointer = pointer_f.idx + 1
         test_words = pointer_f.words
+
         if isWhat == 'true':
-            pointer_f.status[test_words[pointer_f.idx][1]] = answer
+            valueList.append(test_words[pointer_f.idx][1])
+            valueList.append(answer)
+            pointer_f.status[test_words[pointer_f.idx][1]] = valueList
         else:
-            test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace(".", " ")
-            test_words[pointer_f.idx][2] = test_words[pointer_f.idx][2].replace("$", " ")
-            pointer_f.status[test_words[pointer_f.idx][2]] = answer
+            valueList.append(test_words[pointer_f.idx][2])
+            valueList.append(answer)
+            pointer_f.status[test_words[pointer_f.idx][1]] = valueList
 
         pointer_f.idx = pointer
         pointer_f.save()

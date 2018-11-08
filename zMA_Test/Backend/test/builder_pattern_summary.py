@@ -55,9 +55,12 @@ class ConcreteBuilderSummary(BuilderSummary):
             self.ques = pointer_f.ques_multi
 
     def setAns(self, pointer_f):
-        for the_key, the_value in pointer_f.status.items():
-            self.correct_ans.append(the_key)
-            self.your_ans.append(the_value)
+        words = pointer_f.words
+        for word in words:
+            for the_key, the_value in pointer_f.status.items():
+                if word[1] == the_key:
+                    self.correct_ans.append(the_value[0])
+                    self.your_ans.append(the_value[1])
 
     def getSummary(self):
         self.summary_object = Summary(self.test_words, self.ques, self.correct_ans, self.your_ans)
