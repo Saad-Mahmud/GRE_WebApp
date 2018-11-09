@@ -19,6 +19,7 @@ from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 @APP_MAIN.route('/testpage')
 @login_required
 def test_page():
+    print('aaaaaaaaaaaaaaaaaaaaaaammmmmmmmmmmmmmmmmmmmmmmm')
     return render_template("test_page.html")
 
 

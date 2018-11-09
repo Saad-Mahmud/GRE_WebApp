@@ -1,0 +1,20 @@
+<table class="table table-bordered" align="center">
+    <thead>
+    <tr>
+        <th>Questions</th>
+        <th>Your Answers</th>
+        <th>Correct Answers</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(10) %}
+
+        <tr>
+            <td>{{ ques[i] }}</td>
+            <td>{{ your_ans[i] }}</td>
+            <td>{{ correct_ans[i] }}</td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>

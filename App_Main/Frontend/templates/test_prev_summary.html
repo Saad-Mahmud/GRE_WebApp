@@ -20,81 +20,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Previous Summary</title>
-
     <style>
         table {
-
-            width: 100%;
-            align-items: center;
-            position: relative;
-        }
-
-        th, td {
-            text-align: center;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #8aa1df;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #bcc0f0;
+            position: absolute;
+            top: 17%;
+            border: 5px;
         }
 
         th {
             background-color: #4a93c9;
             color: white;
+            text-align: center;
+            padding: 8px;
         }
 
-        h2 {
-            background: #b9dadb;
+        td {
+            text-align: center;
+            padding: 8px;
         }
     </style>
 
     <style>
-        .summary {
-
+        h1 {
+            background: #b9dadb;
             position: absolute;
-            top: 12%;
-            margin-left: 5%;
+            top: 11%;
+            left: 35%;
         }
 
+        form {
+            position: absolute;
+            top: 95%;
+        }
     </style>
 </head>
 <body>
-{% include 'header.html' %}
 
-<div class="summary" style="display: block">
-    <h2 align="center">Previous Test Summary</h2>
 
-    <table align="center" style="display: block">
-
-        <tr>
-            <th>Questions</th>
-            <th>Your Answers</th>
-            <th>Correct Answers</th>
-        </tr>
-
-        {% for i in range(10) %}
-
-            <tr>
-                <td>{{ last_sum[0][i] }}</td>
-                <td>{{ last_sum[1][i] }}</td>
-                <td>{{ last_sum[2][i] }}</td>
-            </tr>
-
-        {% endfor %}
-    </table>
-
-    <form action="{{ url_for('definedprevsum') }}" method="post">
-        Enter a number to check the previous test summary:<br>
-        <input type="number" name="summarypath" value="1">
-        <br>
-        <input type="submit" value="Submit">
-    </form>
-
+<div>
+    {% include 'header.html' %}
+    <h1 align="center">Previous Test Summary</h1>
 </div>
+
+{% include 'test_prev_summary_view.html' %}
+
+<form class="form" action="{{ url_for('definedprevsum') }}" method="post">
+    Enter a number to check the previous test summary:<br>
+    <input type="number" name="summarypath" value="1">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
 
 </body>
 </html>

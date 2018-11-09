@@ -1,0 +1,20 @@
+<table class="table table-bordered" align="center">
+    <thead>
+    <tr>
+        <th>Questions</th>
+        <th>Your Answers</th>
+        <th>Correct Answers</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(10) %}
+
+        <tr>
+            <td>{{ last_sum[0][i] }}</td>
+            <td>{{ last_sum[1][i] }}</td>
+            <td>{{ last_sum[2][i] }}</td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>

@@ -23,69 +23,48 @@
 
     <style>
         table {
-
-            width: 100%;
-            align-items: center;
-            position: relative;
-        }
-
-        th, td {
-            text-align: center;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #8aa1df;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #bcc0f0;
+            position: absolute;
+            top: 30%;
+            border: 5px;
         }
 
         th {
             background-color: #4a93c9;
             color: white;
+            text-align: center;
+            padding: 8px;
         }
 
-        h2 {
-            background: #b9dadb;
+        td {
+            text-align: center;
+            padding: 8px;
         }
     </style>
 
     <style>
-        .summary {
+        h2 {
+            background: #b9dadb;
             position: absolute;
-            top: 12%;
-            margin-left: 5%;
+            top: 15%;
+            left: 30%;
+        }
+
+        h3 {
+            background: #b9dadb;
+            position: absolute;
+            top: 20%;
+            left: 30%;
         }
     </style>
 </head>
 <body>
-{% include 'header.html' %}
 
-
-<div class="summary" style="display: block">
+<div>
+    {% include 'header.html' %}
     <h2 align="center">Congratulation, Test has ended</h2>
-    <h2 align="center">Correct: {{ correct }} and Wrong: {{ wrong }}</h2>
-
-    <table align="center" style="display: block">
-
-        <tr>
-            <th>Questions</th>
-            <th>Your Answers</th>
-            <th>Correct Answers</th>
-        </tr>
-
-        {% for i in range(10) %}
-
-            <tr>
-                <td>{{ ques[i] }}</td>
-                <td>{{ your_ans[i] }}</td>
-                <td>{{ correct_ans[i] }}</td>
-            </tr>
-
-        {% endfor %}
-    </table>
+    <h3 align="center">Correct: {{ correct }} and Wrong: {{ wrong }}</h3>
 </div>
+
+{% include 'test_summary_view.html' %}
 </body>
 </html>
