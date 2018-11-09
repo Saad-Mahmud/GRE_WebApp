@@ -17,11 +17,13 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
 <head>
     <meta charset="UTF-8">
     <title>Previous Summary</title>
     <style>
-        lists{
+        lists {
             position: static;
             top: 60%;
         }
@@ -29,24 +31,35 @@
 
     <style>
 
-.active {
-    background-color: green;
-}
-.topnav {
-  overflow: hidden;
-  background-color: red;
-}
-.topnav a:hover {
-  background-color: #5ddd18;
-  color: black;
-}
+        .active {
+            background-color: green;
+        }
 
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-}
+        .topnav {
+            overflow: hidden;
+            background-color: red;
+        }
 
-</style>
+        .topnav a:hover {
+            background-color: #5ddd18;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 10px 10px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+    </style>
 
 </head>
 <body>
@@ -60,43 +73,44 @@
     <a class="navbar-brand" href="{{ url_for('hello_world') }}">VocLAB</a>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-      </li>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+            </li>
 
-        <li class="nav-item ">
-        <a class="nav-link " href="{{ url_for('dictionary') }}">Dictionary</a>
-        </li>
-        <li class="nav-item ">
-        <a class="nav-link " href="{{ url_for('practice_intro') }}">Practice</a>
-        </li>
-        <li class="nav-item ">
-        <a class="nav-link" href="{{ url_for('test_page') }}">Test</a>
-        </li>
+            <li class="nav-item ">
+                <a class="nav-link " href="{{ url_for('dictionary') }}">Dictionary</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link " href="{{ url_for('practice_intro') }}">Practice</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for('test_page') }}">Test</a>
+            </li>
 
-        <li class="nav-item ">
-        <a class="nav-link" href="{{ url_for('user',username=current_user.username) }}">Profile</a>
-        </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for('user',username=current_user.username) }}">Profile</a>
+            </li>
 
 
-        {% if ut == 'A' %}
-            <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">Admin</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="{{ url_for('admin_words') }}">Admin WordView</a>
-              <a class="dropdown-item" href="{{ url_for('adminsuggestions') }}">Admin SuggestionsView</a>
-              <a class="dropdown-item" href="{{ url_for('admintodo') }}">Admin TODO List</a>
-              <a class="dropdown-item" href="{{ url_for('admin') }}">Admin User History</a>
-            </div>
-          </li>
+            {% if ut == 'A' %}
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('admin_words') }}">Admin WordView</a>
+                        <a class="dropdown-item" href="{{ url_for('adminsuggestions') }}">Admin SuggestionsView</a>
+                        <a class="dropdown-item" href="{{ url_for('admintodo') }}">Admin TODO List</a>
+                        <a class="dropdown-item" href="{{ url_for('admin') }}">Admin User History</a>
+                    </div>
+                </li>
 
-        {% endif %}
-    </ul>
+            {% endif %}
+        </ul>
     </div>
-<div class="topnav">
+    <div class="topnav">
         <a class="nav-link" href="{{ url_for('logout') }}">{{ ('Logout') }}</a>
     </div>
 </nav>
@@ -130,49 +144,49 @@
     <!-- Footer Elements -->
     <div class="container">
 
-      <!-- Grid row-->
-      <div class="row">
+        <!-- Grid row-->
+        <div class="row">
 
-        <!-- Grid column -->
-        <div class="col-md-12">
-          <div class="mb-5 flex-center">
+            <!-- Grid column -->
+            <div class="col-md-12">
+                <div class="mb-5 flex-center">
 
-            <!-- Facebook -->
-            <a class="fb-ic">
-              <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!-- Twitter -->
-            <a class="tw-ic">
-              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
+                    <!-- Facebook -->
+                    <a class="fb-ic">
+                        <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <!-- Twitter -->
+                    <a class="tw-ic">
+                        <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
 
-            <!--Linkedin -->
-            <a class="li-ic">
-              <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
+                    <!--Linkedin -->
+                    <a class="li-ic">
+                        <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
 
-            <!--Pinterest-->
-            <a class="gt-ic">
-              <i class="fa fa-github fa-lg white-text fa-2x"> </i>
-            </a>
-          </div>
+                    <!--Pinterest-->
+                    <a class="gt-ic">
+                        <i class="fa fa-github fa-lg white-text fa-2x"> </i>
+                    </a>
+                </div>
+            </div>
+            <!-- Grid column -->
+
         </div>
-        <!-- Grid column -->
-
-      </div>
-      <!-- Grid row-->
+        <!-- Grid row-->
 
     </div>
     <!-- Footer Elements -->
 
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2018 Copyright:
-      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
+        <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
     </div>
     <!-- Copyright -->
 
-  </footer>
-  <!-- Footer -->
+</footer>
+<!-- Footer -->
 
 
 <script>
@@ -182,8 +196,8 @@
         var text = e.options[e.selectedIndex].text;
         console.log(value);
         console.log(text);
-        document.getElementById(id+"_text").innerHTML=value
-}
+        document.getElementById(id + "_text").innerHTML = value
+    }
 </script>
 
 </body>

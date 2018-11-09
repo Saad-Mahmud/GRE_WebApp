@@ -23,6 +23,8 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
@@ -55,7 +57,7 @@
     </style>
 
     <style>
-        .myclass{
+        .myclass {
 
             min-height: 600px;
             position: relative;
@@ -68,25 +70,39 @@
 
     <style>
 
-.active {
-    background-color: green;
-}
+        .active {
+            background-color: green;
+        }
 
-.topnav a:hover {
-  background-color: #5ddd18;
-  color: black;
-}
+        .topnav {
+            overflow: hidden;
+            background-color: red;
+        }
 
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-}
+        .topnav a:hover {
+            background-color: #5ddd18;
+            color: black;
+        }
 
-</style>
+        .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 10px 10px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+    </style>
 
 
 </head>
-<body >
+<body>
 
 {% include 'test_header.html' %}
 
