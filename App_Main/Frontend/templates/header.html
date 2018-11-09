@@ -30,13 +30,16 @@
                 <a class="nav-link" href="{{ url_for('logout')}}">{{ ('Logout') }}</a>
             </li>
             <div class="container">
-                {% with messages= get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-info" role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-                {% endwith %}
+                {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
             </div>
         </ul>
     </div>

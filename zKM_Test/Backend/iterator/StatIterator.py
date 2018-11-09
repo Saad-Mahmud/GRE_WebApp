@@ -36,6 +36,9 @@ class Menu:
 
     def iterator(self):
         return MenuIterator(self.items)
+    #
+    # def retArr(self):
+    #     return self.items
 
 class Iteration:
     def IteratingCountry(self):

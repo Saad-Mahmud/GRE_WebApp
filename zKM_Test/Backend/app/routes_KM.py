@@ -1,6 +1,5 @@
 import json
 from datetime import datetime, timedelta
-import os
 
 from flask import json, request
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
@@ -13,19 +12,19 @@ from werkzeug.urls import url_parse
 from App_Main.Backend.App import APP_MAIN, APPLOGIN, db, mail
 from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, \
     ResetPasswordForm, LocalStatForm
-from zKM_Test.Backend.builder import RegBuilder, AdapterPattern
-from zKM_Test.Backend.builder.RateRank import RateRank as RK
+from zKM_Test.Backend.builder import RegBuilder, AdapterPattern, ProfileAdapter, EditProfileBuilder
+from zKM_Test.Backend.factory.LoginFactory import LoginFactory
+from zKM_Test.Backend.factory.RateRank import RateRank as RK
 from zKM_Test.Backend.facade.facadeForm import AdditionalForm
 from zKM_Test.Backend.app.model import User, Gre_data
 from zKM_Test.Backend.facade import FacadeAdditional
-from zKM_Test.Backend.iterator.Iterator import Iteration
+from zKM_Test.Backend.iterator.StatIterator import Iteration
 
 try:
     from urllib.request import Request,urlopen, URLError
 except ImportError:
     from urllib2 import Request,urlopen,URLError
 
-from PIL import Image
 from flask_mail import Message
 
 next_gpage = ""
@@ -229,18 +228,21 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.objects(username=form.username.data)
-        if len(user)==0:
-            return redirect(url_for('login'))
-        else:
-            user = user[0]
-        if user is None or not user.check_password(form.password.data):
-            return redirect(url_for('login'))
-        login_user(user,remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        # user = User.objects(username=form.username.data)
+        # if len(user)==0:
+        #     return redirect(url_for('login'))
+        # else:
+        #     user = user[0]
+        # if user is None or not user.check_password(form.password.data):
+        #     return redirect(url_for('login'))
+        # login_user(user,remember=form.remember_me.data)
+        # next_page = request.args.get('next')
+        # if not next_page or url_parse(next_page).netloc != '':
+        #     next_page = url_for('index')
+        # return redirect(next_page)
+        log = LoginFactory()
+        red = log.CheckValid(form)
+        return redirect(red)
     return render_template('login.html',title="Sign In", form=form)
 
 
@@ -317,17 +319,17 @@ def user(username):
 
     return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx,stat_data=stat_data, title='Profile')
 
-def save_pic(form_picture):
-    random_hex = os.urandom(8).hex()
-    _,f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(APP_MAIN.static_folder, 'img', picture_fn)
-    output_size=(125,125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-
-    return picture_fn
+# def save_pic(form_picture):
+#     random_hex = os.urandom(8).hex()
+#     _,f_ext = os.path.splitext(form_picture.filename)
+#     picture_fn = random_hex + f_ext
+#     picture_path = os.path.join(APP_MAIN.static_folder, 'img', picture_fn)
+#     output_size=(125,125)
+#     i = Image.open(form_picture)
+#     i.thumbnail(output_size)
+#     i.save(picture_path)
+#
+#     return picture_fn
 
 @APP_MAIN.route('/edit_profile',methods=['POST','GET'])
 
@@ -335,10 +337,16 @@ def save_pic(form_picture):
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
-        if form.pic.data:
-            picture_file = save_pic(form.pic.data)
-            current_user.update(pic=picture_file)
-        current_user.update(about_me=form.about_me.data)
+        # if form.pic.data:
+        #     picture_file = save_pic(form.pic.data)
+        #     current_user.update(pic=picture_file)
+        # current_user.update(about_me=form.about_me.data)
+        Concrete_Builder = EditProfileBuilder.ConcreteBuilder()
+        director = EditProfileBuilder.Director(form=form)
+        director.construct(Concrete_Builder)
+        user1 = Concrete_Builder.product
+        user = ProfileAdapter.Adapter()
+        user.Adapting(user1)
         current_user.reload()
         flash("Your changes have been saved!")
         return redirect(url_for('user', username=current_user.username))
