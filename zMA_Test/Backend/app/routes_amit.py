@@ -21,6 +21,7 @@ def test_page():
     return render_template("test_page.html")
 
 
+@login_required
 @APP_MAIN.route('/test/<type>')
 def test(type):
 #...................................................Factory Pattern is used...............................................
@@ -59,6 +60,7 @@ def test(type):
                            multi_dict=check2.sorted_dict, sessionID=sessionID.id)
 
 
+@login_required
 @APP_MAIN.route('/nexttestword', methods=['POST'])
 def nextTestWord():
     username = current_user.username
@@ -112,6 +114,7 @@ def nextTestWord():
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
 
 
+@login_required
 @APP_MAIN.route('/thisans', methods=['POST'])
 def nextAns():
     sessionID = request.form['sessionID']
@@ -121,6 +124,7 @@ def nextAns():
     return json.dumps({'ans': answer})
 
 
+@login_required
 @APP_MAIN.route('/testsummary', methods=['POST'])
 def summary():
     sessionID = request.form['sessionID']
@@ -146,6 +150,7 @@ def summary():
                            test_words=check.test_words, ques=check.ques, correct_ans=check.correct_ans, your_ans=check.your_ans)
 
 
+@login_required
 @APP_MAIN.route('/previoussummary')
 def previoussummary():
 #.......................................Memento Pattern is used to restore the summary......................................
@@ -158,6 +163,7 @@ def previoussummary():
         return render_template("test_no_summary.html")
 
 
+@login_required
 @APP_MAIN.route('/definedprevsum', methods=['POST'])
 def definedprevsum():
     sumpath = request.form['summarypath']
