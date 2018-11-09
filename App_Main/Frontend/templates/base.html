@@ -28,9 +28,11 @@
 </script>
 <head>
     <meta charset="UTF-8">
+    <title>
     {% block title %}
-    {% if title %}{{ title }} - VocLAB{% else %}Welcome to VocLAB{% endif %}
+    {% if title %}{{ title }}{% else %}VocLAB{% endif %}
     {% endblock %}
+    </title>
     {% block js %} {% endblock %}
     {% block card %} {% endblock %}
 </head>

@@ -315,10 +315,10 @@ def user(username):
     stat_data = Gre_data.objects(username=current_user.username)
     stat_data = stat_data[0]
 
-    return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx,stat_data=stat_data)
+    return render_template('user.html', user=user, posts=posts, rate=rate, rankindx = rankindx, locindx=locindx,stat_data=stat_data, title='Profile')
 
 def save_pic(form_picture):
-    random_hex = urandom(8).hex()
+    random_hex = os.urandom(8).hex()
     _,f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(APP_MAIN.static_folder, 'img', picture_fn)
@@ -418,7 +418,7 @@ def stat():
     #print(cursor1[10]['_id']==stat_data.id)
     return render_template('stat.html', stat_data=stat_data,
                            user=user,rank = rank,ajax_var=ajax_var,
-                           local=local,length=len(rank),length1=len(local), arr=arr, form = form)
+                           local=local,length=len(rank),length1=len(local), arr=arr, form = form, title='Statistics')
 
 
 @APP_MAIN.route('/admin')

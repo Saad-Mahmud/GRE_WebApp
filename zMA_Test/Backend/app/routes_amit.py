@@ -15,14 +15,16 @@ from zMA_Test.Backend.test.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 
 
-@login_required
+
 @APP_MAIN.route('/testpage')
+@login_required
 def test_page():
     return render_template("test_page.html")
 
 
-@login_required
+
 @APP_MAIN.route('/test/<type>')
+@login_required
 def test(type):
 #...................................................Factory Pattern is used...............................................
     dummy = FetchWords(current_user.username).practice_words(type, 'test')
@@ -60,8 +62,8 @@ def test(type):
                            multi_dict=check2.sorted_dict, sessionID=sessionID.id)
 
 
-@login_required
 @APP_MAIN.route('/nexttestword', methods=['POST'])
+@login_required
 def nextTestWord():
     username = current_user.username
     answer = request.form['answer']
@@ -114,8 +116,8 @@ def nextTestWord():
         return json.dumps({'test_word': test_word, 'correct': correct, 'wrong': wrong})
 
 
-@login_required
 @APP_MAIN.route('/thisans', methods=['POST'])
+@login_required
 def nextAns():
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
@@ -124,8 +126,8 @@ def nextAns():
     return json.dumps({'ans': answer})
 
 
-@login_required
 @APP_MAIN.route('/testsummary', methods=['POST'])
+@login_required
 def summary():
     sessionID = request.form['sessionID']
     isWhat = request.form['isWhat']
@@ -150,8 +152,9 @@ def summary():
                            test_words=check.test_words, ques=check.ques, correct_ans=check.correct_ans, your_ans=check.your_ans)
 
 
-@login_required
 @APP_MAIN.route('/previoussummary')
+@login_required
+
 def previoussummary():
 #.......................................Memento Pattern is used to restore the summary......................................
     caretaker = Caretaker()
@@ -163,8 +166,8 @@ def previoussummary():
         return render_template("test_no_summary.html")
 
 
-@login_required
 @APP_MAIN.route('/definedprevsum', methods=['POST'])
+@login_required
 def definedprevsum():
     sumpath = request.form['summarypath']
 #............................................Memento is used to restore a defined summary....................................
