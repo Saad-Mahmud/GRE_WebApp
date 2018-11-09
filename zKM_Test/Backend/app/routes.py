@@ -24,6 +24,7 @@ from zKM_Test.Backend.facade import FacadeAdditional
 from zKM_Test.Backend.iterator.Iterator import Iteration
 from zKM_Test.Backend.observer.Observer1 import Notification
 from zMA_Test.Backend.app.model import session_test, session_practice, user_word_history, test_summary
+from zMA_Test.Backend.practice.builderpattern import ConcreteBuilderPracticeSummary, DirectorPracticeSummary
 from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, create_user_word_history
 from zMA_Test.Backend.practice.practice_summary import create_summary
 from zMA_Test.Backend.practice.practice_util import showstat
@@ -576,7 +577,7 @@ def practice(type):
     sessionID = create_session_practice(status, words, 0, words)
     #userWordHistory = create_user_word_history()
 
-    return render_template('tryit.html', word=words[0], sessionID=sessionID.id)
+    return render_template('practicedummy.html', word=words[0], sessionID=sessionID.id)
 
 
 @APP_MAIN.route('/fliped', methods=['POST'])
@@ -676,18 +677,27 @@ def practice_summary():
     sessionID = request.form['sessionID']
     pointer_f = session_practice.objects(id=sessionID)[0]
 
+    concrete_practice_builder = ConcreteBuilderPracticeSummary()
+    director_practice = DirectorPracticeSummary(pointer_f)
+    director_practice.constructPracticeSummary(concrete_practice_builder)
+    practice_sum = concrete_practice_builder.practice_summary_object
 
-    words = pointer_f.words
-    history = pointer_f.history
-    correct, wrong = create_summary(words,history)
+    #
+    #
+    # words = pointer_f.words
+    # history = pointer_f.history
+    # correct, wrong = create_summary(words,history)
+    #
+    # for key,v in correct.items():
+    #     print("corrrect ", key, v)
+    # return render_template('practicesummary.html', words=words, correct=correct, wrong=wrong )
+    return render_template('practicesummary.html', words=practice_sum.practice_words, correct=practice_sum.correct,
+                           wrong=practice_sum.wrong)
 
-    for key,v in correct.items():
-        print("corrrect ", key, v)
-    return render_template('practicesummary.html', words=words, correct=correct, wrong=wrong )
 
 @APP_MAIN.route('/tryit')
 def tryit():
-    return render_template('flashcard.html')
+    return render_template('practicedummy.html')
 
 
 '''

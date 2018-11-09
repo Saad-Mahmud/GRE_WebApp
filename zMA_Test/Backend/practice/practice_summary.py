@@ -1,3 +1,5 @@
+from zMA_Test.Backend.practice.iteratorpattern import IterableObject
+
 
 class SummaryObj:
     def __init__(self, wordname, wordmeaning, correct, wrong):
@@ -14,13 +16,26 @@ def create_summary(words, history):
     for key, value in history.items():
         correct_count = 0
         wrong_count = 0
-        for v in value:
-            if v=='ik':
+
+        valueList = IterableObject(value)
+        iterator = valueList.iterator()
+        while iterator.has_next():
+            v = iterator.next()
+            if v == 'ik':
                 correct_count += 1
             else:
                 wrong_count += 1
+
         correct[key] = correct_count
         wrong[key] = wrong_count
+
+        # for v in value:
+        #     if v=='ik':
+        #         correct_count += 1
+        #     else:
+        #         wrong_count += 1
+        # correct[key] = correct_count
+        # wrong[key] = wrong_count
         print("printing right and wrong ", key, correct_count, wrong_count)
 
     return correct, wrong

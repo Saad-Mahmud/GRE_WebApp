@@ -1,4 +1,5 @@
 <html lang="en">
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Bootstrap core CSS -->
@@ -10,21 +11,11 @@
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
 
 
 <head>
@@ -241,14 +232,14 @@
         }
 
 
-
     </style>
 
     <!-- sienav -->
     <style>
-        body {
+
+        /*body {
             font-family: "Lato", sans-serif;
-        }
+        }*/
 
         .sidenav {
             height: 100%;
@@ -267,7 +258,7 @@
         .sidenav a {
             /*padding: 6px 8px 6px 16px;*/
             text-decoration: none;
-            font-size: 25px;
+            font-size: 10px;
             color: #818181;
             display: block;
         }
@@ -288,7 +279,7 @@
             }
 
             .sidenav a {
-                font-size: 18px;
+                font-size: 10px;
             }
         }
     </style>
@@ -312,13 +303,14 @@
         .stat {
             position: fixed;
             top: 50%;
-            left: 5%;
+            margin-left: 1%;
+
         }
     </style>
 </head>
-
 <body>
-{% include 'header.html' %}
+
+{%  include 'header.html' %}
 
 
 <div class="sidenav">
@@ -334,13 +326,12 @@
     </div>
 
     <div class="stat" style="display: block">
-        <h4 align="left">You have mastered <b id="master">0</b> out of 10 words</h4>
-        <h4 align="left">You are reviewing <b id="review">0</b> out of 10 words</h4>
-        <h4 align="left">You are learning <b id="learn">0</b> out of 10 words</h4>
+        <p align="left">You have mastered <b id="master">0</b> out of 10 words</p>
+        <p align="left">You are reviewing <b id="review">0</b> out of 10 words</p>
+        <p align="left">You are learning <b id="learn">0</b> out of 10 words</p>
 
     </div>
 </div>
-
 
 <div class="card js-card " style="display: block">
     <div class="card__wrapper">
@@ -352,7 +343,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="myclass" style="display: inline-block; vertical-align: center">
 
@@ -379,8 +369,6 @@
 
 
 </div>
-
-
 <script>
 
     let cardTransitionTime = 500;
@@ -584,4 +572,4 @@
 </script>
 
 </body>
-</html>>
+</html>

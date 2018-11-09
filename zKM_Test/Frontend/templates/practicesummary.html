@@ -4,11 +4,34 @@
     <meta charset="UTF-8">
     <title>Practice Summary</title>
 
+
+
     <style>
+        table{
+            position: absolute;
+            top: 20%;
+            border: 5px;
+        }
+
+        th {
+            background-color: #4a93c9;
+            color: white;
+            text-align: center;
+            padding: 8px;
+        }
+        td{
+            text-align: center;
+            padding: 8px;
+        }
+
+
+/*
         table {
             width: 100%;
             align-items: center;
-            position: relative;
+            position: absolute;
+            left: 30%;
+            top: 30%;
 
         }
 
@@ -33,15 +56,22 @@
         h2 {
             background: #b9dadb;
         }
+*/
     </style>
 
 </head>
 
 <body>
+{% include 'header.html' %}
 
 
 
-{% include 'summarydictview.html' %}
+    {% include 'summarydictview.html' %}
+    <div style="position: absolute; top: 120%; left: 20% ">
+        <button class="btn btn-success" id="practice_again" >Practice Again</button>
+        <button class="btn btn-success" id="review_words">Review Words</button>
+    </div>
+
 
 
 

@@ -1,4 +1,5 @@
-<table align="center" style="display: block">
+
+<!--<table align="center" style="display: block">
 
     <tr>
         <th>Word</th>
@@ -18,4 +19,27 @@
 
     {% endfor %}
 </table>
+-->
 
+<table class="table table-striped" align="center" >
+  <thead>
+    <tr>
+      <th scope="col">Word</th>
+      <th scope="col">Meaning</th>
+      <th scope="col">Corrected</th>
+      <th scope="col">Missed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for word in words %}
+
+        <tr>
+            <td>{{ word.word }}</td>
+            <td>{{ word.meaning }}</td>
+            <td>{{ correct[word.wordID] }}</td>
+            <td>{{ wrong[word.wordID] }}</td>
+        </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
