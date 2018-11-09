@@ -115,14 +115,14 @@ def previous_practice():
         caretaker.addMemento(originator.save())
     #.......................................#
 
-
+    print("current username ", current_user.username, caretaker.mementos.__len__())
     if caretaker.mementos.__len__() > 0:
         last_sum = originator.restore(caretaker.getMemento((caretaker.mementos.__len__() - 1)))
         for l in last_sum:
             print("laassssssssssst ", l)
         return render_template("practice_prev_summary.html", words=last_sum)
     else:
-        return render_template("test_no_summary.html")
+        return render_template("practice_no_summary.html")
 
 @APP_MAIN.route('/specificpractice', methods=['POST'])
 @login_required
@@ -143,7 +143,7 @@ def specific_practice():
     #.......................................#
 
     if int(sumpath) > caretaker.mementos.__len__():
-        return render_template("test_no_summary.html")
+        return render_template("practice_no_summary.html")
     else:
         last_sum = originator.restore(caretaker.getMemento(int(sumpath)-1))
         for l in last_sum:

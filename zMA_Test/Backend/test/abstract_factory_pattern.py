@@ -114,7 +114,7 @@ class Product():
         self.allWords = Words.objects()
 
     @abc.abstractmethod
-    def set(self):
+    def set(self,type, username,no_of_words=3):
         pass
 
 
@@ -123,7 +123,7 @@ class TestProduct(Product):
     Implement the Product interface.
     """
 
-    def set(self,type,username='amit'):
+    def set(self,type,username='amit',no_of_words=3):
         factory = LevelFactory()
         sorted_ratings = factory.setlevel(type).set()
         return sorted_ratings[0:10]

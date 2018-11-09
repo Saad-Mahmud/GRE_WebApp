@@ -54,33 +54,53 @@
 
             min-height: 600px;
             position: relative;
-            top: 230px;
-            left: 450px;
+            top: 200px;
+            left: 400px;
         }
     </style>
+
+    <style>
+
+.active {
+    background-color: green;
+}
+
+.topnav a:hover {
+  background-color: #5ddd18;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+</style>
 
 
 </head>
 <body>
 
-{% include 'header.html' %}
+{% include 'practice_header.html' %}
 
 
 
-<div class="myclass" style="display: inline-block;" >
+<div align="center" class="myclass" style="display: inline-block;" >
     <h2 align="center">Select Complexity Level</h2>
     <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='easy') }}" class="myButton" id="easy" style='visibility:visible' onclick="easy(this, '{{ sessionID }}')">Easy</a>
+        <a href="{{ url_for('practice', type='easy') }}" class="btn btn-success" id="easy" style='visibility:visible' onclick="easy(this, '{{ sessionID }}')">Easy</a>
     </div>
     <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='medium') }}" class="myButton" id="medium" style='visibility:visible' onclick="medium(this, '{{ sessionID }}')">Medium</a>
+        <a href="{{ url_for('practice', type='medium') }}" class="btn btn-success" id="medium" style='visibility:visible' onclick="medium(this, '{{ sessionID }}')">Medium</a>
     </div>
     <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='hard') }}" class="myButton" id="hard" style='visibility:visible' onclick="hard(this, '{{ sessionID }}')">Hard</a>
+        <a href="{{ url_for('practice', type='hard') }}" class="btn btn-success" id="hard" style='visibility:visible' onclick="hard(this, '{{ sessionID }}')">Hard</a>
     </div>
 
-    <div style="display: inline-block">
-        <a href="{{ url_for('previous_practice') }}" class="myButton" id="previous" style='visibility:visible'>Review Words</a>
+    <hr>
+    <div align="center" style="display: inline-block">
+        <h2 align="center">Or, Review already learned words</h2>
+        <a href="{{ url_for('previous_practice') }}" class="btn btn-success" id="previous" style='visibility:visible'>Review Words</a>
     </div>
 
 </div>
