@@ -3,6 +3,7 @@ import operator
 import random
 from datetime import datetime, timedelta
 from random import randint
+import os
 
 from flask import json, request, send_file
 from flask import render_template, flash, redirect, url_for, abort, session, make_response
@@ -40,7 +41,7 @@ try:
 except ImportError:
     from urllib2 import Request,urlopen,URLError
 
-from os import urandom
+from os import urandom, os
 
 from PIL import Image
 from flask_mail import Message
@@ -140,6 +141,7 @@ def get_access_token():
 
 
 @APP_MAIN.route('/index')
+@login_required
 def index():
     posts = []
     return render_template('index.html', title = 'Home', posts=posts)
@@ -263,8 +265,9 @@ def login():
 
 
 @APP_MAIN.route('/logout')
+@login_required
 def logout():
-    resp = make_response(redirect(url_for('index')))
+    resp = make_response(redirect(url_for('hello_world')))
     if request.cookies.get('session'):
         resp.set_cookie('session', '', expires=0)
         session.pop('access_token',None)
@@ -344,7 +347,7 @@ def save_pic(form_picture):
 
     return picture_fn
 
-
+@login_required
 @APP_MAIN.route('/edit_profile',methods=['POST','GET'])
 def edit_profile():
     form = EditProfileForm()

@@ -22,7 +22,7 @@ client = pymongo.MongoClient("localhost", 27017)
 db = client.zSaad_Test
 connect('zSaad_Test', host='127.0.0.1', port=27017)
 APPLOGIN = LoginManager(APP_MAIN)
-APPLOGIN.login_view = 'login'
+APPLOGIN.login_view = 'hello_world'
 APPLOGIN.session_protection = "Strong"
 APPREGISTER = RegisterManager(APP_MAIN)
 APPREGISTER.register_view='register'
