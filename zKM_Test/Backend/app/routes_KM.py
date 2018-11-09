@@ -430,11 +430,10 @@ def stat():
                            local=local,length=len(rank),length1=len(local), arr=arr, form = form, title='Statistics')
 
 
-@APP_MAIN.route('/admin')
+@APP_MAIN.route('/admin_stat')
 @login_required
 def admin():
-    if current_user.is_authenticated:
-        if current_user.usertype=='A':
+    if current_user.is_authenticated and current_user.usertype=='A':
             current_time1 = datetime.now()
             lastweek = datetime.now() - timedelta(days=7)
             print(lastweek)

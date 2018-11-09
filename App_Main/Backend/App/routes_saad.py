@@ -43,6 +43,7 @@ def download_file(filename):
 #.............................. END -------------------------------------
 
 
+#.............................. Dictionary -------------------------------------
 @APP_MAIN.route('/dictionary/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/dictionary/<string:page>')
 @login_required
@@ -62,12 +63,15 @@ def dictionary(page):
             return render_template('404.html')
 
         return render_template('dictionary.html', links=links, title=title,
-                               words=dictionary, length=len(dictionary))
+                               words=dictionary, length=len(dictionary),ut = current_user.usertype )
 
     else:
         return redirect(url_for('hello_world'))
 
+#.............................. End -------------------------------------
 
+
+#.............................. suggestion -------------------------------------
 @APP_MAIN.route('/suggestions/Words/',defaults={'wordID': ''})
 @APP_MAIN.route('/suggestions/Words/<string:wordID>')
 def suggestion(wordID):
@@ -77,6 +81,8 @@ def suggestion(wordID):
         return render_template('404.html')
 
     return render_template('suggestions_word.html', form=['Translation','Meaning','Usage','Error'])
+
+#.............................. suggestion -------------------------------------
 
 @APP_MAIN.route('/suggestions/general/',defaults={'x': ''})
 @APP_MAIN.route('/suggestions/general/<string:x>')
