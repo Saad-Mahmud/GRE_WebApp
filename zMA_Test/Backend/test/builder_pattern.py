@@ -31,7 +31,7 @@ class Director:
 
 
 @six.add_metaclass(abc.ABCMeta)
-class Builder():
+class Builder:
     def __init__(self):
         self.random_idx = []
         self.option = []

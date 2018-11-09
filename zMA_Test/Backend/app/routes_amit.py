@@ -15,13 +15,10 @@ from zMA_Test.Backend.test.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
 
 
-
 @APP_MAIN.route('/testpage')
 @login_required
 def test_page():
-    print('aaaaaaaaaaaaaaaaaaaaaaammmmmmmmmmmmmmmmmmmmmmmm')
     return render_template("test_page.html")
-
 
 
 @APP_MAIN.route('/test/<type>')
@@ -155,14 +152,13 @@ def summary():
 
 @APP_MAIN.route('/previoussummary')
 @login_required
-
 def previoussummary():
 #.......................................Memento Pattern is used to restore the summary......................................
     caretaker = Caretaker()
     originator = Originator()
     if caretaker.mementos.__len__() > 0:
         last_sum = originator.restore(caretaker.getMemento(caretaker.mementos.__len__() - 1))
-        return render_template("test_prev_summary.html", last_sum=last_sum)
+        return render_template("test_prev_summary.html", last_sum=last_sum, memento_len=caretaker.mementos.__len__())
     else:
         return render_template("test_no_summary.html")
 
@@ -174,6 +170,8 @@ def definedprevsum():
 #............................................Memento is used to restore a defined summary....................................
     caretaker = Caretaker()
     originator = Originator()
+    if int(sumpath) < 0:
+        return render_template("test_no_summary.html")
     if int(sumpath) > caretaker.mementos.__len__():
         return render_template("test_no_summary.html")
     else:

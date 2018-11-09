@@ -10,7 +10,6 @@ class session_practice(Document):
     history = DictField()
 
 
-
 class session_test(Document):
     words = ListField(required=True)
     idx = IntField()
@@ -23,9 +22,11 @@ class user_word_history(Document):
     username = StringField(required=True, primary_key=True)
     status = DictField()
 
+
 class test_summary(Document):
     username = StringField(required=True, primary_key=True)
     summary = ListField()
+
 
 class review_words(Document):
     username = StringField(required=True, primary_key=True)
