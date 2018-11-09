@@ -9,7 +9,8 @@ from App_Main.Backend.Words.Words import Words
 from zMA_Test.Backend.app.model import session_practice, user_word_history, review_words
 from zMA_Test.Backend.practice.builderpattern import ConcreteBuilderPracticeSummary, DirectorPracticeSummary
 from zMA_Test.Backend.practice.builderpattern2 import ConcreteBuilderNextWord, DirectorNextWord
-from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, update_review_words
+from zMA_Test.Backend.practice.fetch_practice import FetchWords, create_session_practice, update_review_words, \
+    fetch_session_practice, fetch_user_word_history, fetch_review_words
 from zMA_Test.Backend.practice.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.practice.practice_util import showstat
 
@@ -23,28 +24,29 @@ def practice_intro():
         return render_template("practice.html")
     return redirect(url_for("hello_world"))
 
-@login_required
+
 @APP_MAIN.route('/practice/<type>')
+@login_required
 def practice(type):
     if current_user.is_authenticated:
         fetchwords = FetchWords(current_user.username)
         words = fetchwords.practice_words(type,"practice")
         status = {word['wordID']:'firstseen' for word in words}
         sessionID = create_session_practice(status, words, 0, words)
-        #userWordHistory = create_user_word_history()
-        return render_template('practicedummy.html', word=words[0], sessionID=sessionID.id)
+
+        return render_template('practicedummy.html', word=words[0], sessionID=sessionID.id, length=len(words))
     else:
         return redirect(url_for("hello_world"))
 
 
 @APP_MAIN.route('/fliped', methods=['POST'])
 @login_required
-def translate_ma():
+def flip():
     sessionID = request.form['sessionID']
-    pointer_f = session_practice.objects(id=sessionID)[0]
+    pointer_f = fetch_session_practice(sessionID)
 
-    pointer = pointer_f.idx # fetched pointer
-    words = pointer_f.edited_words # fetched word list
+    pointer = pointer_f.idx
+    words = pointer_f.edited_words
 
     if len(words)!=0:
         word = words[pointer]
@@ -53,14 +55,16 @@ def translate_ma():
 
     return json.dumps({'word': word})
 
-@login_required
+
 @APP_MAIN.route('/nextword', methods=['POST'])
+@login_required
 def nextWord():
-    user_history = user_word_history.objects(username=current_user.username)[0]
+    user_history = fetch_user_word_history(current_user.username)
     sessionID = request.form['sessionID']
     buttonID = request.form['buttonID']
-    pointer_f = session_practice.objects(id=sessionID)[0]
+    pointer_f = fetch_session_practice(sessionID)
 
+    # .....................................Builder pattern is used to produce next word...........................................
     concrete_builder_next_word = ConcreteBuilderNextWord()
     director_next_word = DirectorNextWord(pointer_f, buttonID, user_history)
     director_next_word.constructNextWord(concrete_builder_next_word)
@@ -75,7 +79,9 @@ def nextWord():
 @login_required
 def practice_summary():
     sessionID = request.form['sessionID']
-    pointer_f = session_practice.objects(id=sessionID)[0]
+    pointer_f = fetch_session_practice(sessionID)
+
+    # .....................................Builder pattern is used to create summary...........................................
 
     concrete_practice_builder = ConcreteBuilderPracticeSummary()
     director_practice = DirectorPracticeSummary(pointer_f)
@@ -90,15 +96,6 @@ def practice_summary():
     originator.setState(prev_sum)
     caretaker.addMemento(originator.save())
 
-    #
-    #
-    # words = pointer_f.words
-    # history = pointer_f.history
-    # correct, wrong = create_summary(words,history)
-    #
-    # for key,v in correct.items():
-    #     print("corrrect ", key, v)
-    # return render_template('practicesummary.html', words=words, correct=correct, wrong=wrong )
     return render_template('practicesummary.html', words=practice_sum.practice_words, correct=practice_sum.correct,
                            wrong=practice_sum.wrong)
 
@@ -111,7 +108,7 @@ def previous_practice():
     originator = Originator()
 
     #If you want to show all review words #
-    summaries_obj = review_words.objects(username=current_user.username)[0]
+    summaries_obj = fetch_review_words(current_user.username)
     summaries = summaries_obj.summary
     for sum in summaries:
         originator.setState(sum)
@@ -137,7 +134,7 @@ def specific_practice():
     originator = Originator()
 
     # If you want to show all review words #
-    summaries_obj = review_words.objects(username=current_user.username)[0]
+    summaries_obj = fetch_review_words(current_user.username)
     summaries = summaries_obj.summary
     for sum in summaries:
         originator.setState(sum)

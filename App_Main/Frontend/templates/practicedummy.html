@@ -322,13 +322,13 @@
         <div class="clip2">
             <div class="slice2"></div>
         </div>
-        <div class="status">0 of 10</div>
+        <div class="status">0 of {{ length }}</div>
     </div>
 
     <div class="stat" style="display: block">
-        <p align="left">You have mastered <b id="master">0</b> out of 10 words</p>
-        <p align="left">You are reviewing <b id="review">0</b> out of 10 words</p>
-        <p align="left">You are learning <b id="learn">0</b> out of 10 words</p>
+        <p align="left">You have mastered <b id="master">0</b> out of {{ length }} words</p>
+        <p align="left">You are reviewing <b id="review">0</b> out of {{ length }} words</p>
+        <p align="left">You are learning <b id="learn">0</b> out of {{ length }} words</p>
 
     </div>
 </div>
@@ -498,7 +498,7 @@
                 document.getElementById("learn").innerHTML = response.learning;
 
                 m = response.mastered;
-                progressBarUpdate(m, 10);
+                progressBarUpdate(m, {{ length }});
 
                 /*r = ((response.reviewing)*100)/(response.mastered+response.reviewing+response.learning);
                 l = ((response.learning)*100)/(response.mastered+response.reviewing+response.learning);

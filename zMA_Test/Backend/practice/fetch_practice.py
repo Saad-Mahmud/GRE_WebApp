@@ -61,7 +61,14 @@ class FetchWords():
 
 
 
+def fetch_session_practice(sessionID):
+    return session_practice.objects(id=sessionID)[0]
 
 
+def fetch_user_word_history(username):
+    return user_word_history.objects(username=username)[0]
+
+def fetch_review_words(username):
+    return review_words.objects(username=username)[0]
 
 
