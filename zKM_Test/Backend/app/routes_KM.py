@@ -329,8 +329,9 @@ def save_pic(form_picture):
 
     return picture_fn
 
-@login_required
 @APP_MAIN.route('/edit_profile',methods=['POST','GET'])
+
+@login_required
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
