@@ -1,4 +1,4 @@
-from zMA_Test.Backend.app.model import session_practice, user_word_history
+from zMA_Test.Backend.app.model import session_practice, user_word_history, review_words
 from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
 from App_Main.Backend.Words.Words import Words
 
@@ -18,6 +18,20 @@ def create_user_word_history(username):
 def update_user_word_status(oldStatus, newStatus):
     mergedList = newStatus + [s for s in oldStatus if s not in oldStatus]
     return mergedList
+
+
+def create_review_words(username, summary):
+    sum = review_words(username=username, summary=summary)
+    sum = sum.save()
+    return sum
+
+
+def update_review_words(username, words):
+    prev_sum = words
+    practice_sum = review_words.objects(username=username)[0]
+    practice_sum.summary.append(prev_sum)
+    practice_sum.save()
+    return prev_sum
 
 
 class FetchWords():

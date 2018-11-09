@@ -27,6 +27,9 @@ class test_summary(Document):
     username = StringField(required=True, primary_key=True)
     summary = ListField()
 
+class review_words(Document):
+    username = StringField(required=True, primary_key=True)
+    summary = ListField()
 
 
 # class Gre_data(Document):

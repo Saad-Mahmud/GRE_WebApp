@@ -25,38 +25,6 @@
         }
 
 
-/*
-        table {
-            width: 100%;
-            align-items: center;
-            position: absolute;
-            left: 30%;
-            top: 30%;
-
-        }
-
-        th, td {
-            text-align: center;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: white;
-        }
-
-        tr:nth-child(odd) {
-            background-color: gray;
-        }
-
-        th {
-            background-color: #4a93c9;
-            color: white;
-        }
-
-        h2 {
-            background: #b9dadb;
-        }
-*/
     </style>
 
 </head>
@@ -68,8 +36,8 @@
 
     {% include 'summarydictview.html' %}
     <div style="position: absolute; top: 120%; left: 20% ">
-        <button class="btn btn-success" id="practice_again" >Practice Again</button>
-        <button class="btn btn-success" id="review_words">Review Words</button>
+       <a href="{{ url_for('practice_intro') }}" class="btn btn-success" id="practice_again" >Practice Again</a>
+        <a href="{{ url_for('previous_practice') }}" class="btn btn-success" id="review_words">Review Words</a>
     </div>
 
 

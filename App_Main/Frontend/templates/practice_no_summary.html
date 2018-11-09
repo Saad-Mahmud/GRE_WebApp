@@ -12,15 +12,37 @@
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 
-
 <head>
     <meta charset="UTF-8">
-    <title>Practice</title>
+    <title>Previous Summary</title>
 
+    <style>
+        h1 {
+            font-size: 80px;
+            color: red;
+        }
+    </style>
+    <style>
+        .summary {
+            position: absolute;
+            top: 20%;
+            margin-left: 10%;
+            font-style: italic;
+        }
+    </style>
+
+    <style>
+        .myclass{
+            position: absolute;
+            top: 50%;
+            left: 25%;
+        }
+    </style>
     <style>
         .myButton {
             background-color: #44c767;
@@ -48,46 +70,19 @@
 
         }
     </style>
-
-    <style>
-        .myclass{
-
-            min-height: 600px;
-            position: relative;
-            top: 230px;
-            left: 450px;
-        }
-    </style>
-
-
 </head>
 <body>
-
 {% include 'header.html' %}
 
 
-
-<div class="myclass" style="display: inline-block;" >
-    <h2 align="center">Select Complexity Level</h2>
-    <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='easy') }}" class="myButton" id="easy" style='visibility:visible' onclick="easy(this, '{{ sessionID }}')">Easy</a>
-    </div>
-    <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='medium') }}" class="myButton" id="medium" style='visibility:visible' onclick="medium(this, '{{ sessionID }}')">Medium</a>
-    </div>
-    <div style="display: inline-block">
-        <a href="{{ url_for('practice', type='hard') }}" class="myButton" id="hard" style='visibility:visible' onclick="hard(this, '{{ sessionID }}')">Hard</a>
+<div align="center" class="myclass" style="display: inline-block;" >
+    <h2 align="center">Sorry, You haven't practiced any words</h2>
+    <div align="center">
+        <a href="{{ url_for('practice_intro') }}" class="myButton" id="practice_again">Practice</a>
     </div>
 
-    <div style="display: inline-block">
-        <a href="{{ url_for('previous_practice') }}" class="myButton" id="previous" style='visibility:visible'>Review Words</a>
-    </div>
 
 </div>
-
-{% include 'footer.html' %}
-
-
 
 </body>
 </html>
