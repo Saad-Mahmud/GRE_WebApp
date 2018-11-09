@@ -404,7 +404,7 @@ def reset_token(token):
 
 
 
-
+#.............................. Amit Routes starts-------------------------------------
 @login_required
 @APP_MAIN.route('/testpage')
 def test_page():
@@ -560,6 +560,10 @@ def definedprevsum():
         last_sum = originator.restore(caretaker.getMemento(int(sumpath)-1))
         return render_template("test_prev_summary.html", last_sum=last_sum)
 
+#.............................. Amit Routes ends-------------------------------------
+
+
+#.............................. Moumita Routes starts-------------------------------------
 
 @login_required
 @APP_MAIN.route('/practice')
@@ -713,6 +717,7 @@ def download_file(filename):
         return
     return send_file(filename)
 '''
+#.............................. Moumita Routes ends-------------------------------------
 
 @APP_MAIN.route('/stat',methods=['POST','GET'])
 @login_required
