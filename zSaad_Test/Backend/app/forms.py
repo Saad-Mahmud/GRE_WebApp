@@ -8,6 +8,7 @@ except ImportError:
 
 
 
+
 class WordSuggestionForm(FlaskForm):
     report = TextAreaField('Report', validators=[DataRequired(),Length(min=20, max=300)])
 

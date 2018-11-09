@@ -3,6 +3,11 @@ from flask import render_template,redirect,url_for,flash,send_from_directory,req
 from App_Main.Backend.Words.Words import Words
 from werkzeug.utils import secure_filename
 from App_Main.Backend.App.model import Suggestions
+from flask_login import current_user, login_user, logout_user, login_required
+from flask_oauth import OAuth
+from flask_register import register_required
+from App_Main.Backend.GetDictionary.GetDict import GetDict
+
 import datetime
 
 import os
@@ -12,52 +17,56 @@ except ImportError:
     from urllib import urlretrieve
 
 
+#.............................. Landing Page -------------------------------------
 
 @APP_MAIN.route('/')
 def hello_world():
     return render_template("dummy.html")
 
-@APP_MAIN.route('/Words/audio/',defaults={'filename': ''})
-@APP_MAIN.route('/Words/audio/<path:filename>')
+#.............................. END -------------------------------------
+
+
+#.............................. Audio file -------------------------------------
+
+@APP_MAIN.route('/words/audio/',defaults={'filename': ''})
+@APP_MAIN.route('/words/audio/<path:filename>')
+@login_required
 def download_file(filename):
     file = ''
     for i in range(len(filename)-4):
         file =file+filename[i]
-    print(file)
     if(Words.objects(word=file)==[]):
         return
     return send_from_directory(APP_MAIN.config['AUDIO_FOLDER'],
                                filename)
 
+#.............................. END -------------------------------------
+
+
 @APP_MAIN.route('/dictionary/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/dictionary/<string:page>')
+@login_required
 def dictionary(page):
-    page = page.lower()
-    title = page.capitalize()
-    links = ['All','A','B','C','D','E','F','G'
-        ,'H','I','J','K','L','M','N','O','P',
-             'Q','R','S','T','U','V','W','X','Y','Z']
+    if current_user.is_authenticated:
+        page = page.lower()
+        title = page.capitalize()
+        links = ['All','A','B','C','D','E','F','G'
+            ,'H','I','J','K','L','M','N','O','P',
+                 'Q','R','S','T','U','V','W','X','Y','Z']
+        dictionary = None
+        if(page=='all'):
+            dictionary = GetDict().get_userdict(current_user.id, 'all')
+        elif(page[0]>='a' and page[0]<='z' and len(page)==1):
+            dictionary = GetDict().get_userdict(current_user.id, page[0])
+        else:
+            return render_template('404.html')
 
-    if(page=='all'):
-        wordlist=Words.objects
-    elif(page[0]>='a' and page[0]<='z' and len(page)==1):
-        wordlist = Words.objects(wordID__startswith=page[0])
+        return render_template('dictionary.html', links=links, title=title,
+                               words=dictionary, length=len(dictionary))
+
     else:
-        return render_template('404.html')
+        return redirect(url_for('hello_world'))
 
-
-    words = [
-        {
-            'wordID': w.wordID,
-            'word': w.word ,
-            'TYPE': w.TYPE ,
-            'meaning': w.meanings[0] ,
-            'usages' : w.usages ,
-            'translations' : w.translations
-        }
-        for w in wordlist
-    ]
-    return render_template('dictionary.html',links=links, title=title, words=words,length=len(words))
 
 @APP_MAIN.route('/suggestions/Words/',defaults={'wordID': ''})
 @APP_MAIN.route('/suggestions/Words/<string:wordID>')
@@ -110,31 +119,27 @@ def admintranslate(trnsid):
 
 @APP_MAIN.route('/adminwords/',defaults={'page': 'ALL'})
 @APP_MAIN.route('/adminwords/<string:page>')
+@login_required
 def admin_words(page):
-    page = page.lower()
-    title = page.capitalize()
-    links = ['All','A','B','C','D','E','F','G'
-        ,'H','I','J','K','L','M','N','O','P',
-             'Q','R','S','T','U','V','W','X','Y','Z']
-    print(title)
-    if(page=='all'):
-        wordlist=Words.objects
-    elif(page[0]>='a' and page[0]<='z' and len(page)==1):
-        wordlist = Words.objects(wordID__startswith=page[0])
+    if (current_user.is_authenticated and current_user.usertype=='U'):
+        page = page.lower()
+        title = page.capitalize()
+        links = ['All','A','B','C','D','E','F','G'
+            ,'H','I','J','K','L','M','N','O','P',
+                 'Q','R','S','T','U','V','W','X','Y','Z']
+        dictionary = None
+        if(page=='all'):
+            dictionary = GetDict().get_adict('all')
+        elif(page[0]>='a' and page[0]<='z' and len(page)==1):
+            dictionary = GetDict().get_adict(page[0])
+        else:
+            return render_template('404.html')
+
+        return render_template('admin_words.html', links=links, title=title,
+                               words=dictionary, length=len(dictionary))
+
     else:
-        return render_template('404.html')
-    words = [
-        {
-            'wordID': w.wordID,
-            'word': w.word ,
-            'TYPE': w.TYPE ,
-            'meaning': w.meanings[0] ,
-            'usages' : w.usages ,
-            'translations': w.translations
-        }
-        for w in wordlist
-    ]
-    return render_template('admin_words.html',links=links, title=title, words=words,length=len(words))
+        return redirect(url_for('hello_world'))
 
 @APP_MAIN.route('/admindeleteword', methods=['POST'])
 def admindeleteword():
@@ -241,3 +246,24 @@ def editsuggestion():
 @APP_MAIN.route('/about')
 def about():
     return render_template('about.html', title = 'About')
+
+
+@APP_MAIN.route('/dictionary_anon/',defaults={'page': 'ALL'})
+@APP_MAIN.route('/dictionary_anon/<string:page>')
+def dictionary_anon(page):
+    page = page.lower()
+    title = page.capitalize()
+    links = ['All','A','B','C','D','E','F','G'
+        ,'H','I','J','K','L','M','N','O','P',
+             'Q','R','S','T','U','V','W','X','Y','Z']
+
+    dictionary = None
+    if (page == 'all'):
+        dictionary = GetDict().get_andict('all')
+    elif (page[0] >= 'a' and page[0] <= 'z' and len(page) == 1):
+        dictionary = GetDict().get_andict(page[0])
+    else:
+        return render_template('404.html')
+
+    return render_template('dictionary_anon.html',links=links, title=title,
+                           words=dictionary,length=len(dictionary))
