@@ -220,17 +220,24 @@
             }
         }
 
-        progress[value]::-webkit-progress-value {
-            background: whiteSmoke -webkit-linear-gradient(-45deg,
-            transparent 33%, rgba(0, 0, 0, .1) 33%,
-            rgba(0, 0, 0, .1) 66%, transparent 66%),
-            -webkit-linear-gradient(top,
-                    rgba(255, 255, 255, .25),
-                    rgba(0, 0, 0, .25)),
-            -webkit-linear-gradient(left, #09c, #f44);
+        progress.wrong {
+            -webkit-appearance: none;
+            appearance: none;
 
-            border-radius: 2px;
-            background-size: 35px 20px, 100% 100%, 100% 100%;
+        }
+
+        progress.wrong::-webkit-progress-value {
+            background: #c30101;
+        }
+
+        progress.correct {
+            -webkit-appearance: none;
+            appearance: none;
+
+        }
+
+        progress.correct::-webkit-progress-value {
+            background: #006400;
         }
     </style>
 
@@ -249,7 +256,7 @@
 
 </head>
 
-<body >
+<body>
 {#{% include 'header.html' %}#}
 
 <nav class="navbar navbar-expand-lg navbar-dark unique-color-dark">
@@ -261,17 +268,17 @@
     <a class="navbar-brand" href="{{ url_for('hello_world') }}">VocLAB</a>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-                <a class="nav-link" href="{{url_for('index') }}">Home</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('practice_intro')}}">Practice <span class="sr-only"></span></a>
+                <a class="nav-link" href="{{ url_for('practice_intro') }}">Practice <span class="sr-only"></span></a>
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('test_page')}}">Test</a>
+                <a class="nav-link" href="{{ url_for('test_page') }}">Test</a>
             </li>
 
             <li class="nav-item">
@@ -279,30 +286,29 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout')}}">{{ ('Logout') }}</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">{{ ('Logout') }}</a>
             </li>
             <div class="container">
                 {% with messages= get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-info" role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
                 {% endwith %}
             </div>
 
-    </ul>
+        </ul>
     </div>
 </nav>
 
 
-
 <div class="sidenav">
     <h5 id="correct">Correct: 0</h5>
-    <progress id="corbar" class="progress" max="10"></progress>
+    <progress id="corbar" class="correct" max="10"></progress>
 
     <h5 id="wrong">Wrong: 0</h5>
-    <progress id="wrongbar" class="progress" max="10"></progress>
+    <progress id="wrongbar" class="wrong" max="10"></progress>
 
 </div>
 
