@@ -16,6 +16,7 @@ class WordDataLoader():
                 self.dftr = None
                 self.lang = None
         except IOError as error:
+            print (error)
             raise IOError
 
         self.size=self.df.shape[0]

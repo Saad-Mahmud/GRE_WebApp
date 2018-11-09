@@ -25,9 +25,6 @@ class UserDict(DictionaryMaker):
             if(self.dict.get(r.id) is not None):
                 self.dict[r.id] = RatingG(self.dict[r.id])
                 self.dict[r.id].setData(r.Ratings[0])
-            else:
-                self.dict[r.id] = RatingG(self.dict[r.id])
-                self.dict[r.id].setData(5)
 
         ratings = user_word_history.objects(username=self.userid)
         if len(ratings) == 0:

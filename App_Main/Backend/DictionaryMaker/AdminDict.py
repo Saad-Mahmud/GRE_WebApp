@@ -23,9 +23,6 @@ class AdminDict(DictionaryMaker):
             if(self.dict.get(r.id) is not None):
                 self.dict[r.id] = RatingG(self.dict[r.id])
                 self.dict[r.id].setData(r.Ratings[0])
-            else:
-                self.dict[r.id] = RatingG(self.dict[r.id])
-                self.dict[r.id].setData(5)
 
         for w in self.words:
             self.dict[w.wordID] = Translation(self.dict[w.wordID])
