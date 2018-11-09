@@ -1,3 +1,4 @@
+'''
 from flask import Flask
 from flask_login import LoginManager
 
@@ -29,4 +30,5 @@ db = client.tutorial_mega
 connect('zSaad_Test', host='127.0.0.1', port=27017)
 
 
-from zMA_Test.Backend.app import routes, model
+from zMA_Test.Backend.app import routes_amit, model
+'''
