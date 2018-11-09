@@ -1,3 +1,5 @@
+import six
+
 from App_Main.Backend.Words.Words_Rating import Words_Rating
 
 
@@ -64,7 +66,8 @@ gg.set()
 import abc
 
 
-class Level(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Level():
     """
     Declare the factory method, which returns an object of type Product.
     Creator may also define a default implementation of the factory
@@ -111,7 +114,8 @@ class HardLevel(Level):
         return HardProduct()
 
 
-class Product(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Product():
     """
     Define the interface of objects the factory method creates.
     """
