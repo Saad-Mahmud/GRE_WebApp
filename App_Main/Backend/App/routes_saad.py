@@ -236,3 +236,8 @@ def editsuggestion():
             a = a[0]
             a.delete()
     return json.dumps({'status': 'success'})
+
+
+@APP_MAIN.route('/about')
+def about():
+    return render_template('about.html', title = 'About')
