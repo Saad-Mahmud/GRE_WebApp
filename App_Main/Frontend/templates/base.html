@@ -123,12 +123,34 @@ body {
 
     {% else %}
             <div class="nav navbar-nav navbar-right">
+            <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
+        </li>
+        <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('practice_intro') }}">Practice</a>
+        </li>
+        <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('test_page') }}">Test</a>
+        </li>
+
+
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">{{ ('Profile') }}</a></li>
             {#<li><a class="nav-link" href="{{ url_for('reset_request') }}">Forgot Password?</a> </li>#}
-            <li class="nav-item">
+            {% if current_user.usertype == 'A' %}
+            <!-- Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">Admin</a>
+            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{{ url_for('admin_words') }}">Admin WordView</a>
+              <a class="dropdown-item" href="{{ url_for('adminsuggestions') }}">Admin SuggestionsView</a>
+              <a class="dropdown-item" href="{{ url_for('admintodo') }}">Admin TODO List</a>
+              <a class="dropdown-item" href="{{ url_for('admin') }}">Admin User History</a>
+            </div>
+          </li>
 
-            </li>
+        {% endif %}
 
 
     </ul>
