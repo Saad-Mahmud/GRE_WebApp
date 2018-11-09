@@ -121,7 +121,7 @@ def admintranslate(trnsid):
 @APP_MAIN.route('/adminwords/<string:page>')
 @login_required
 def admin_words(page):
-    if (current_user.is_authenticated and current_user.usertype=='U'):
+    if (current_user.is_authenticated and current_user.usertype=='A'):
         page = page.lower()
         title = page.capitalize()
         links = ['All','A','B','C','D','E','F','G'
@@ -142,6 +142,7 @@ def admin_words(page):
         return redirect(url_for('hello_world'))
 
 @APP_MAIN.route('/admindeleteword', methods=['POST'])
+@login_required
 def admindeleteword():
     s1= request.form['wordID']
     if(len(Words.objects(wordID=s1)) == 0):
@@ -152,6 +153,7 @@ def admindeleteword():
         return json.dumps({'status': 'success'})
 
 @APP_MAIN.route('/adminaddtrans', methods=['POST'])
+@login_required
 def adminaddtrans():
     lang= request.form['Lang']
     trans = request.form['Trans']
@@ -171,16 +173,19 @@ def adminaddtrans():
 
 @APP_MAIN.route('/admineditword/',defaults={'wordID':''})
 @APP_MAIN.route('/admineditword/<string:wordID>')
+@login_required
 def admineditword(wordID):
     return render_template('editwordpage.html')
 
 @APP_MAIN.route('/adminnewword/')
+@login_required
 def adminnewword():
     return render_template('addnewword.html')
 
 
 @APP_MAIN.route('/adminaudio/',defaults={'wordID':''},methods=['POST','GET'])
 @APP_MAIN.route('/adminaudio/<string:wordID>',methods=['POST','GET'])
+@login_required
 def adminaudio(wordID):
 
     if request.method == 'POST':
@@ -212,6 +217,7 @@ def allowed_file(filename):
 
 @APP_MAIN.route('/adminsuggestions/',defaults={'x':''})
 @APP_MAIN.route('/adminsuggestions/<string:x>')
+@login_required
 def adminsuggestions(x):
     if(x!=''):
         return render_template('404.html')
@@ -220,6 +226,7 @@ def adminsuggestions(x):
 
 @APP_MAIN.route('/admintodo/',defaults={'x':''})
 @APP_MAIN.route('/admintodo/<string:x>')
+@login_required
 def admintodo(x):
     if(x!=''):
         return render_template('404.html')
@@ -227,6 +234,7 @@ def admintodo(x):
     return render_template('admintodo.html',suggestions=Suggestions.objects(status='TD'),length=len(a))
 
 @APP_MAIN.route('/editsuggestion', methods=['POST'])
+@login_required
 def editsuggestion():
     if(request.form['type']=='todo'):
         a = Suggestions.objects(id=request.form['id'])
