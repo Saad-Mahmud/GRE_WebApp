@@ -2,7 +2,7 @@
 
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}</h1>
-    <h2> To make dummy user run dummy.py </h2>
+    <h2>Welcome, to our website where we relentlessly try to make things easy for You!! </h2>
     {% if current_user.usertype=='A' %}
        <h4><a href="{{ url_for('admin') }}">Registration History</a> </h4>
     {% endif %}

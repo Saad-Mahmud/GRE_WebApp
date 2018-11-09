@@ -14,8 +14,9 @@ client = pymongo.MongoClient("localhost",27017)
 db = client.zSaad_Test
 connect('zSaad_Test', host="127.0.0.1", port = 27017)
 
-cntttt = ["Bangladesh","America","England","Syria","India","Pakistan","Brazil","Argentina", "India",
-          "Sri Lanka", "Nepal", "China", "Japan", "Russia", "Australia", "Other"
+cntttt = ["America","Argentina","Australia","Bangladesh","Brazil","China","England",
+          "Honululu","India","Japan", "Nepal","Pakistan",
+          "Russia","Sri Lanka","Syria","Uganda"
           ]
 # pword = 'abc'
 # for i in range(11,16,1):
@@ -66,8 +67,8 @@ cntttt = ["Bangladesh","America","England","Syria","India","Pakistan","Brazil","
 #                                      rate_date=rate_date, rating_chart=rating_chart)
 
 
-"""
-for i in range(1,11,1):
+
+for i in range(1,17,1):
     cnt = Country(country_id=i,
                   country_name=cntttt[i-1])
     cnt.save()
@@ -77,7 +78,7 @@ collection = db['country']
 cursor = collection.find({})
 for i in cursor:
     print(i['country_name'])
-    """
+
 
 
 # from flask import Flask
