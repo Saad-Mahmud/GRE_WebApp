@@ -303,7 +303,7 @@
 </nav>
 
 
-<div class="sidenav">
+<div class="sidenav" id="side" style="visibility: hidden">
     <h5 id="correct">Correct: 0</h5>
     <progress id="corbar" class="correct" max="10"></progress>
 
@@ -370,6 +370,7 @@
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice2");
+        document.getElementById("side").style.visibility = 'visible';
         list[0] = '{{ multi_dict[0][0] }}';
         list[1] = '{{ multi_dict[1][0] }}';
         list[2] = '{{ multi_dict[2][0] }}';
@@ -383,7 +384,7 @@
         removeDummy("choose_text");
         removeDummy(source.id);
         removeDummy("choice1")
-
+        document.getElementById("side").style.visibility = 'visible';
         list[0] = '{{ option_dict[0][0] }}';
         list[1] = '{{ option_dict[1][0] }}';
         list[2] = '{{ option_dict[2][0] }}';

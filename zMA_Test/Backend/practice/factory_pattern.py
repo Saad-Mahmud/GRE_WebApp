@@ -2,6 +2,7 @@ import six
 
 from App_Main.Backend.Words.Words_Rating import Words_Rating
 
+
 # #factory pattern
 #
 # class Level(object):
@@ -171,9 +172,9 @@ class LevelFactory:
             creator = HardLevel()
         return creator.factory_method()
 
-
 """
 def main():
     easy_creator = EasyLevel()
     easy_creator.product.interface()
 """
+

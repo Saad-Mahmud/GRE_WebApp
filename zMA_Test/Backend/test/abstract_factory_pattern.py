@@ -65,6 +65,7 @@ from App_Main.Backend.Words.Words_Rating import Words_Rating
 #
 import abc
 
+
 @six.add_metaclass(abc.ABCMeta)
 class Mode():
     """
@@ -101,6 +102,7 @@ class PracticeMode(Mode):
 
     def factory_method(self):
         return PracticeProduct()
+
 
 @six.add_metaclass(abc.ABCMeta)
 class Product():
