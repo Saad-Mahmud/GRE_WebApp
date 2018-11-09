@@ -1,4 +1,6 @@
 #factory pattern
+import six
+
 from zMA_Test.Backend.app.model import user_word_history
 from zMA_Test.Backend.practice.factory_pattern import LevelFactory
 from App_Main.Backend.Words.Words import Words
@@ -63,8 +65,8 @@ from App_Main.Backend.Words.Words_Rating import Words_Rating
 #
 import abc
 
-
-class Mode(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Mode():
     """
     Declare the factory method, which returns an object of type Product.
     Creator may also define a default implementation of the factory
@@ -100,8 +102,8 @@ class PracticeMode(Mode):
     def factory_method(self):
         return PracticeProduct()
 
-
-class Product(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Product():
     """
     Define the interface of objects the factory method creates.
     """

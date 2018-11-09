@@ -1,5 +1,6 @@
-from App_Main.Backend.Words.Words_Rating import Words_Rating
+import six
 
+from App_Main.Backend.Words.Words_Rating import Words_Rating
 
 # #factory pattern
 #
@@ -52,8 +53,6 @@ gg = ff.setLevel("easy")
 gg.set()
 """
 
-
-
 #
 # """
 # Define an interface for creating an object, but let subclasses decide
@@ -64,7 +63,8 @@ gg.set()
 import abc
 
 
-class Level(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Level():
     """
     Declare the factory method, which returns an object of type Product.
     Creator may also define a default implementation of the factory
@@ -72,13 +72,12 @@ class Level(metaclass=abc.ABCMeta):
     Call the factory method to create a Product object.
     """
 
-    def __init__(self,country_id=0):
+    def __init__(self, country_id=0):
         self.product = self.factory_method()
 
     @abc.abstractmethod
     def factory_method(self):
         pass
-
 
 
 class EasyLevel(Level):
@@ -111,11 +110,13 @@ class HardLevel(Level):
         return HardProduct()
 
 
-class Product(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Product():
     """
     Define the interface of objects the factory method creates.
     """
-    def __init__(self,country_id=0):
+
+    def __init__(self, country_id=0):
         self.allWordsRatings = Words_Rating.objects()
         self.wordRatingList = [
             {
@@ -162,7 +163,7 @@ class HardProduct(Product):
 class LevelFactory:
 
     def setlevel(self, levelType):
-        if levelType =="easy":
+        if levelType == "easy":
             creator = EasyLevel()
         elif levelType == "medium":
             creator = MediumLevel()
@@ -170,9 +171,9 @@ class LevelFactory:
             creator = HardLevel()
         return creator.factory_method()
 
+
 """
 def main():
     easy_creator = EasyLevel()
     easy_creator.product.interface()
 """
-
