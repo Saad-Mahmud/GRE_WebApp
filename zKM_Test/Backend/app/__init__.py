@@ -1,5 +1,5 @@
 import os
-
+'''
 import pymongo
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -37,4 +37,5 @@ APP_MAIN.config['MAIL_PASSWORD'] =os.environ.get('DBPASS') or 'Grewebapp22'
 mail = Mail(APP_MAIN)
 
 
-from zKM_Test.Backend.app import routes,model,errors
+#from zKM_Test.Backend.app import routes,model,errors
+'''

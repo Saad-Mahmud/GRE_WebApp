@@ -1,7 +1,7 @@
 import abc
 
-from zKM_Test.Backend.app import db
 
+from App_Main.Backend.App import db
 
 class Item:
     def __init__(self, name, price):

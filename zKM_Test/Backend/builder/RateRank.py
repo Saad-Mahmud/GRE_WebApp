@@ -4,7 +4,7 @@ import operator
 import six
 from flask_login import current_user
 
-from zKM_Test.Backend.app import db
+from App_Main.Backend.App import db
 from zKM_Test.Backend.app.model import Gre_data, User
 
 

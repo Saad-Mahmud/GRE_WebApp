@@ -3,10 +3,13 @@ from datetime import datetime, timedelta
 
 import pymongo
 from flask import Flask
-from mongoengine import *
 from werkzeug.security import generate_password_hash
+from mongoengine import *
+from flask_login import UserMixin
 
-from zKM_Test.Backend.app.model import User, Gre_data, Country
+class Country(UserMixin, Document):
+    country_id = IntField(required=True, primary_key=True)
+    country_name = StringField(required=True, max_length=50, unique=True)
 
 app = Flask(__name__)
 
