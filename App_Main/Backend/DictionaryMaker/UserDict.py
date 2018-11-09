@@ -30,7 +30,10 @@ class UserDict(DictionaryMaker):
                 self.dict[r.id].setData(5)
 
         ratings = user_word_history.objects(username=self.userid)
-        ratings = ratings[0]['status']
+        if len(ratings) == 0:
+            ratings = {}
+        else:
+            ratings = ratings[0]['status']
 
         for key, value in self.dict.items():
             if (ratings.get(key) is None):
