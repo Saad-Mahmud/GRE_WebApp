@@ -41,8 +41,6 @@ try:
 except ImportError:
     from urllib2 import Request,urlopen,URLError
 
-from os import urandom, os
-
 from PIL import Image
 from flask_mail import Message
 
