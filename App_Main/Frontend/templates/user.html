@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block js %}
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUUBgtiJj06wt/s=" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block app_content %}
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(228) }}"></td>
+
+            <td>
+                <h3>User: {{ user.username }}</h3>
+                <h5>Rating: {{ rate.rating }}</h5>
+                <h5>Rank(Local): {{ locindx }}</h5>
+                <h5>Rank(Global): {{ rankindx }}</h5>
+                <h6>accout: {{ user.email }}</h6>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+                {% if user == current_user %}
+                <p> <a class="btn btn-default btn-sm" role="button" href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+                <p><a class="btn btn-default btn-sm" href="{{ url_for('reset_request') }}">Forgot Password?</a> </p>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <h5>Age: {{ user.age }}</h5>
+            <p>Gender: {{ user.gender }}<br>
+                Country: {{ user.country }}
+                <p>Member since: {{ user.reg_date }}</p>
+            </p>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+
+    <h3>Charts:</h3>
+<h5>{{ current_user.username }}'s Rating Graph</h5>
+<div class="ct-chart0 .ct-perfect-fourth"></div>
+
+
+<script>
+     let options = {
+        width: 1100,
+        height: 400
+    };
+
+     let data0 = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in stat_data.rate_date %}
+          "{{ i }}",
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in stat_data.rating_chart %}
+            {{ i }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    // Create a new line chart object where as first parameter we pass in a selector
+    // that is resolving to our chart container element. The Second parameter
+    // is the actual data object.
+     new Chartist.Line('.ct-chart0', data0, options);
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

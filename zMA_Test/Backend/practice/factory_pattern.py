@@ -1,4 +1,4 @@
-from zSaad_Test.Backend.Words.Words_Rating import Words_Rating
+from App_Main.Backend.Words.Words_Rating import Words_Rating
 
 
 #factory pattern

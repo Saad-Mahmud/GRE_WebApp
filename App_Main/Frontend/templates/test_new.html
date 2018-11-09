@@ -1,0 +1,502 @@
+<html lang="en">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/css/mdb.min.css" rel="stylesheet">
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+    <style>
+        .myButton {
+            background-color: #44c767;
+            -moz-border-radius: 28px;
+            -webkit-border-radius: 28px;
+            border-radius: 28px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 17px;
+            padding: 16px 31px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+            margin: 5px;
+            text-align: center;
+            vertical-align: center;
+
+        }
+
+        .myButton:hover {
+            background-color: #5cbf2a;
+        }
+
+        .myButton:active {
+
+        }
+    </style>
+
+
+    <style>
+        label {
+            font-family: Georgia;
+            font-size: 25px;
+            alignment: center;
+        }
+
+        input[type=radio] {
+
+            display: none;
+            color: #122b40;
+        }
+
+        input[type=radio] + label {
+            background: url('https://lh3.googleusercontent.com/CSygHWUdWSpIIfoPv3gwc0PctzOTVFGSCcSel4lOtxBBofmpt1QJxOF8MwrXbi0lIxxnKw2Cj6btMFTJZIGxWpkNpHZL41cOa5sgeSgtlsmat7YjkQlrU2XbmhPrxZwElMf9hucSAfEgF0VRLQy58ATRdf1mQULv5VcfnWFyus03KF8Egtg_pwW1_LRnklFEAUUZ_TyzEqFM3cp6G_aDyQpNCKxNvoLWkrcV-tgxqxQGAqC45JAkWWNXSxKgXD8TINX_xO1oml6fh_qVC32SwSQZqkk8Mkhvi2V3DSME0BzcS7wlku5tUK9ijkksro3Wp9kS7Ng4kyPDpkhZAh0kaiKXe4vUXfpZhhXuVjMwaP04HmMFJ7tjKt7bKvIHo0LcKv1zbbQsJ5ZTbI9wRabnUk9dWZtKE0w9BwiNbHuw1JrJBzmSCon9aQZD2DCD72DZEgaUchpdWKi-jShqHvrhaUYUeOUQiImDmo9NBKocQIW76p69uns8tbm1XXohE6tc-PKj8Cx66YtZLm4oUsvppee7Sw92GBFNvMPP9BGZSvxZmpV6TV5rNga1JBJOCMKw76SuYRNob9jCPmjzVMYjmFN8GknmaqOti7kh-QP7IlTUleyq=w25-h24-no') left top no-repeat;
+            display: block;
+            min-height: 10px;
+            padding-left: 50px;
+            color: #122b40;
+            font-style: italic;
+        }
+
+        input[type=radio]:checked + label {
+            background: url('https://lh3.googleusercontent.com/QSVgoBuOonsWKUZm6m0NKwekEvkfMOWrPFfevisISZjzeu2uQkxMOY1MUh3QgorRu2qc1kwKX4So7-mGJ-hayMAitq15L63KQNBfsOcm1qmWDU657CNl4lauYhgVz7f59IMrZBg8FWdgh26VDCvGMwUqaK6CBVv13AdKbxDMeDqiZS73EgzF5kBW5smh1nxCY5Gqk8yCmDsYh4KixdZWKGW7BqXLZn7cB2fQV4-o0DePjN69GJLXmddJ6H32CBgiFKE4smBvb1ByWpREmRYpFEUaHuQdbhHiiebI4Kipz35I6OxsVxKC6HOIQC3Xk6JVePhgudB2_-8Nyq2M9rWqIap8kAhmN-FI8iRdSLXhTV4FEeTHqokQ0qEXEZ5N9dRKoXT3al1Alcwrson_OtaALHldR9O7BO6Iq5_BV7-ERpoSYD8wGGhCcWQbjKkz5qHTa8yWRAfZaCLnK8Dzs0DPJtgMjQirittz8cpQQxQM4fhzXvG2x_Dtev4Y1YcZbzsaU6FpamC188SkjEDGOjYnf6CTk0VVbPk1DXFPIEGbOmc7b1unsq7uHOOkuRkGnTQ_d8aLNNPpeDvxP4agpI-ycfdH2ciG4sRXSKcdeAXGIHhNaI9T=w25-h24-no') left top no-repeat;
+            color: blue;
+            font-style: normal;
+        }
+
+        input[type=checkbox] {
+            display: none;
+        }
+
+        input[type=checkbox] + label {
+            background: url('https://lh3.googleusercontent.com/Xxv2PonyC_el80dSzxdDFkgF7gM_Ru7u9ErRZS9hJeC9V1W073WowYQIhyivqHd74mt7GQBpL8aK9Aqsv9Kf2Ku_hjmsXsAZstjM0jFW4iQ85BYM41OnftEitTSzC0VagQ0hAxAYBbvTlOztGsDf5WOTW39gixPLf7DTZ72-YKANYzf1nMSH6Pc2b4_MTf4deEku7cS_xenmFAwlO5wM9lAs2TXRbOJBmuJmlIm1f6Zv7CNQR96yldK98z9QtDkDiZib2YxdFNXK_eLec8yWy-syA3imgmBDrlCR7BGZzVN36PTJDe5yChArZ-Gn2QHZAwsMCtKys_tKjngmgnYvTyj182U3jTz1Lt0N9OLpv_N4ouK8o4QEvvGs8BOTx9jAnlHoDY8D_QsKLgf_Vo1OG_DCJj67b3MTu9BYU4o3UXQgjTx7R-fHrl8V_zSHpaJyN61dwt0wVX9kerZxfxdFLnKu2CQOBITobLfZK0Q9T4REe2goZOqX0EQHfvLWuLlw7cur_VdXJctEKYCqINzeYxFqeyh1VGRkOjaY-ke73m8KkG2EYSlym7p1sYnX53xzNG66C5vCvHRm7624WZj9a2pTXSwjLCGEcQYtZ96nPTUYmrn-=s23-no') left top no-repeat;
+            display: block;
+            min-height: 23px;
+            padding-left: 50px;
+
+        }
+
+        input[type=checkbox] + label + hover {
+            background: #ccc;
+        }
+
+        input[type=checkbox]:checked + label {
+            background: url('https://lh3.googleusercontent.com/HtfShMuTVS5ellcvc4pNootlL8UKbR93Q6XHDDhcXmlxB6ImLN_A5WpYZSGDT_NJjPIK7MUl2jlwdFnD6RNYKak6bEYJ0X453PgqaNS_TEWp8Ck4fysY6Rx08jfENtWmpPETSqOeB3BoSLVuD8ZUdXlJ37ArYTmDbsCQA41zTuD1lT2m59ze9odMF2PB8FEQimdJtkyq1572ywgIdZwlimHTn3fgLK2OHza42kl22Wr4_JX1Ih1yEaqjQQTYS-5uGyiZat0SqRNoxdoYilsqcgQ0fLGiKjaPQb7gGbVjl1NFzfP5Mbyu7sOIQQ8sbRAZx63rNbD-fhvG5bLFuYulqyO6VBTBJ82KtumHkUV1ejR0sRn6hK-eFWJ7jvl1wnoqM3Ps6yFh7Jsl67r_9Yr5WF-nTwGYX979k0R7ZGmeL82tg2PGdzUlfiez6iuE6jByvEMsLC3QCLbUhA8-IY9pX-bi3b1YHq4jPk1Up5o1m15i1QuQk0fE4QuRNPBrd8L54bSjFF7mqmAdDwvC5y8wuj8O3GPYF5KA9AupDJIsE5C5-DcbkIhjvcBDaLHSpDq8KLI5BRUE9PunQl9GUrW3BdFagrJ1l79MmysIwewy_yGHRbnI=s23-no') left top no-repeat;
+            padding-left: 50px;
+            color: #f00;
+            font-style: normal;
+        }
+
+        .control-group {
+            display: inline-block;
+
+            height: 100px;
+            margin: 10px;
+            padding: 30px;
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            text-align: left;
+            vertical-align: top;
+            /*box-shadow: 0 1px 2px rgba(0, 0, 0, .1); */
+
+        }
+
+        .choice:hover {
+            background: #ccc;
+        }
+
+
+    </style>
+
+
+    <style>
+
+        h4 {
+            color: #111;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 30px;
+            font-weight: 300;
+            line-height: 32px;
+            margin: 0 0 72px;
+            text-align: center;
+        }
+
+        h5 {
+            color: #efefef;
+
+        }
+
+    </style>
+
+    <style>
+        .myclass {
+            display: flex;
+            min-height: 600px;
+            position: relative;
+            top: 230px;
+            left: 450px;
+        }
+
+    </style>
+
+
+    <style>
+
+        .btn {
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 25px;
+            font-size: 22px;
+            text-decoration: none;
+            margin: 20px;
+            color: #fff;
+            position: absolute;
+            top: 500px;
+            left: 50px;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .btn:active {
+            transform: translate(0px, 5px);
+            box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .25);
+        }
+
+    </style>
+
+
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            background-color: #232435;
+            overflow-x: hidden;
+            padding-top: 20%;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+        progress[value]::-webkit-progress-value {
+            background: whiteSmoke -webkit-linear-gradient(-45deg,
+            transparent 33%, rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%, transparent 66%),
+            -webkit-linear-gradient(top,
+                    rgba(255, 255, 255, .25),
+                    rgba(0, 0, 0, .25)),
+            -webkit-linear-gradient(left, #09c, #f44);
+
+            border-radius: 2px;
+            background-size: 35px 20px, 100% 100%, 100% 100%;
+        }
+    </style>
+
+
+    <style>
+        h2, h1 {
+            font-weight: bold;
+            color: #761c19;
+        }
+
+        h6 {
+            font-weight: bold;
+        }
+    </style>
+
+
+</head>
+
+<body style="background-color: #A9A9A9">
+{% include 'header.html' %}
+
+
+<div class="sidenav">
+    <h5 id="correct">Correct: 0</h5>
+    <progress id="corbar" class="progress" max="10"></progress>
+
+    <h5 id="wrong">Wrong: 0</h5>
+    <progress id="wrongbar" class="progress" max="10"></progress>
+
+</div>
+
+
+<div id="selclass" class="myclass" style="display: inline-block">
+    <h1 align="center" id="choose_text">Choose a Test Method</h1>
+    <div align="center">
+        <div align="center" style="display: inline-block">
+            <a href="#" class="myButton" id="choice1" style='visibility:visible' onclick="multipleChoice(this)">Multiple
+                Choice</a>
+        </div>
+        <div align="center" style="display: inline-block">
+            <a href="#" class="myButton" id="choice2" style='visibility:visible' onclick="fillInTheBlanks(this)">Fill in
+                the blanks</a>
+        </div>
+    </div>
+</div>
+
+<div class="control-group" style="display: block">
+    <h2 class="quest" align="center" id="line" style="color: #761c19" style="visibility: visible"></h2>
+    <form id="formid" style="visibility: hidden">
+        <input type="radio" name="gender" id="radio_btn1" onclick="check(this.value)" value={{ option_dict[0][0] }}/>
+        <label class="choice" for="radio_btn1">{{ option_dict[0][0] }}</label><br/>
+        <input type="radio" name="gender" id="radio_btn2" onclick="check(this.value)" value={{ option_dict[1][0] }}/>
+        <label class="choice" for="radio_btn2">{{ option_dict[1][0] }}</label><br/>
+        <input type="radio" name="gender" id="radio_btn3" onclick="check(this.value)" value={{ option_dict[2][0] }}/>
+        <label class="choice" for="radio_btn3">{{ option_dict[2][0] }}</label><br/>
+        <input type="radio" name="gender" id="radio_btn4" onclick="check(this.value)" value={{ option_dict[3][0] }}/>
+        <label class="choice" for="radio_btn4">{{ option_dict[3][0] }}</label><br/>
+    </form>
+
+
+    <div class="btns" style="display: block">
+        <div style="display: inline-flex">
+            <a href="#" class="myButton" id="submit" style='visibility:hidden'
+               onclick="displayAns(this, '{{ sessionID }}')">Submit</a>
+        </div>
+        <div style="display: inline-flex">
+            <a href="#" class="myButton" id="next" style='visibility:hidden'
+               onclick="nextTestWord(this, '{{ sessionID }}')">Next</a>
+        </div>
+    </div>
+    <div class="showans" style="display: block">
+        <h6 id="anstext"></h6>
+    </div>
+</div>
+
+<div class="cor">
+
+</div>
+
+
+<script>
+    var isWhat = true;
+
+    function multipleChoice(source) {
+        isWhat = false;
+        var list = [];
+        removeDummy("choose_text");
+        removeDummy(source.id);
+        removeDummy("choice2");
+        list[0] = '{{ multi_dict[0][0] }}';
+        list[1] = '{{ multi_dict[1][0] }}';
+        list[2] = '{{ multi_dict[2][0] }}';
+        list[3] = '{{ multi_dict[3][0] }}';
+
+        setValues(list, '{{ multi_word }}')
+    }
+
+    function fillInTheBlanks(source) {
+        var list = [];
+        removeDummy("choose_text");
+        removeDummy(source.id);
+        removeDummy("choice1")
+
+        list[0] = '{{ option_dict[0][0] }}';
+        list[1] = '{{ option_dict[1][0] }}';
+        list[2] = '{{ option_dict[2][0] }}';
+        list[3] = '{{ option_dict[3][0] }}';
+
+        setValues(list, '{{ test_line }}')
+    }
+
+    function removeDummy(id) {
+        var elem = document.getElementById(id);
+        elem.parentNode.removeChild(elem);
+        return false;
+    }
+
+    function setValues(list, line) {
+        document.getElementById("line").innerHTML = line;
+        document.getElementById("line").style.visibility = 'visible';
+
+        var $label = $('input[id=radio_btn1]').next();
+        $label.text(list[0]);
+        var $label = $('input[id=radio_btn2]').next();
+        $label.text(list[1]);
+        var $label = $('input[id=radio_btn3]').next();
+        $label.text(list[2]);
+        var $label = $('input[id=radio_btn4]').next();
+        $label.text(list[3]);
+
+        $("#radio_btn1").val(list[0]);
+        $("#radio_btn2").val(list[1]);
+        $("#radio_btn3").val(list[2]);
+        $("#radio_btn4").val(list[3]);
+
+        document.getElementById("formid").style.visibility = 'visible';
+        document.getElementById("submit").style.visibility = 'visible';
+    }
+
+    function check(ans) {
+    }
+
+    function nextTestWord(source, sessionID) {
+
+        document.getElementById("radio_btn1").disabled = false;
+        document.getElementById("radio_btn2").disabled = false;
+        document.getElementById("radio_btn3").disabled = false;
+        document.getElementById("radio_btn4").disabled = false;
+
+        console.log(isWhat);
+        var answer;
+
+        document.getElementById("anstext").innerHTML = ' ';
+        document.getElementById("submit").style.visibility = 'visible';
+        document.getElementById("next").style.visibility = 'hidden';
+
+        var exampleForm = document.forms['formid'];
+        for (var i = 0; i < exampleForm.length; i++) {
+            if (exampleForm[i].type === 'radio' && exampleForm[i].checked === true) {
+                answer = exampleForm[i].value;
+                exampleForm[i].checked = false;
+            }
+        }
+
+        $.ajax({
+            url: '/nexttestword',
+            data: {'answer': answer, 'sessionID': sessionID, 'buttonID': source.id, 'isWhat': isWhat},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                if (response.test_word[0] === '$null$') {
+                    document.getElementById("line").innerHTML = "Congratulations. Test ended";
+                    document.getElementById("formid").style.visibility = 'hidden';
+                    document.getElementById("next").style.visibility = 'hidden';
+                    document.getElementById("submit").style.visibility = 'hidden';
+                    document.getElementById("correct").style.visibility = 'hidden';
+                    document.getElementById("wrong").style.visibility = 'hidden';
+
+                    $.ajax({
+                        url: '/testsummary',
+                        data: {
+                            'sessionID': sessionID,
+                            'isWhat': isWhat,
+                            'correct': response.correct,
+                            'wrong': response.wrong
+                        },
+                        dataType: 'html',
+                        type: 'POST',
+                        success: function (response) {
+                            $('body').replaceWith(response);
+                        },
+                        error: function (error) {
+                            console.log('Error in receiving');
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("line").innerHTML = response.test_line;
+                    document.getElementById("correct").innerHTML = 'Correct : ' + response.correct;
+                    document.getElementById("wrong").innerHTML = 'Wrong : ' + response.wrong;
+
+                    $("#corbar").val(response.correct);
+                    $("#wrongbar").val(response.wrong);
+
+                    document.getElementById("correct").style.visibility = 'visible';
+                    document.getElementById("wrong").style.visibility = 'visible';
+
+                    var $label = $('input[id=radio_btn1]').next();
+                    $label.text(response.option_dict[0][0]);
+                    $("#radio_btn1").val(response.option_dict[0][0]);
+                    $label = $('input[id=radio_btn2]').next();
+                    $label.text(response.option_dict[1][0]);
+                    $("#radio_btn2").val(response.option_dict[1][0]);
+                    $label = $('input[id=radio_btn3]').next();
+                    $label.text(response.option_dict[2][0]);
+                    $("#radio_btn3").val(response.option_dict[2][0]);
+                    $label = $('input[id=radio_btn4]').next();
+                    $label.text(response.option_dict[3][0]);
+                    $("#radio_btn4").val(response.option_dict[3][0]);
+                }
+            },
+            error: function (error) {
+                console.log('Error in receiving');
+            }
+        });
+    }
+
+    function displayAns(source, sessionID) {
+        document.getElementById("radio_btn1").disabled = true;
+        document.getElementById("radio_btn2").disabled = true;
+        document.getElementById("radio_btn3").disabled = true;
+        document.getElementById("radio_btn4").disabled = true;
+
+        var answer;
+        var exampleForm = document.forms['formid'];
+        for (var i = 0; i < exampleForm.length; i++) {
+            if (exampleForm[i].type === 'radio' && exampleForm[i].checked === true) {
+                answer = exampleForm[i].value;
+            }
+        }
+
+        $.ajax({
+            url: '/thisans',
+            data: {'sessionID': sessionID, 'isWhat': isWhat},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                if (response.ans === answer) {
+                    document.getElementById("anstext").style.color = "#006400";
+                    document.getElementById("anstext").innerHTML = "Correct : You have selected " + answer;
+                }
+                else {
+                    document.getElementById("anstext").style.color = "#c30101";
+                    document.getElementById("anstext").innerHTML = "Wrong : You have selected " + answer + ". Correct answer is " + response.ans;
+                }
+
+            },
+            error: function (error) {
+                console.log('Error in receiving');
+            }
+        });
+
+        document.getElementById(source.id).style.visibility = 'hidden';
+        document.getElementById("next").style.visibility = 'visible';
+    }
+
+</script>
+</body>
+</html>

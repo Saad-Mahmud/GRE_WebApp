@@ -1,6 +1,6 @@
 from zSaad_Test.Backend.Words.WordDataLoader import WordDataLoader
 from zSaad_Test.Backend.Words.WordRatingLoader import WordRatingLoader
-from zSaad_Test.Backend.initDB import DBConf
+from App_Main.Backend.Config.DBConfig import DBConf
 
 
 def init_DB_with_words():

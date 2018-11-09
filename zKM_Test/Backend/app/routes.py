@@ -12,11 +12,11 @@ from flask_register import register_required
 from werkzeug.security import generate_password_hash
 from werkzeug.urls import url_parse
 
-from zKM_Test.Backend.app import APP_MAIN, APPLOGIN, db, mail
+from App_Main.Backend.App import APP_MAIN, APPLOGIN, db, mail
 from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, \
     ResetPasswordForm, LocalStatForm
 from zKM_Test.Backend.builder import RegBuilder, AdapterPattern
-from zKM_Test.Backend.builder.RateRank import RateRank
+from zKM_Test.Backend.builder.RateRank import RateRank as RK
 from zKM_Test.Backend.facade.facadeForm import AdditionalForm
 from zKM_Test.Backend.app.model import User, Gre_data
 from zKM_Test.Backend.facade import FacadeAdditional
@@ -33,15 +33,18 @@ from zMA_Test.Backend.test.fetch_test import create_session_test, create_gre_tes
     update_initial_session_test, update_next_session_test, update_test_summary
 from zMA_Test.Backend.test.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.test.test_util import show_test_stat, rating_change
-from zSaad_Test.Backend.Words.Words import Words
+from App_Main.Backend.Words.Words import Words
 
 try:
     from urllib.request import Request,urlopen, URLError
 except ImportError:
     from urllib2 import Request,urlopen,URLError
+
 from os import urandom
+
 from PIL import Image
 from flask_mail import Message
+
 next_gpage = ""
 reg_bool = True
 GOOGLE_CLIENT_ID = '375961356325-p3umdlkkjr6ak9kairqv8b3ttalio52a.apps.googleusercontent.com'
@@ -51,7 +54,7 @@ REDIRECT_URI = '/oauth2callback'
 
 
 oauth = OAuth()
-
+RateRank = RK()
 
 google = oauth.remote_app('google',
                           base_url='https://www.google.com/accounts/',
@@ -136,19 +139,9 @@ def get_access_token():
     return session.get('access_token')
 
 
-@APP_MAIN.route('/')
 @APP_MAIN.route('/index')
 def index():
-    posts = [
-        {
-            'author': {'username':'Koushik Deb'},
-            'body': 'Beautiful day in Malibagh'
-        },
-        {
-            'author': {'username':'Sadeen Mahbub Mob'},
-            'body': 'The Justice League movie was so khuul!'
-        }
-    ]
+    posts = []
     return render_template('index.html', title = 'Home', posts=posts)
 
 
@@ -411,10 +404,6 @@ def reset_token(token):
     return render_template('reset_token.html', title='Reset Password',form=form)
 
 
-@APP_MAIN.route('/dictionary')
-@login_required
-def dictionary():
-    pass
 
 
 @login_required
@@ -593,7 +582,7 @@ def practice(type):
 
 
 @APP_MAIN.route('/fliped', methods=['POST'])
-def translate():
+def translate_ma():
     sessionID = request.form['sessionID']
     pointer_f = session_practice.objects(id=sessionID)[0]
 
@@ -702,13 +691,8 @@ def practice_summary():
 def tryit():
     return render_template('flashcard.html')
 
-import os
-static_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-static_dir = os.path.join(static_dir, 'Frontend')
-static_dir = os.path.join(static_dir, 'static')
-static_dir = os.path.join(static_dir, 'audio')
 
-
+'''
 @APP_MAIN.route('/Words/audio/',defaults={'filename': ''})
 @APP_MAIN.route('/Words/audio/<path:filename>')
 def download_file(filename):
@@ -720,7 +704,7 @@ def download_file(filename):
     if(Words.objects(word=file)==[]):
         return
     return send_file(filename)
-
+'''
 
 @APP_MAIN.route('/stat',methods=['POST','GET'])
 @login_required

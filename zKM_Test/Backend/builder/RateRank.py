@@ -9,12 +9,16 @@ from zKM_Test.Backend.app.model import Gre_data, User
 
 
 class RateRank:
-    def rating(username):
+
+    def __init__(self):
+        pass
+
+    def rating(self,username):
         rate = Gre_data.objects(username=username)
         rate = rate[0]
         return rate
 
-    def ranking(ajax_var):
+    def ranking(self,ajax_var):
         col = db['gre_data']
         curser = col.find({})
         dict = {}

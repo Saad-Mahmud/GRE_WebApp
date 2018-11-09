@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block card %}
+<style>
+.card {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 45%;
+    background-color: #e9ffee;
+}
+
+.card:hover {
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2);
+}
+
+</style>
+{% endblock %}
+{% block app_content %}
+    <div align="center">
+    <h1>Register</h1>
+    <div class="card" align="center">
+        <br>
+    <div align="center">
+        <div class="col-md-8" align="center">
+            {{ wtf.quick_form(form) }}
+
+        </div>
+
+    </div>
+    <br>
+    <P>
+            <a class="btn btn-default" role="button" href="{{ url_for('gregister') }}"> Sign Up with Google!</a>
+        </P>
+    </div>
+    </div>
+{% endblock %}

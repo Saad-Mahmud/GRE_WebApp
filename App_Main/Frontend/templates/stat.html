@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block js %}
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUUBgtiJj06wt/s=" crossorigin="anonymous"></script>
+{% endblock %}
+
+
+{% block app_content %}
+<h2>Global</h2>
+
+<table class="table table-dark">
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Rank</th>
+    <th>Country</th>
+  </tr>
+    {% for i in range(0,length) %}
+         <tr>
+            <td>{{ rank[i][0] }}</td>
+            <td>{{ rank[i][1] }}</td>
+            <td>{% print(i+1) %} </td>
+            <td>{% print(user.objects(username=rank[i][0])[0].country) %}
+            </td>
+         </tr>
+    {% endfor %}
+
+</table>
+ <form action="" method="post" novalidate>
+ {{ form.hidden_tag() }}
+<h2>Local</h2>
+<p>
+        <select name="cnt_name1" id="sc" onclick="myFunction(this.id)">
+            <option value="select country">Select a country</option><br>
+            {% for i in arr %}
+                <option value="{{i}}">{% print(i) %}</option><br>
+            {% endfor %}
+        </select>
+
+</p>
+     <p>{{ form.submit() }}</p>
+
+ </form>
+<table class="table table-dark">
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Rank</th>
+    <th>Country</th>
+  </tr>
+    {% for i in range(0,length1) %}
+         <tr>
+            <td>{{ local[i][0] }}</td>
+            <td>{{ local[i][1] }}</td>
+            <td>{% print(i+1) %} </td>
+             {% if ajax_var==None or ajax_var=='select country'%}
+            <td>{{ current_user.country }}</td>
+            {% else %}
+            <td>{{ ajax_var }}</td>
+            {% endif %}
+         </tr>
+    {% endfor %}
+
+</table>
+
+<h3>Charts:</h3>
+{#<h5>{{ current_user.username }}'s Rating Graph</h5>#}
+<div class="ct-chart0 .ct-perfect-fourth"></div>
+<h5>Test vs Score</h5>
+<div class="ct-chart .ct-perfect-fourth"></div>
+<h5>Global Rating</h5>
+<br>
+<div class="ct-chart2 .ct-perfect-fourth"></div>
+<h5>Local Rating</h5>
+<div class="ct-chart3 .ct-perfect-fourth"></div>
+
+<script>
+     let options = {
+        width: 1100,
+        height: 400
+    };
+
+     let data0 = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in stat_data.rate_date %}
+          "{{ i }}",
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in stat_data.rating_chart %}
+            {{ i }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    let data = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in range(1,stat_data.how_many_test+1,1) %}
+          {{ i }},
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in stat_data.all_scores %}
+            {{ i }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    let data1 = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in range(0,length) %}
+          "{{ rank[i][0] }}",
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in range(0,length) %}
+            {{ rank[i][1] }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    let data2 = {
+      // A labels array that can contain any sort of values
+      labels: [{% for i in range(0,length1) %}
+          "{{ local[i][0] }}",
+          {% endfor %}
+      ],
+      // Our series array that contains series objects or in this case series data arrays
+      series: [
+        [{% for i in range(0,length1) %}
+            {{ local[i][1] }},
+            {% endfor %}
+        ]
+      ]
+        };
+
+    // Create a new line chart object where as first parameter we pass in a selector
+    // that is resolving to our chart container element. The Second parameter
+    // is the actual data object.
+     //let mychart0 = new Chartist.Line('.ct-chart0', data0, options);
+    let mychart = new Chartist.Line('.ct-chart', data, options);
+
+    let mychart2 = new Chartist.Bar('.ct-chart2', data1, options);
+    let mychart3 = new Chartist.Bar('.ct-chart3', data2, options);
+
+    function myFunction(id) {
+        var e = document.getElementById(id);
+        console.log(id)
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        if(value === 'select country'){
+
+        }
+        else{
+            //document.getElementById(id+"_text").innerHTML=value*/
+        $.ajax({
+            url: '/statcountry',
+            data: {'sc':value.toString()},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                //document.getElementById(id+"_text").innerHTML=response.status
+                console.log(response.status)
+            },
+            error: function (error) {
+                //document.getElementById(id+"_text").innerHTML='Translation Not Available'
+            }
+        });
+
+       }
+
+}
+</script>
+{% endblock %}
+
+
+

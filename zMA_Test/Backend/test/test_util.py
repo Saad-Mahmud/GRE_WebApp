@@ -1,5 +1,5 @@
 from zMA_Test.Backend.test.iterator_pattern import WordList
-from zSaad_Test.Backend.Words.Words_Rating import Words_Rating
+from App_Main.Backend.Words.Words_Rating import Words_Rating
 
 
 def show_test_stat(status):

@@ -12,7 +12,7 @@ from zMA_Test.Backend.practice.fetch_practice import create_session_practice, Fe
 from zMA_Test.Backend.practice.practice_util import showstat
 # from zMA_Test.Backend.test.fetch_test import create_session_test
 from zMA_Test.Backend.test.test_util import show_test_stat
-from zSaad_Test.Backend.Words.Words import Words
+from App_Main.Backend.Words.Words import Words
 
 
 @APP_MAIN.route('/')

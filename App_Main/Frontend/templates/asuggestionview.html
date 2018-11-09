@@ -1,0 +1,23 @@
+<div class="card">
+    <h5 class="card-header"><b>{{ suggestion.TYPE }}</b> </h5>
+  <div class="card-body">
+    <h5 class="card-title">By: <i>User Name</i></h5>
+    <p class="card-text">
+        <b>Report :</b>
+         {{ suggestion.report }}
+      <h6 align="right"><b>Date: </b>{{ suggestion.date }}</h6>
+    </p>
+
+      <div align="right">
+          {% if suggestion.status=='US' %}
+              <a class="btn btn-success" role="button"  onclick="myADD('{{ suggestion.id }}')">
+                  Add To TODO List</a>
+          {% endif %}
+
+          <a onclick="myDel('{{ suggestion.id }}')" class="btn btn-danger" role="button" >
+                    Delete</a>
+    </div>
+
+
+  </div>
+</div>

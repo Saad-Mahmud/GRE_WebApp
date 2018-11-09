@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/css/mdb.min.css" rel="stylesheet">
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
+
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+<script>
+    function myFunction() {
+        var textarea = document.getElementById('report');
+        var selectrype = document.getElementById("selecttype");
+        var tp = selectrype.options[selectrype.selectedIndex].value;
+        var text = textarea.value;
+        console.log(tp);
+        console.log(text);
+        $.ajax({
+            url: '/processsuggestion',
+            data: {'type':tp.toString(),'report':text},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                console.log(response.status)
+            },
+            error: function (error) {
+
+                console.log(error)
+            }
+        });
+
+}
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Suggestion</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark unique-color-dark">
+
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" height="60" alt="vlab logo">
+    </a>
+
+    <a class="navbar-brand" href="{{ url_for('hello_world') }}">VocLAB</a>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('hello_world') }}">Home</a>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
+      </li>
+        <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">Admin</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{{ url_for('admin_words') }}">Admin WordView</a>
+          <a class="dropdown-item" href="{{ url_for('adminsuggestions') }}">Admin SuggestionsView</a>
+          <a class="dropdown-item" href="{{ url_for('admintodo') }}">Admin TODO List</a>
+        </div>
+      </li>
+
+    </ul>
+    </div>
+</nav>
+
+
+<div class="card" align="center" style="position: center; padding-top: 2%">
+
+    <h5 class="card-header"><b>Give Us Suggestions. Help Us Improve.</h5>
+    <div class="card-body">
+    <p class="card-text">
+        <div class="form-group">
+            <label for="comment">Report:</label>
+            <textarea class="form-control" rows="5" id="report"></textarea>
+            <label for="exampleFormControlSelect1">Type:</label>
+            <select class="form-control" id="selecttype">
+                {% for x in form %}
+                    <option value='{{ x }}'>'{{ x }}'</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div align="right">
+            <a href="#" class="btn btn-success" onclick="myFunction()">Submit</a>
+         </div>
+    </p>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark pt-4" style="position: relative; margin-top: 50%">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+          <div class="mb-5 flex-center">
+
+            <!-- Facebook -->
+            <a class="fb-ic">
+              <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+            <!-- Twitter -->
+            <a class="tw-ic">
+              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Linkedin -->
+            <a class="li-ic">
+              <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+            </a>
+
+            <!--Pinterest-->
+            <a class="gt-ic">
+              <i class="fa fa-github fa-lg white-text fa-2x"> </i>
+            </a>
+          </div>
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright:
+      <a href="https://mdbootstrap.com/bootstrap-tutorial/">VocLAB.org</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
+
+
+</body>
+</html>

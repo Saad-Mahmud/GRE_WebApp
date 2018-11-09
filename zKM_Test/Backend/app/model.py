@@ -1,7 +1,7 @@
 from mongoengine import *
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Mub
-from zKM_Test.Backend.app import APPLOGIN, APP_MAIN
+from App_Main.Backend.App import APPLOGIN, APP_MAIN
 from hashlib import md5
 from werkzeug.security import check_password_hash
 

@@ -1,0 +1,126 @@
+<html>
+<head>
+    <style>
+        * {
+    margin:0;
+    padding:0;
+}
+.pie {
+    background-color:#ecc0b7;
+    width:200px;
+    height:200px;
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    position:relative;
+}
+.clip1 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+}
+.slice1 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 100px, 200px, 0px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#f7e5e1;
+    border-color:#f7e5e1;
+    -moz-transform:rotate(0);
+    -webkit-transform:rotate(0);
+    -o-transform:rotate(0);
+    transform:rotate(0);
+}
+.clip2 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0, 100px, 200px, 0px);
+}
+.slice2 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#f7e5e1;
+    border-color:#f7e5e1;
+    -moz-transform:rotate(0);
+    -webkit-transform:rotate(0);
+    -o-transform:rotate(0);
+    transform:rotate(0);
+}
+.status {
+    position:absolute;
+    height:30px;
+    width:200px;
+    line-height:60px;
+    text-align:center;
+    top:50%;
+    margin-top:-35px;
+    font-size:60px;
+}
+    </style>
+</head>
+<body>
+
+<div class="pie">
+    <div class="clip1">
+        <div class="slice1"></div>
+    </div>
+    <div class="clip2">
+        <div class="slice2"></div>
+    </div>
+    <div class="status"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+    progressBarUpdate(1, 6);
+});
+
+function rotate(element, degree) {
+    element.css({
+        '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-ms-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+            'zoom': 1
+    });
+}
+
+function progressBarUpdate(x, outOf) {
+    var firstHalfAngle = 180;
+    var secondHalfAngle = 0;
+
+    // caluclate the angle
+    var drawAngle = x / outOf * 360;
+
+    // calculate the angle to be displayed if each half
+    if (drawAngle <= 180) {
+        firstHalfAngle = drawAngle;
+    } else {
+        secondHalfAngle = drawAngle - 180;
+    }
+
+    // set the transition
+    rotate($(".slice1"), firstHalfAngle);
+    rotate($(".slice2"), secondHalfAngle);
+
+    // set the values on the text
+    $(".status").html(x + " of " + outOf);
+}
+</script>
+</body>
+</html>

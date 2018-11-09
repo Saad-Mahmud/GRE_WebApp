@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUUBgtiJj06wt/s=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+    <h2>Users Table</h2>
+    <table>
+        <h2>Registration Table for the last week</h2>
+        <tr>
+            <th>User Name</th>
+            <th>Date of registration</th>
+        </tr>
+        {% for i,j in dict.items() %}
+            <tr>
+            <td>{{ i }}</td>
+            <td>{{ j }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>

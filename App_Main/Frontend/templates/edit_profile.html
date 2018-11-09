@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf%}
+
+
+
+{% block js %}
+    <style>
+        #myDIV {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            x.style.display = "block";
+
+
+            }
+        function myFunction2() {
+            var x = document.getElementById("myDIV");
+            x.style.display = "none";
+        }
+    </script>
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+{% endblock js %}
+
+
+{% block app_content %}
+
+
+    <h1>Edit Profile</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(cols=100, rows=4) }}<br>
+            {% for error in form.about_me.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.pic.label()}}<br>
+            {{ form.pic(class="form-control-file")}}
+            {% if form.pic.errors %}
+                {% for error in form.pic.errors %}
+                <span style="color:red;">[{{ error }}]</span>
+                {% endfor %}
+            {% endif %}
+        </p>
+        <br>
+            <p>{{ form.submit() }}</p>
+    </form>
+
+    <p><button class="btn btn-secondary" onclick="myFunction()">Change Profile Picture</button></p>
+     <div id="myDIV">
+         <p>
+      <h4>Go to  <a href="https://gravatar.com/" target="null"><i><u>https://gravatar.com/</u></i></a>  and Log In with you email. Then change your profile picture to show it on your profile.
+     </h4>
+         </p>
+         <p>
+        <button class="btn btn-secondary" onclick="myFunction2()">OK</button>
+         </p>
+     </div>
+    <br>
+    <br>
+    <div>
+    </div>
+
+{% endblock %}
+

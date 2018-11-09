@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block card %}
+<style>
+.card {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 45%;
+    background-color: #fcffee;
+}
+
+.card:hover {
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2);
+}
+.xxx {
+    padding-right: 380px;
+}
+
+</style>
+{% endblock %}
+
+{% block app_content %}
+    <div align="center">
+    <div class="card" align="center">
+    <h1>To Guide you through:</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+    <p>
+        {{ form.age.label(class="form-control-label") }}<br>
+        {{ form.age(class="col-md-8 form-control") }}<br>
+        {% for error in form.age.errors %}
+        <span style="color:red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <div class="xxx">
+        {{ form.gender.label }}
+        </div>
+        <div align="left">
+        {{ form.gender() }}<br>
+        </div>
+    </p>
+    <p>
+        <select name="cnt_name" class="form-control selcls col-md-8 form-control">
+            <option value="select country" >Select a country</option><br>
+            {% for i in arr %}
+                <option value="{{i}}">{% print(i) %}</option><br>
+            {% endfor %}
+        </select>
+
+    </p>
+     <p>
+            {{ form.confirm_password.label(class="form-control-label") }}<br>
+            {{ form.confirm_password(class="col-md-8 form-control") }}<br>
+            {% for error in form.confirm_password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+     </p>
+
+    <p>{{ form.submit(class="btn btn-outline-info") }}</p>
+    </form>
+    </div>
+    </div>
+{% endblock %}

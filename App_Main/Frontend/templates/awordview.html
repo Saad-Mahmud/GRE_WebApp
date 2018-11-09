@@ -1,0 +1,45 @@
+<div class="card">
+
+    <h5 class="card-header"><b>{{ word.word }}</b> <i>({{ word.TYPE }})</i> </h5>
+
+    <div class="card-body">
+        <h5 class="card-title">{{ word.meaning }}</h5>
+
+        <p class="card-text">
+            <b>Usage :</b>
+            <ul>
+                {% for usage in word.usages %}
+                    <li >{{ usage }}</li>
+                {% endfor %}
+            </ul>
+            <b>Translation:  </b>
+
+            <select id="{{ word.wordID }}" onclick="myFunction(this.id)" >
+                <option value="- - - -">None</option>
+                {% for key, value in word.translations.items(): %}
+                    <option value={{ value }}>{{ key }}</option>
+                {% endfor %}
+            </select>
+            <b>  =  </b>
+            <b id="{{ word.wordID }}_text"> - - - -</b>
+
+        </p>
+
+        <div align="left">
+            <audio class="embed-responsive-item" controls >
+                <source src="/words/audio/{{ word.word }}.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+      <div align="right">
+          <a href="{{ url_for('admintranslate') }}{{ word.wordID }}" class="btn btn-primary"
+             role="button"  >Add Translation</a>
+          <a href="{{ url_for('adminaudio') }}{{ word.wordID }}" class="btn btn-primary"
+               role="button"  >Add Audio</a>
+          <a href="{{ url_for('admineditword') }}{{ word.wordID }}" class="btn btn-primary"
+               role="button"  >Edit Text</a>
+          <a href="{{ url_for('admindelete') }}{{ word.wordID }}" class="btn btn-danger"
+               role="button" > Delete</a>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,584 @@
+<html lang="en">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/css/mdb.min.css" rel="stylesheet">
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Practice</title>
+    <!-- Chart  -->
+    <style>
+
+
+        .pie {
+            background-color: #3b97df;
+            width: 200px;
+            height: 200px;
+            -moz-border-radius: 100px;
+            -webkit-border-radius: 100px;
+            border-radius: 100px;
+            position: relative;
+            left: 15%;
+            top: 10%;
+        }
+
+        .clip1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            clip: rect(0px, 200px, 200px, 100px);
+        }
+
+        .slice1 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            clip: rect(0px, 100px, 200px, 0px);
+            -moz-border-radius: 100px;
+            -webkit-border-radius: 100px;
+            border-radius: 100px;
+            background-color: #464646;
+            border-color: #464646;
+            -moz-transform: rotate(0);
+            -webkit-transform: rotate(0);
+            -o-transform: rotate(0);
+            transform: rotate(0);
+        }
+
+        .clip2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            clip: rect(0, 100px, 200px, 0px);
+        }
+
+        .slice2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            clip: rect(0px, 200px, 200px, 100px);
+            -moz-border-radius: 100px;
+            -webkit-border-radius: 100px;
+            border-radius: 100px;
+            background-color: #464646;
+            border-color: #464646;
+            -moz-transform: rotate(0);
+            -webkit-transform: rotate(0);
+            -o-transform: rotate(0);
+            transform: rotate(0);
+        }
+
+        .status {
+            position: absolute;
+            height: 30px;
+            width: 200px;
+            line-height: 60px;
+            text-align: center;
+            top: 50%;
+            margin-top: -35px;
+            font-size: 60px;
+
+        }
+    </style>
+
+    <!-- Flashcard -->
+    <style>
+        .card {
+            perspective: 600px;
+            position: relative;
+            background-color: #464646;
+
+        }
+
+        .card.is-switched .card__wrapper {
+            animation: rotate 0.5s linear both;
+        }
+
+        .card__wrapper {
+            transform-style: preserve-3d;
+            animation: rotate-inverse 0.5s linear both;
+        }
+
+        .card__side {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+        }
+
+        .card__side.is-active {
+            position: static;
+        }
+
+        .card__side--back {
+            transform: rotateY(180deg);
+
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotateY(0);
+            }
+            70% {
+                transform: rotateY(200deg);
+            }
+            100% {
+                transform: rotateY(180deg);
+            }
+        }
+
+        @keyframes rotate-inverse {
+            0% {
+                transform: rotateY(180deg);
+            }
+            70% {
+                transform: rotateY(-20deg);
+            }
+            100% {
+                transform: rotateY(0);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            text-align: center;
+            /* padding: 1.5rem;*/
+        }
+
+        h1, h2 {
+            margin: 0;
+        }
+
+        .card {
+            margin: 2rem auto;
+            max-width: 800px;
+            margin-top: 10%;
+            margin-left: 30%;
+
+        }
+
+        .card__side {
+            padding: 1em;
+            border-radius: 5px;
+            color: white;
+            background-color: #3b97df;
+            height: 350px;
+
+        }
+
+        .card__side--back {
+            background-color: #ffffff;
+            box-shadow: 0px 5px 0px 0px #3c93d5;
+            height: 350px;
+        }
+
+        .btn {
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 25px;
+            font-size: 22px;
+            text-decoration: none;
+            margin: 20px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .btn:active {
+            transform: translate(0px, 5px);
+            box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .25);
+        }
+
+        .btn--blue {
+            background-color: #55acee;
+            box-shadow: 0px 5px 0px 0px #3c93d5;
+        }
+
+        .btn--blue:hover {
+            background-color: #6fc6ff;
+        }
+
+        .title {
+            color: #fff;
+        }
+
+
+    </style>
+
+    <!-- sienav -->
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 350px;
+            position: fixed;
+            z-index: -1;
+            top: 60px;
+            left: 0;
+            color: #efefef;
+            background-color: #232435;
+            overflow-x: hidden;
+
+            /*padding-top: 20px;*/
+        }
+
+        .sidenav a {
+            /*padding: 6px 8px 6px 16px;*/
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: darkblue;
+        }
+
+        .main {
+            margin-left: 160px; /* Same as the width of the sidenav */
+            font-size: 28px; /* Increased text to enable scrolling */
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+    <style>
+        .flipbtn {
+            position: absolute;
+            left: 55%;
+        }
+
+        .idkbtn {
+            position: absolute;
+            left: 35%;
+        }
+
+        .ikbtn {
+            position: absolute;
+            left: 65%;
+        }
+
+        .stat {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+        }
+    </style>
+</head>
+
+<body>
+{% include 'header.html' %}
+
+
+<div class="sidenav">
+
+    <div style="display: block" class="pie">
+        <div class="clip1">
+            <div class="slice1"></div>
+        </div>
+        <div class="clip2">
+            <div class="slice2"></div>
+        </div>
+        <div class="status">0 of 10</div>
+    </div>
+
+    <div class="stat" style="display: block">
+        <h4 align="left">You have mastered <b id="master">0</b> out of 10 words</h4>
+        <h4 align="left">You are reviewing <b id="review">0</b> out of 10 words</h4>
+        <h4 align="left">You are learning <b id="learn">0</b> out of 10 words</h4>
+
+    </div>
+</div>
+
+
+<div class="card js-card " style="display: block">
+    <div class="card__wrapper">
+        <div class="card__side is-active align-items-center d-flex justify-content-center">
+            <h3><b id="cardside1">{{ word.word }}</b></h3>
+        </div>
+        <div class="card__side card__side--back">
+            {% include 'dictview.html' %}
+        </div>
+    </div>
+</div>
+
+
+<div class="myclass" style="display: inline-block; vertical-align: center">
+
+
+    <div style="display: block">
+        <div class="idkbtn" style="display: inline-block">
+            <a href="#" class="btn btn-danger" id="idk" style='visibility:hidden'
+               onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I don't Know</a>
+        </div>
+        <div class="ikbtn" style="display: inline-block">
+            <a href="#" class="btn btn-success" id="ik" style='visibility:hidden'
+               onclick="myFunction(this, '{{ sessionID }}', 'idk','ik','flip')">I
+                know</a>
+
+        </div>
+
+    </div>
+    <div class="flipbtn" style="display: block">
+        <a href="#" class="btn btn-danger" id="flip" style='visibility:visible'
+           onclick="flipCard('{{ sessionID }}','flip','ik','idk')">Flip</a>
+
+    </div>
+
+
+
+</div>
+
+
+<script>
+
+    let cardTransitionTime = 500;
+
+    let $card = $('.js-card');
+    let switching = false;
+
+
+    function flipCard(sessionID, id2hide, id2show, id3show) {
+        document.getElementById("flip").style.visibility = 'hidden';
+        $.ajax({
+            url: '/fliped',
+            data: {'sessionID': sessionID},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+
+                if (response.word['wordID'] === '$null$') {
+                    document.getElementById("cardside1").innerHTML = 'Congratulations!You have learned everything';
+                    document.getElementById(id2hide).style.visibility = 'hidden'
+                    document.getElementById(id3hide).style.visibility = 'hidden';
+                    document.getElementById(id2show).style.visibility = 'hidden';
+
+                }
+                else {
+
+
+                    var audio = document.getElementById("audio");
+                    audio.src = "/Words/audio/" + response.word['word'] + ".mp3";
+                    audio.load(); //call this to just preload the audio without playing
+                    audio.play(); //call this to play the song right away
+
+                    var e = document.getElementById("selectlan");
+                    var value = e.options[e.selectedIndex].value;
+                    var text = e.options[e.selectedIndex].text;
+                    if (value !== '- - - -')
+                        document.getElementById("trans").innerHTML = response.word['translations'][text];
+                    document.getElementById("selectlan").onchange = function () {
+                        translation(response.word['translations'])
+                    };
+
+                    document.getElementById("word").innerHTML = response.word['word'];
+                    document.getElementById("type").innerHTML = response.word['TYPE'];
+                    document.getElementById("meaning").innerHTML = response.word['meaning'];
+                    document.getElementById("usage").innerHTML = response.word['usage'];
+
+                    document.getElementById("flip").style.visibility = 'hidden';
+                    if (document.getElementById('flip').style.visibility === 'hidden') {
+
+
+                        document.getElementById('ik').style.visibility = 'visible';
+                        document.getElementById('idk').style.visibility = 'visible';
+                    }
+
+
+                }
+
+                console.log("flipped ", response.word, response.word['word']);
+            },
+            error: function (error) {
+                console.log('bal');
+            }
+        });
+
+        if (switching) {
+            return false
+        }
+        switching = true
+
+        $card.toggleClass('is-switched')
+        window.setTimeout(function () {
+
+            $card.children().children().toggleClass('is-active')
+            switching = false
+
+
+        }, cardTransitionTime / 2)
+    }
+
+
+    function rotate(element, degree) {
+        element.css({
+            '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-ms-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+            'zoom': 1
+        });
+    }
+
+    function progressBarUpdate(x, outOf) {
+        var firstHalfAngle = 180;
+        var secondHalfAngle = 0;
+
+        // caluclate the angle
+        var drawAngle = x / outOf * 360;
+
+        // calculate the angle to be displayed if each half
+        if (drawAngle <= 180) {
+            firstHalfAngle = drawAngle;
+        } else {
+            secondHalfAngle = drawAngle - 180;
+        }
+
+        // set the transition
+        rotate($(".slice1"), firstHalfAngle);
+        rotate($(".slice2"), secondHalfAngle);
+
+        // set the values on the text
+        $(".status").html(x + " of " + outOf);
+    }
+
+    function myFunction(source, sessionID, id2hide, id3hide, id2show) {
+        switching = false;
+
+        var m = 3;
+
+        $.ajax({
+            url: '/nextword',
+            data: {'sessionID': sessionID, 'buttonID': source.id},
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                document.getElementById("master").innerHTML = response.mastered;
+                document.getElementById("review").innerHTML = response.reviewing;
+                document.getElementById("learn").innerHTML = response.learning;
+
+                m = response.mastered;
+                progressBarUpdate(m, 10);
+
+                /*r = ((response.reviewing)*100)/(response.mastered+response.reviewing+response.learning);
+                l = ((response.learning)*100)/(response.mastered+response.reviewing+response.learning);
+                chart(m,r,l)
+                */
+                if (response.word['wordID'] === '$null$') {
+
+                    document.getElementById("cardside1").innerHTML = 'Congratulations!You have learned new words\nPlease see the summary';
+                    document.getElementById(id2hide).style.visibility = 'hidden'
+                    document.getElementById(id3hide).style.visibility = 'hidden';
+                    document.getElementById(id2show).style.visibility = 'hidden';
+
+                    $.ajax({
+                        url: '/practicesummary',
+                        data: {
+                            'sessionID': sessionID
+                        },
+                        dataType: 'html',
+                        type: 'POST',
+                        success: function (response) {
+                            $('body').replaceWith(response);
+                        },
+                        error: function (error) {
+                            console.log('Error in receiving');
+                        }
+                    });
+
+
+                }
+                else {
+
+                    document.getElementById("cardside1").innerHTML = response.word['word']
+                    document.getElementById(id2hide).style.visibility = 'hidden'
+                    document.getElementById(id3hide).style.visibility = 'hidden';
+                    document.getElementById(id2show).style.visibility = 'visible';
+                }
+
+                console.log("nextword ", response.word, response.word['word']);
+
+            },
+            error: function (error) {
+                console.log('bal');
+            }
+        });
+        if (switching) {
+            return false
+        }
+        switching = true
+
+        $card.toggleClass('is-switched')
+        window.setTimeout(function () {
+            $card.children().children().toggleClass('is-active')
+            switching = false
+        }, cardTransitionTime / 2)
+
+    }
+
+
+    function translation(meaning) {
+        var e = document.getElementById("selectlan");
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value);
+        console.log(text);
+        console.log(meaning);
+        if (value == "- - - -") document.getElementById("trans").innerHTML = "----";
+        else document.getElementById("trans").innerHTML = meaning[text];
+
+    }
+
+</script>
+
+</body>
+</html>>

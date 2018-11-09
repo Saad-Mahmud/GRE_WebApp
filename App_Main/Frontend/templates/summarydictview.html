@@ -1,0 +1,21 @@
+<table align="center" style="display: block">
+
+    <tr>
+        <th>Word</th>
+        <th>Meaning</th>
+        <th>Corrected </th>
+        <th>Missed </th>
+    </tr>
+
+    {% for word in words %}
+
+        <tr>
+            <td>{{ word.word }}</td>
+            <td>{{ word.meaning }}</td>
+            <td>{{ correct[word.wordID] }}</td>
+            <td>{{ wrong[word.wordID] }}</td>
+        </tr>
+
+    {% endfor %}
+</table>
+

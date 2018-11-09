@@ -1,7 +1,7 @@
 import random
 from zSaad_Test.Backend.app.model import Suggestions
 import datetime
-from zSaad_Test.Backend.initDB import DBConf
+from App_Main.Backend.Config.DBConfig import DBConf
 
 
 def init_errordb():

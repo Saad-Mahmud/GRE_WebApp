@@ -1,0 +1,46 @@
+<table>
+        <tr>
+            <td>
+                <h4><b id="word">{{ word.word }}></b> (<i id="type"> {{word.TYPE}}</i>)</h4>
+            </td>
+       </tr>
+        <tr>
+            <audio  id="audio" controls>
+                <source src="/words/audio/{{ word.word }}.mp3" type="audio/mpeg">
+            </audio>
+        </tr>
+
+
+        <tr>
+            <td>
+                <h4><b>Meaning :</b></h4> <h4 id="meaning"> {{ word.meaning }}</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4 ><b>Usage :</b></h4> <h4 id="usage"> {{ word.usage }}</h4>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h4><b>Translation:  </b> <select id="selectlan" style="width: 100px; height: 40px; font-size: 22px">
+                    <option value="- - - -">None</option>
+                    <option value="bangali">Bangali</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="italian">Italian</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="spanish">Spanish</option>
+                </select><b id="trans">  - - - - </b></h4>
+
+
+
+
+            </td>
+        </tr>
+
+</table>
