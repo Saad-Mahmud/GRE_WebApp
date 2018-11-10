@@ -5,9 +5,10 @@ class Mediator():
 
 
     def swap(self,obj):
-        if(obj.TYPE == 'US'):
-            TODO(username = obj.username,TYPE = obj.TYPE,
-                 report=obj.report,date = obj.date,id = obj.id,status = 'TD').save()
+        if(obj.status == 'US'):
+            print ('US')
+            TODO(username=obj.username, TYPE=obj.TYPE,
+                        report=obj.report, date=obj.date, id=obj.id, status='TD').save()
             obj.delete()
         else:
             suggestions(username=obj.username, TYPE=obj.TYPE,
@@ -15,6 +16,7 @@ class Mediator():
             obj.delete()
 
 class TODO(Document):
+
     username = StringField(required=True, max_length=50)
     TYPE = StringField(required=True, max_length=50)
     report = StringField(required=True, max_length=500)
@@ -34,4 +36,5 @@ class suggestions(Document):
     status = StringField(required=True,max_length=5)
 
     def swap(self):
+        print ('sg')
         Mediator().swap(self)

@@ -259,7 +259,7 @@ def addnewword():
                 print (os.path.join(DBConf.getInstance().initDB_dir+'/', str(a.id)+'.csv'))
                 file.save(os.path.join(DBConf.getInstance().initDB_dir+'/', str(a.id)+'.csv'))
                 AddDataToDB(str(a.id))
-                return redirect(url_for('adminsuggestions'))
+                return redirect(url_for('admin_words'))
         else:
             return render_template('addnewword.html')
     else:
@@ -335,24 +335,32 @@ def admintodo(x):
 @APP_MAIN.route('/editsuggestion', methods=['POST'])
 @login_required
 def editsuggestion():
-    if(request.form['type']=='3'):
-        a = suggestions.objects(id=request.form['id'])
-        if(len(a)):
-            k = a[0]
-            k.delete()
 
-    elif(request.form['type']=='1'):
-        a = suggestions.objects(id=request.form['id'])
-        if (len(a)):
-            a = a[0]
-            a.swap()
+    if (current_user.is_authenticated and current_user.usertype == 'A'):
+        if(request.form['type']=='3'):
+            a = suggestions.objects(id=request.form['id'])
+            if(len(a)):
+                k = a[0]
+                k.delete()
+            a = TODO.objects(id=request.form['id'])
+            if (len(a)):
+                k = a[0]
+                k.delete()
 
-    else:
-        a = TODO.objects(id=request.form['id'])
-        if (len(a)):
-            a = a[0]
-            a.swap()
-    return json.dumps({'status': 'success'})
+        elif(request.form['type']=='1'):
+            a = suggestions.objects(id=request.form['id'])
+            print('here')
+            if (len(a)):
+                a = a[0]
+                a.swap()
+
+        else:
+            a = TODO.objects(id=request.form['id'])
+            print('here')
+            if (len(a)):
+                a = a[0]
+                a.swap()
+        return json.dumps({'status': 'success'})
 
 
 @APP_MAIN.route('/about')
