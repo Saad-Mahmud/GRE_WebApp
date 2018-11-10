@@ -143,7 +143,7 @@ def register():
         #             password_hash=generate_password_hash(form.password.data),reg_date=datetime.utcnow(), usertype='U', about_me=form.username.data+"\'s about")
         # user.save()
         user = AdapterPattern.Adapter()
-        user = user.Adapting(user1)
+        user = user.request(user1)
         user.save()
 
         # reg_date = datetime.utcnow()-timedelta(days=15) will create reg date 15 days before now... so this will not come in admin page
@@ -211,8 +211,8 @@ def additional(username):
     arr = arr.IteratingCountry()
     if form.validate_on_submit():
         # /////////////////////////facade pattern //////////////////////////////
-        facade = FacadeAdditional.Addition()
-        facade = facade.additionalInfo(username=username,form=form)
+        facade = FacadeAdditional.Addition(username=username,form=form)
+        facade = facade.additionalInfo()
         if facade==True:
             return redirect(url_for('login'))
         else:
@@ -346,7 +346,7 @@ def edit_profile():
         director.construct(Concrete_Builder)
         user1 = Concrete_Builder.product
         user = ProfileAdapter.Adapter()
-        user.Adapting(user1)
+        user.request(user1)
         current_user.reload()
         flash("Your changes have been saved!")
         return redirect(url_for('user', username=current_user.username))

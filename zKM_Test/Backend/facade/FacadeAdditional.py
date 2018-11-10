@@ -8,16 +8,19 @@ from zMA_Test.Backend.practice.fetch_practice import create_user_word_history, c
 
 
 class Addition:
-    def additionalInfo(self,username,form):
-        user = User.objects(username=username)
-        name = username
+    def __init__(self,username,form):
+        self.user = User.objects(username=username)
+        self.name = username
+        self.form = form
+
+    def additionalInfo(self):
         check1 = CheckUser()
-        check1 = check1.check(user=user)
+        check1 = check1.check(user=self.user)
         if check1:
             return True
-        user = user[0]
+        self.user = self.user[0]
         checkin = CheckUser()
-        checkin = checkin.check2(user=user, form=form, name=name)
+        checkin = checkin.check2(user=self.user, form=self.form, name=self.name)
         if checkin == True:
             return True
         else:
@@ -26,20 +29,24 @@ class Addition:
 
 class CheckUser:
     def check(self,user):
-        if len(user) == 0:
+        self.user = user
+        if len(self.user) == 0:
             return True
 
     def check2(self,user, form, name):
-        if user.check_password(form.confirm_password.data):
-            user = user.update(age=form.age.data,
+        self.user = user
+        self.form = form
+        self.name = name
+        if self.user.check_password(self.form.confirm_password.data):
+            self.user = self.user.update(age=self.form.age.data,
                                country=request.form.get('cnt_name'),
-                               gender=form.gender.data)
+                               gender=self.form.gender.data)
 
-            date = datetime.utcnow()
-            create_gre_test(name, {}, date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
-            create_user_word_history(name)
-            create_review_words(name, [])
-            print('aaaaaaaaaaaaaaaaaaaaaaaaa',create_test_summary(name, []))
+            self.date = datetime.utcnow()
+            create_gre_test(self.name, {}, self.date, 0, 0.0, 0.0, 0.0, request.form.get('cnt_name'), [], [], [])
+            create_user_word_history(self.name)
+            create_review_words(self.name, [])
+            print('aaaaaaaaaaaaaaaaaaaaaaaaa',create_test_summary(self.name, []))
             flash("Congrats!!you can now log in !!!")
             return True
         else:
