@@ -6,6 +6,11 @@ from App_Main.Backend.DictionaryMaker.DictionaryMaker import DictionaryMaker
 from App_Main.Backend.Words.Words_Rating import Words_Rating
 from zMA_Test.Backend.app.model import user_word_history
 
+def max(a,b):
+    if(a>=b):
+        return a
+    else:
+        return b
 
 class UserDict(DictionaryMaker):
     """
@@ -24,7 +29,7 @@ class UserDict(DictionaryMaker):
         for r in ratings:
             if(self.dict.get(r.id) is not None):
                 self.dict[r.id] = RatingG(self.dict[r.id])
-                self.dict[r.id].setData(r.Ratings[0])
+                self.dict[r.id].setData(max(0,r.Ratings[0]))
 
         ratings = user_word_history.objects(username=self.userid)
         if len(ratings) == 0:

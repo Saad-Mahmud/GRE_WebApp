@@ -5,6 +5,12 @@ from App_Main.Backend.DictionaryMaker.DictionaryMaker import DictionaryMaker
 from App_Main.Backend.Words.Words_Rating import Words_Rating
 
 
+def max(a,b):
+    if(a>=b):
+        return a
+    else:
+        return b
+
 class AdminDict(DictionaryMaker):
     """
     Override the factory method to return an instance of a
@@ -22,7 +28,7 @@ class AdminDict(DictionaryMaker):
         for r in ratings:
             if(self.dict.get(r.id) is not None):
                 self.dict[r.id] = RatingG(self.dict[r.id])
-                self.dict[r.id].setData(r.Ratings[0])
+                self.dict[r.id].setData(max(0,r.Ratings[0]))
 
         for w in self.words:
             self.dict[w.wordID] = Translation(self.dict[w.wordID])

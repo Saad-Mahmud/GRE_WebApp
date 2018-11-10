@@ -1,5 +1,5 @@
 from zMA_Test.Backend.app.model import session_practice, user_word_history, review_words
-from zMA_Test.Backend.test.abstract_factory_pattern import ModeFactory
+from zMA_Test.Backend.test.test_factory_pattern import ModeFactory
 from App_Main.Backend.Words.Words import Words
 
 

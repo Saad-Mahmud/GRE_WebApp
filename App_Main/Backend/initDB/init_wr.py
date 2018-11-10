@@ -14,3 +14,4 @@ def init_urdb():
     user_word_history(username='asd',status=status).save()
     user_word_history(username='asd1', status=status).save()
     user_word_history(username='asd2', status=status).save()
+    user_word_history(username='asd3', status=status).save()
