@@ -4,6 +4,7 @@ import pymongo
 from flask_bootstrap import Bootstrap
 from App_Main.Backend.initDB.init_words import init_DB_with_words
 from App_Main.Backend.initDB.init_error import init_errordb
+from App_Main.Backend.initDB.init_wr import init_urdb
 from App_Main.Backend.Config.Config import GlobalConf
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -36,7 +37,7 @@ mail = Mail(APP_MAIN)
 
 init_DB_with_words()
 init_errordb()
-
+init_urdb()
 
 from zKM_Test.Backend.app import routes_KM,model,errors
 from zMA_Test.Backend.app import routes_amit,routes_mou,model
