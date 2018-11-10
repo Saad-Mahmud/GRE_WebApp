@@ -61,6 +61,14 @@
 
     </style>
 
+    <style>
+        form {
+            font-family: Ubuntu;
+            font-weight: bold;
+            color: #4a93c9;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -117,7 +125,8 @@
 
 <form align="center" class="form" action="{{ url_for('specific_practice') }}" method="post">
     Go to page:<br>
-    <input type="number" name="practicesum" value="1">
+{#    <input type="number" name="practicesum" value="1">#}
+    <input type="number" min="1" max="{{ mem_len }}" name="practicesum" required="required" value=" ">
     <br>
     <input type="submit" value="Submit">
 </form>

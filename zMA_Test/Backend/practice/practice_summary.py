@@ -28,6 +28,5 @@ def create_summary(words, history):
 
         correct[key] = correct_count
         wrong[key] = wrong_count
-        print("printing right and wrong ", key, correct_count, wrong_count)
 
     return correct, wrong

@@ -15,8 +15,6 @@ from zMA_Test.Backend.practice.memento_pattern import Caretaker, Originator
 from zMA_Test.Backend.practice.practice_util import showstat
 
 
-
-
 @APP_MAIN.route('/practice')
 @login_required
 def practice_intro():
@@ -115,11 +113,8 @@ def previous_practice():
         caretaker.addMemento(originator.save())
     #.......................................#
 
-    print("current username ", current_user.username, caretaker.mementos.__len__())
     if caretaker.mementos.__len__() > 0:
         last_sum = originator.restore(caretaker.getMemento((caretaker.mementos.__len__() - 1)))
-        for l in last_sum:
-            print("laassssssssssst ", l)
         return render_template("practice_prev_summary.html", words=last_sum)
     else:
         return render_template("practice_no_summary.html")
@@ -146,9 +141,7 @@ def specific_practice():
         return render_template("practice_no_summary.html")
     else:
         last_sum = originator.restore(caretaker.getMemento(int(sumpath)-1))
-        for l in last_sum:
-            print("laassssssssssst ", l)
-        return render_template("practice_prev_summary.html", words=last_sum)
+        return render_template("practice_prev_summary.html", words=last_sum, mem_len=caretaker.mementos.__len__())
 
 
 

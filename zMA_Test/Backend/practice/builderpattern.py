@@ -68,7 +68,6 @@ class ConcreteBuilderPracticeSummary(BuilderPracticeSummary):
                     wrong_count += 1
             self.correct[key] = correct_count
             self.wrong[key] = wrong_count
-            print("printing right and wrong ", key, correct_count, wrong_count)
 
     def getPracticeSummary(self):
         self.practice_summary_object = PracticeSummary(self.practice_words, self.history, self.correct, self.wrong)

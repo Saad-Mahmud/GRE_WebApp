@@ -120,10 +120,3 @@ class LevelFactory:
         else:
             creator = HardLevel()
         return creator.factory_method()
-
-"""
-def main():
-    easy_creator = EasyLevel()
-    easy_creator.product.interface()
-"""
-
