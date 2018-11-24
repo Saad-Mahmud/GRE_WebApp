@@ -16,7 +16,7 @@ from zKM_Test.Backend.builder import RegBuilder, AdapterPattern, ProfileAdapter,
 from zKM_Test.Backend.factory.LoginFactory import LoginFactory
 from zKM_Test.Backend.factory.RateRank import RateRank as RK
 from zKM_Test.Backend.facade.facadeForm import AdditionalForm
-from zKM_Test.Backend.app.model import User, Gre_data
+from zKM_Test.Backend.app.model import User, Gre_data, Country
 from zKM_Test.Backend.facade import FacadeAdditional
 from zKM_Test.Backend.iterator.StatIterator import Iteration
 
@@ -202,6 +202,17 @@ def gregister():
 @APP_MAIN.route('/additional/<username>', methods=['POST','GET'])
 @register_required
 def additional(username):
+
+    cntttt = ["America", "Argentina", "Australia", "Bangladesh", "Brazil", "China", "England",
+              "Honululu", "India", "Japan", "Nepal", "Pakistan",
+              "Russia", "Sri Lanka", "Syria", "Uganda"
+              ]
+
+    for i in range(1, 17, 1):
+        cnt = Country(country_id=i,
+                      country_name=cntttt[i - 1])
+        cnt.save()
+
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = AdditionalForm()
