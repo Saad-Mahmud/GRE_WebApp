@@ -39,6 +39,10 @@ init_DB_with_words()
 init_errordb()
 init_urdb()
 
+
 from zKM_Test.Backend.app import routes_KM,model,errors
 from zMA_Test.Backend.app import routes_amit,routes_mou,model
 from App_Main.Backend.App import routes_saad,model
+from App_Main.Backend.initDB.init_admin import init_admin_db
+
+init_admin_db()

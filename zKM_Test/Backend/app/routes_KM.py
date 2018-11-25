@@ -10,8 +10,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.urls import url_parse
 
 from App_Main.Backend.App import APP_MAIN, APPLOGIN, db, mail
-from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, \
-    ResetPasswordForm, LocalStatForm
+from zKM_Test.Backend.app.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm,  ResetPasswordForm, LocalStatForm
 from zKM_Test.Backend.builder import RegBuilder, AdapterPattern, ProfileAdapter, EditProfileBuilder
 from zKM_Test.Backend.factory.LoginFactory import LoginFactory
 from zKM_Test.Backend.factory.RateRank import RateRank as RK

@@ -14,7 +14,7 @@ from zMA_Test.Backend.practice.fetch_practice import create_user_word_history, c
 # class Country(UserMixin, Document):
 #     country_id = IntField(required=True, primary_key=True)
 #     country_name = StringField(required=True, max_length=50, unique=True)
-
+'''
 app = Flask(__name__)
 
 client = pymongo.MongoClient("localhost",27017)
@@ -102,6 +102,5 @@ create_review_words("admin", [])
 # print(a)
 # print(b)
 
-if __name__== "__main__":
-    app.run(debug=True)
 
+'''
