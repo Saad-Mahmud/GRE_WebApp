@@ -1,15 +1,19 @@
-import random
-from datetime import datetime, timedelta
 
 import pymongo
 from flask import Flask
 from werkzeug.security import generate_password_hash
 from mongoengine import *
-from flask_login import UserMixin
+from datetime import datetime
 
-class Country(UserMixin, Document):
-    country_id = IntField(required=True, primary_key=True)
-    country_name = StringField(required=True, max_length=50, unique=True)
+from zKM_Test.Backend.app.model import User
+from zMA_Test.Backend.test.fetch_test import create_gre_test
+from zMA_Test.Backend.practice.fetch_practice import create_user_word_history, create_review_words
+
+#
+#
+# class Country(UserMixin, Document):
+#     country_id = IntField(required=True, primary_key=True)
+#     country_name = StringField(required=True, max_length=50, unique=True)
 
 app = Flask(__name__)
 
@@ -21,21 +25,25 @@ cntttt = ["America","Argentina","Australia","Bangladesh","Brazil","China","Engla
           "Honululu","India","Japan", "Nepal","Pakistan",
           "Russia","Sri Lanka","Syria","Uganda"
           ]
-# pword = 'abc'
-# for i in range(11,16,1):
-#     x = random.randint(0,3)
-#     user = User(username=str(i),
-#                 email=str(i)+'@gmail.com',
-#                 password_hash=generate_password_hash(pword),
-#                 country = cntttt[x],
-#                 about_me = str(i) + "\'s about",
-#                 age = str(random.randint(1,30)),
-#                 reg_date = datetime.utcnow(),
-#                 gender = 'Male'
-#                 ,usertype = 'A'  #for admin, it is 'A', for others, 'U'
-#                 )
-#     user.save()
+pword = 'admin'
+user = User(username='admin',
+            email='admin@gmail.com',
+            password_hash=generate_password_hash(pword),
+            country = cntttt[3],
+            about_me = "admin\'s about",
+            age = "20",
+            reg_date = datetime.utcnow(),
+            gender = 'Male'
+            ,usertype = 'A'  #for admin, it is 'A', for others, 'U'
+            )
 
+user.save()
+create_gre_test("admin", {}, datetime.utcnow(), 0, 0.0, 0.0, 0.0, "Bangladesh", [], [], [])
+create_user_word_history("admin")
+create_review_words("admin", [])
+
+
+#
 # col = db['user']
 # cursor = col.find({})
 # lastweek = datetime.now()
@@ -68,20 +76,20 @@ cntttt = ["America","Argentina","Australia","Bangladesh","Brazil","China","Engla
 #         country = user.country
 #         stat_data = stat_data.update(history = history, how_many_test=how_many_test,rating = rating, best_score = best_score, avg_score=avg_score, test_date=datetime.utcnow(), country=country,
 #                                      rate_date=rate_date, rating_chart=rating_chart)
-
-
-
-for i in range(1,17,1):
-    cnt = Country(country_id=i,
-                  country_name=cntttt[i-1])
-    cnt.save()
-
-
-collection = db['country']
-cursor = collection.find({})
-for i in cursor:
-    print(i['country_name'])
-
+#
+#
+#
+# for i in range(1,17,1):
+#     cnt = Country(country_id=i,
+#                   country_name=cntttt[i-1])
+#     cnt.save()
+#
+#
+# collection = db['country']
+# cursor = collection.find({})
+# for i in cursor:
+#     print(i['country_name'])
+#
 
 
 # from flask import Flask
